@@ -1,0 +1,30 @@
+{
+  "name": "whatsapp-outreach",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JJcode404/whatsapp-outreach.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JJcode404/whatsapp-outreach/issues"
+  },
+  "homepage": "https://github.com/JJcode404/whatsapp-outreach#readme",
+  "dependencies": {
+    "axios": "^1.13.2",
+    "csv-parser": "^3.2.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "node-cron": "^4.2.1",
+    "pg": "^8.17.1",
+    "uuid": "^13.0.0"
+  }
+}
