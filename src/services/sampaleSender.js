@@ -9,7 +9,7 @@ export async function sendSamples(phone) {
       to: phone,
       type: "text",
       text: {
-        body: "Great! 🎉\n\nHere are a few short video samples we’ve created for clients:\nhttps://yourportfolio.com\n\nLet me know if you’d like something similar for your business.",
+        body: "Great! 🎉\n\nHere are a few short video samples we’ve created for clients:\nhttps://drive.google.com/drive/folders/1jTrQmrXBLtUIAx1xyI0VP8Vfsy_CbC2U\n\nLet me know if you’d like something similar for your business.",
       },
     },
     {

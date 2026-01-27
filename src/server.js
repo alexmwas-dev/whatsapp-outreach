@@ -1,6 +1,5 @@
-// Server entry point placeholder
-import dotenv from "dotenv";
-dotenv.config();
+// server.js
+import "dotenv/config";
 
 import app from "./app.js";
 

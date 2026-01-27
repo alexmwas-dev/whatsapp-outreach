@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/* =========================
+   ENUMS
+========================= */
+
+enum ContactStatus {
+  NEW
+  INTRO_SENT
+  CONSENTED
+  DECLINED
+  BLOCKED
+  ASSIGNED
+  SAMPLES_SENT
+  FOLLOW_UP_SENT
+  RESPONDED_AFTER_FOLLOWUP
+  NEGOTIATING
+  CONVERTED
+  LOST
+  ERROR
+  ARCHIVED
+}
+
+enum MessageDirection {
+  INBOUND
+  OUTBOUND
+}
+
+/* =========================
+   CONTACTS (LEADS)
+========================= */
+
+model Contact {
+  id               String        @id @default(uuid())
+  name             String
+  phone            String        @unique
+  email            String?
+  
+  status           ContactStatus @default(NEW)
+  consent          Boolean       @default(false)
+  converted        Boolean       @default(false)
+
+  samplesSentAt    DateTime?
+  followUpSentAt   DateTime?
+
+  salesRepId       String?
+  salesRep         SalesRep?     @relation(fields: [salesRepId], references: [id])
+
+  messages         Message[]
+  campaigns        CampaignContact[]
+
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+
+  @@index([phone])
+  @@index([status])
+}
+
+/* =========================
+   SALES REPS
+========================= */
+
+model SalesRep {
+  id          String     @id @default(uuid())
+  name        String
+  phone       String     @unique
+  email       String?
+  active      Boolean    @default(true)
+
+  contacts    Contact[]
+
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+/* =========================
+   MESSAGES (LOGS)
+========================= */
+
+model Message {
+  id          String           @id @default(uuid())
+  contactId   String
+  contact     Contact         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  direction   MessageDirection
+  message     String
+
+  createdAt   DateTime         @default(now())
+
+  @@index([contactId])
+  @@index([direction])
+}
+
+/* =========================
+   CAMPAIGNS (OPTIONAL BUT SMART)
+========================= */
+
+model Campaign {
+  id          String     @id @default(uuid())
+  name        String
+  description String?
+
+  contacts    CampaignContact[]
+
+  active      Boolean    @default(true)
+  createdAt   DateTime   @default(now())
+}
+
+/* =========================
+   CAMPAIGN ↔ CONTACT JOIN
+========================= */
+
+model CampaignContact {
+  id          String    @id @default(uuid())
+
+  campaignId  String
+  contactId   String
+
+  campaign    Campaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
+
+  assignedAt  DateTime  @default(now())
+
+  @@unique([campaignId, contactId])
+}

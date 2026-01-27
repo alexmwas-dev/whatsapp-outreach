@@ -1,145 +1,244 @@
-import { pool } from "../config/db.js";
-import { sendSamples } from "../services/sampleSender.js";
+import { prisma } from "../lib/prisma.js";
 import { notifyRep } from "../services/repNotifier.js";
+import { sendSamples } from "../services/sampaleSender.js";
+import { catchAsync } from "../utils/catchAsync.js";
+import { AppError } from "../utils/AppError.js";
+import logger from "../utils/loogger.js";
+// import logger from "../utils/logger.js";
 
 /**
  * Webhook verification (Meta requirement)
  */
-export function verifyWebhook(req, res) {
+export const verifyWebhook = catchAsync(async (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
+  console.log("Env token:", JSON.stringify(process.env.VERIFY_TOKEN));
+  console.log("Received token:", JSON.stringify(token));
+
   if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
+    logger.info("Webhook verified successfully");
     return res.status(200).send(challenge);
   }
 
-  return res.sendStatus(403);
-}
+  logger.warn("Webhook verification failed", {
+    meta: { mode, token },
+  });
+
+  throw new AppError("Webhook verification failed", 403);
+});
 
 /**
  * Receive incoming WhatsApp messages
  */
-export async function receiveMessage(req, res) {
-  try {
-    const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+export const receiveMessage = catchAsync(async (req, res) => {
+  const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
 
-    if (!message) return res.sendStatus(200);
+  // Meta requires 200 even if empty
+  const value = req.body.entry?.[0]?.changes?.[0]?.value;
 
-    const phone = message.from;
-    const text = message.text?.body?.toLowerCase() || "";
+  if (value?.statuses) {
+    logger.debug("Webhook status update", {
+      meta: { status: value.statuses[0].status },
+    });
+    return res.sendStatus(200);
+  }
 
-    // Fetch contact
-    const { rows } = await pool.query("SELECT * FROM contacts WHERE phone=$1", [
-      phone,
+  if (!value?.messages) {
+    logger.debug("Webhook event without message");
+    return res.sendStatus(200);
+  }
+
+  const phone = message.from;
+  const text = message.text?.body?.toLowerCase() || "";
+
+  logger.http("Incoming WhatsApp message", {
+    meta: { phone, text },
+  });
+
+  // Fetch contact
+  const contact = await prisma.contact.findUnique({
+    where: { phone },
+  });
+
+  if (!contact) {
+    logger.info("Message from unknown contact", { meta: { phone } });
+    return res.sendStatus(200);
+  }
+
+  /* ----------------------------------
+     HANDLE OPT-OUT / NO
+  ---------------------------------- */
+  if (
+    text.includes("no") ||
+    text.includes("not interested") ||
+    text.includes("stop")
+  ) {
+    logger.info("Contact opted out", {
+      meta: { contactId: contact.id, phone },
+    });
+
+    await prisma.$transaction([
+      prisma.contact.update({
+        where: { phone },
+        data: { status: "CLOSED" },
+      }),
+      prisma.message.create({
+        data: {
+          contactId: contact.id,
+          direction: "INBOUND",
+          message: text,
+        },
+      }),
     ]);
 
-    if (!rows.length) return res.sendStatus(200);
+    return res.sendStatus(200);
+  }
 
-    const contact = rows[0];
+  /* ----------------------------------
+     HANDLE CONSENT / YES
+  ---------------------------------- */
+  if (
+    text.includes("yes") ||
+    text.includes("sure") ||
+    text.includes("okay") ||
+    text.includes("ok")
+  ) {
+    if (!contact.consent && contact.status !== "SAMPLES_SENT") {
+      logger.info("Contact consented", {
+        meta: { contactId: contact.id },
+      });
 
-    /* ----------------------------------
-       HANDLE OPT-OUT / NO
-    ---------------------------------- */
-    if (
-      text.includes("no") ||
-      text.includes("not interested") ||
-      text.includes("stop")
-    ) {
-      await pool.query("UPDATE contacts SET status='CLOSED' WHERE phone=$1", [
-        phone,
-      ]);
+      // Log inbound
+      await prisma.message.create({
+        data: {
+          contactId: contact.id,
+          direction: "INBOUND",
+          message: text,
+        },
+      });
 
-      await pool.query(
-        "INSERT INTO messages(contact_id, direction, message) VALUES($1,'INBOUND',$2)",
-        [contact.id, text],
-      );
+      // Update consent
+      await prisma.contact.update({
+        where: { phone },
+        data: {
+          consent: true,
+          status: "CONSENTED",
+        },
+      });
 
-      return res.sendStatus(200);
-    }
+      /* ----------------------------------
+         AUTO-ASSIGN SALES REP
+      ---------------------------------- */
+      const reps = await prisma.salesRep.findMany({
+        where: { active: true },
+      });
 
-    /* ----------------------------------
-       HANDLE CONSENT / YES
-    ---------------------------------- */
-    if (
-      text.includes("yes") ||
-      text.includes("sure") ||
-      text.includes("okay") ||
-      text.includes("ok")
-    ) {
-      if (!contact.consent && contact.status !== "SAMPLES_SENT") {
-        // Log inbound
-        await pool.query(
-          "INSERT INTO messages(contact_id, direction, message) VALUES($1,'INBOUND',$2)",
-          [contact.id, text],
-        );
+      let assignedRep = null;
 
-        // Update consent
-        await pool.query(
-          "UPDATE contacts SET consent=true, status='CONSENTED' WHERE phone=$1",
-          [phone],
-        );
+      if (reps.length) {
+        assignedRep = reps[Math.floor(Math.random() * reps.length)];
 
-        /* ----------------------------------
-           AUTO-ASSIGN SALES REP
-        ---------------------------------- */
-        const { rows: reps } = await pool.query(
-          "SELECT * FROM sales_reps WHERE active=true",
-        );
+        await prisma.contact.update({
+          where: { id: contact.id },
+          data: {
+            salesRepId: assignedRep.id,
+          },
+        });
 
-        let assignedRep = null;
-
-        if (reps.length) {
-          assignedRep = reps[Math.floor(Math.random() * reps.length)];
-
-          await pool.query("UPDATE contacts SET sales_rep_id=$1 WHERE id=$2", [
-            assignedRep.id,
-            contact.id,
-          ]);
-        }
-
-        // Send samples to lead
-        await sendSamples(phone);
-
-        await pool.query(
-          "INSERT INTO messages(contact_id, direction, message) VALUES($1,'OUTBOUND',$2)",
-          [contact.id, "Sent video samples"],
-        );
-
-        // Notify sales rep on WhatsApp
-        if (assignedRep) {
-          await notifyRep(assignedRep.phone, contact.name, contact.phone);
-
-          await pool.query(
-            "INSERT INTO messages(contact_id, direction, message) VALUES($1,'OUTBOUND',$2)",
-            [contact.id, `Rep notified: ${assignedRep.name}`],
-          );
-        }
-
-        // Final status
-        await pool.query(
-          `UPDATE contacts
-   SET status='SAMPLES_SENT',
-       samples_sent_at = now()
-   WHERE phone=$1`,
-          [phone],
-        );
+        logger.info("Sales rep assigned", {
+          meta: {
+            repId: assignedRep.id,
+            contactId: contact.id,
+          },
+        });
       }
 
-      return res.sendStatus(200);
+      // Send samples
+      try {
+        await sendSamples(phone);
+        await prisma.message.create({
+          data: {
+            contactId: contact.id,
+            direction: "OUTBOUND",
+            message: "Sent video samples",
+          },
+        });
+
+        logger.info("Samples sent", { meta: { contactId: contact.id } });
+      } catch (err) {
+        logger.error("Failed to send samples", { contactId: contact.id, err });
+      }
+
+      await prisma.message.create({
+        data: {
+          contactId: contact.id,
+          direction: "OUTBOUND",
+          message: "Sent video samples",
+        },
+      });
+
+      logger.info("Samples sent", {
+        meta: { contactId: contact.id },
+      });
+
+      // Notify rep
+      if (assignedRep) {
+        try {
+          await notifyRep(
+            assignedRep.phone,
+            assignedRep.name,
+            contact.name,
+            contact.phone,
+          );
+
+          await prisma.message.create({
+            data: {
+              contactId: contact.id,
+              direction: "OUTBOUND",
+              message: `Rep notified: ${assignedRep.name}`,
+            },
+          });
+
+          logger.info("Sales rep notified", {
+            meta: { repPhone: assignedRep.phone },
+          });
+        } catch (err) {
+          logger.error("Failed to notify sales rep", {
+            repPhone: assignedRep.phone,
+            contactId: contact.id,
+            err,
+          });
+        }
+      }
+      // Final status
+      await prisma.contact.update({
+        where: { phone },
+        data: {
+          status: "SAMPLES_SENT",
+          samplesSentAt: new Date(),
+        },
+      });
     }
 
-    /* ----------------------------------
-       HANDLE OTHER MESSAGES
-    ---------------------------------- */
-    await pool.query(
-      "INSERT INTO messages(contact_id, direction, message) VALUES($1,'INBOUND',$2)",
-      [contact.id, text],
-    );
-
     return res.sendStatus(200);
-  } catch (error) {
-    console.error("Webhook error:", error.message);
-    return res.sendStatus(500);
   }
-}
+
+  /* ----------------------------------
+     HANDLE OTHER MESSAGES
+  ---------------------------------- */
+  logger.debug("Unhandled inbound message", {
+    meta: { contactId: contact.id, text },
+  });
+
+  await prisma.message.create({
+    data: {
+      contactId: contact.id,
+      direction: "INBOUND",
+      message: text,
+    },
+  });
+
+  return res.sendStatus(200);
+});

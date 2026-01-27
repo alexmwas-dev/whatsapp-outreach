@@ -1,28 +1,69 @@
 import cron from "node-cron";
-import { pool } from "../config/db.js";
+import { prisma } from "../lib/prisma.js";
 import { sendFollowUpTemplate } from "../services/followUpSender.js";
+import logger from "../utils/logger.js";
+import { AppError } from "../utils/AppError.js";
 
 cron.schedule("0 * * * *", async () => {
-  console.log("Running follow-up job...");
+  logger.info("Running follow-up cron job");
 
-  const { rows: contacts } = await pool.query(`
-    SELECT *
-    FROM contacts
-    WHERE status='SAMPLES_SENT'
-    AND samples_sent_at < now() - interval '48 hours'
-  `);
+  try {
+    const contacts = await prisma.contact.findMany({
+      where: {
+        status: "SAMPLES_SENT",
+        samplesSentAt: {
+          lt: new Date(Date.now() - 48 * 60 * 60 * 1000), // 48 hours ago
+        },
+      },
+    });
 
-  for (const contact of contacts) {
-    await sendFollowUpTemplate(contact.phone, contact.name);
+    if (!contacts.length) {
+      logger.debug("No contacts eligible for follow-up");
+      return;
+    }
 
-    await pool.query(
-      "INSERT INTO messages(contact_id, direction, message) VALUES($1,'OUTBOUND',$2)",
-      [contact.id, "Sent 48h follow-up template"],
-    );
+    for (const contact of contacts) {
+      try {
+        logger.info("Sending follow-up", {
+          meta: { contactId: contact.id, phone: contact.phone },
+        });
 
-    // Optional: prevent repeat follow-ups
-    await pool.query("UPDATE contacts SET status='FOLLOWED_UP' WHERE id=$1", [
-      contact.id,
-    ]);
+        await sendFollowUpTemplate(contact.phone, contact.name);
+
+        await prisma.$transaction([
+          prisma.message.create({
+            data: {
+              contactId: contact.id,
+              direction: "OUTBOUND",
+              message: "Sent 48h follow-up template",
+            },
+          }),
+          prisma.contact.update({
+            where: { id: contact.id },
+            data: { status: "FOLLOW_UP_SENT" },
+          }),
+        ]);
+
+        logger.info("Follow-up completed", {
+          meta: { contactId: contact.id },
+        });
+      } catch (contactError) {
+        // Contact-level failure should NOT stop the cron
+        logger.error("Follow-up failed for contact", {
+          meta: {
+            contactId: contact.id,
+            error: contactError.message,
+          },
+        });
+      }
+    }
+  } catch (error) {
+    // Cron-level failure
+    logger.error("Follow-up cron job failed", {
+      meta: {
+        error: error.message,
+        stack: error.stack,
+      },
+    });
   }
 });

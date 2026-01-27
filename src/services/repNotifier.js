@@ -1,19 +1,37 @@
 import axios from "axios";
 import { WHATSAPP_API_URL } from "../config/whatsapp.js";
 
-export async function notifyRep(repPhone, leadName, leadPhone) {
+export async function notifyRep(repPhone, repName, leadName, leadPhone) {
   return axios.post(
     WHATSAPP_API_URL,
     {
       messaging_product: "whatsapp",
       to: repPhone,
-      type: "text",
-      text: {
-        body:
-          `📢 New Lead Assigned\n\n` +
-          `Name: ${leadName}\n` +
-          `Phone: ${leadPhone}\n\n` +
-          `They’ve consented and received samples. Please follow up.`,
+      type: "template",
+      template: {
+        name: "lead_assigned_notification",
+        language: {
+          code: "en", // or "en_US" if that’s what you picked in Meta
+        },
+        components: [
+          {
+            type: "body",
+            parameters: [
+              {
+                type: "text",
+                text: repName, // {{1}}
+              },
+              {
+                type: "text",
+                text: leadName, // {{2}}
+              },
+              {
+                type: "text",
+                text: leadPhone, // {{3}}
+              },
+            ],
+          },
+        ],
       },
     },
     {
