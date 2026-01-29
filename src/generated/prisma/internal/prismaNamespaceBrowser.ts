@@ -51,6 +51,11 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
+  Organization: 'Organization',
+  User: 'User',
+  Subscription: 'Subscription',
+  WhatsAppNumber: 'WhatsAppNumber',
+  WhatsAppTemplate: 'WhatsAppTemplate',
   Contact: 'Contact',
   SalesRep: 'SalesRep',
   Message: 'Message',
@@ -64,18 +69,98 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  * Enums
  */
 
-export const TransactionIsolationLevel = {
+export const TransactionIsolationLevel = runtime.makeStrictEnum({
   ReadUncommitted: 'ReadUncommitted',
   ReadCommitted: 'ReadCommitted',
   RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
-} as const
+} as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const OrganizationScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  slug: 'slug',
+  plan: 'plan',
+  whatsappBusinessAccountId: 'whatsappBusinessAccountId',
+  whatsappStatus: 'whatsappStatus',
+  messagingTier: 'messagingTier',
+  webhookVerifyToken: 'webhookVerifyToken',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type OrganizationScalarFieldEnum = (typeof OrganizationScalarFieldEnum)[keyof typeof OrganizationScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  email: 'email',
+  password: 'password',
+  role: 'role',
+  organizationId: 'organizationId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const SubscriptionScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  status: 'status',
+  plan: 'plan',
+  messageLimit: 'messageLimit',
+  messagesUsed: 'messagesUsed',
+  currentPeriodStart: 'currentPeriodStart',
+  currentPeriodEnd: 'currentPeriodEnd',
+  provider: 'provider',
+  providerRef: 'providerRef',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
+
+
+export const WhatsAppNumberScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  phoneNumber: 'phoneNumber',
+  phoneNumberId: 'phoneNumberId',
+  accessToken: 'accessToken',
+  displayName: 'displayName',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WhatsAppNumberScalarFieldEnum = (typeof WhatsAppNumberScalarFieldEnum)[keyof typeof WhatsAppNumberScalarFieldEnum]
+
+
+export const WhatsAppTemplateScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  name: 'name',
+  language: 'language',
+  category: 'category',
+  description: 'description',
+  active: 'active',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type WhatsAppTemplateScalarFieldEnum = (typeof WhatsAppTemplateScalarFieldEnum)[keyof typeof WhatsAppTemplateScalarFieldEnum]
+
+
 export const ContactScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   name: 'name',
   phone: 'phone',
   email: 'email',
@@ -94,6 +179,8 @@ export type ContactScalarFieldEnum = (typeof ContactScalarFieldEnum)[keyof typeo
 
 export const SalesRepScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
+  userId: 'userId',
   name: 'name',
   phone: 'phone',
   email: 'email',
@@ -107,10 +194,14 @@ export type SalesRepScalarFieldEnum = (typeof SalesRepScalarFieldEnum)[keyof typ
 
 export const MessageScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   contactId: 'contactId',
+  salesRepId: 'salesRepId',
+  whatsappNumberId: 'whatsappNumberId',
   direction: 'direction',
   message: 'message',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  readAt: 'readAt'
 } as const
 
 export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeof MessageScalarFieldEnum]
@@ -118,6 +209,7 @@ export type MessageScalarFieldEnum = (typeof MessageScalarFieldEnum)[keyof typeo
 
 export const CampaignScalarFieldEnum = {
   id: 'id',
+  organizationId: 'organizationId',
   name: 'name',
   description: 'description',
   active: 'active',

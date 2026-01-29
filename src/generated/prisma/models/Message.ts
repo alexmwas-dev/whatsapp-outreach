@@ -26,52 +26,76 @@ export type AggregateMessage = {
 
 export type MessageMinAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   contactId: string | null
+  salesRepId: string | null
+  whatsappNumberId: string | null
   direction: $Enums.MessageDirection | null
   message: string | null
   createdAt: Date | null
+  readAt: Date | null
 }
 
 export type MessageMaxAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   contactId: string | null
+  salesRepId: string | null
+  whatsappNumberId: string | null
   direction: $Enums.MessageDirection | null
   message: string | null
   createdAt: Date | null
+  readAt: Date | null
 }
 
 export type MessageCountAggregateOutputType = {
   id: number
+  organizationId: number
   contactId: number
+  salesRepId: number
+  whatsappNumberId: number
   direction: number
   message: number
   createdAt: number
+  readAt: number
   _all: number
 }
 
 
 export type MessageMinAggregateInputType = {
   id?: true
+  organizationId?: true
   contactId?: true
+  salesRepId?: true
+  whatsappNumberId?: true
   direction?: true
   message?: true
   createdAt?: true
+  readAt?: true
 }
 
 export type MessageMaxAggregateInputType = {
   id?: true
+  organizationId?: true
   contactId?: true
+  salesRepId?: true
+  whatsappNumberId?: true
   direction?: true
   message?: true
   createdAt?: true
+  readAt?: true
 }
 
 export type MessageCountAggregateInputType = {
   id?: true
+  organizationId?: true
   contactId?: true
+  salesRepId?: true
+  whatsappNumberId?: true
   direction?: true
   message?: true
   createdAt?: true
+  readAt?: true
   _all?: true
 }
 
@@ -149,10 +173,14 @@ export type MessageGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type MessageGroupByOutputType = {
   id: string
+  organizationId: string
   contactId: string
+  salesRepId: string | null
+  whatsappNumberId: string
   direction: $Enums.MessageDirection
   message: string
   createdAt: Date
+  readAt: Date | null
   _count: MessageCountAggregateOutputType | null
   _min: MessageMinAggregateOutputType | null
   _max: MessageMaxAggregateOutputType | null
@@ -178,20 +206,34 @@ export type MessageWhereInput = {
   OR?: Prisma.MessageWhereInput[]
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
   id?: Prisma.StringFilter<"Message"> | string
+  organizationId?: Prisma.StringFilter<"Message"> | string
   contactId?: Prisma.StringFilter<"Message"> | string
+  salesRepId?: Prisma.StringNullableFilter<"Message"> | string | null
+  whatsappNumberId?: Prisma.StringFilter<"Message"> | string
   direction?: Prisma.EnumMessageDirectionFilter<"Message"> | $Enums.MessageDirection
   message?: Prisma.StringFilter<"Message"> | string
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   contact?: Prisma.XOR<Prisma.ContactScalarRelationFilter, Prisma.ContactWhereInput>
+  salesRep?: Prisma.XOR<Prisma.SalesRepNullableScalarRelationFilter, Prisma.SalesRepWhereInput> | null
+  whatsappNumber?: Prisma.XOR<Prisma.WhatsAppNumberScalarRelationFilter, Prisma.WhatsAppNumberWhereInput>
 }
 
 export type MessageOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
+  salesRepId?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsappNumberId?: Prisma.SortOrder
   direction?: Prisma.SortOrder
   message?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   contact?: Prisma.ContactOrderByWithRelationInput
+  salesRep?: Prisma.SalesRepOrderByWithRelationInput
+  whatsappNumber?: Prisma.WhatsAppNumberOrderByWithRelationInput
 }
 
 export type MessageWhereUniqueInput = Prisma.AtLeast<{
@@ -199,19 +241,30 @@ export type MessageWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
   OR?: Prisma.MessageWhereInput[]
   NOT?: Prisma.MessageWhereInput | Prisma.MessageWhereInput[]
+  organizationId?: Prisma.StringFilter<"Message"> | string
   contactId?: Prisma.StringFilter<"Message"> | string
+  salesRepId?: Prisma.StringNullableFilter<"Message"> | string | null
+  whatsappNumberId?: Prisma.StringFilter<"Message"> | string
   direction?: Prisma.EnumMessageDirectionFilter<"Message"> | $Enums.MessageDirection
   message?: Prisma.StringFilter<"Message"> | string
   createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   contact?: Prisma.XOR<Prisma.ContactScalarRelationFilter, Prisma.ContactWhereInput>
+  salesRep?: Prisma.XOR<Prisma.SalesRepNullableScalarRelationFilter, Prisma.SalesRepWhereInput> | null
+  whatsappNumber?: Prisma.XOR<Prisma.WhatsAppNumberScalarRelationFilter, Prisma.WhatsAppNumberWhereInput>
 }, "id">
 
 export type MessageOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
+  salesRepId?: Prisma.SortOrderInput | Prisma.SortOrder
+  whatsappNumberId?: Prisma.SortOrder
   direction?: Prisma.SortOrder
   message?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.MessageCountOrderByAggregateInput
   _max?: Prisma.MessageMaxOrderByAggregateInput
   _min?: Prisma.MessageMinOrderByAggregateInput
@@ -222,10 +275,14 @@ export type MessageScalarWhereWithAggregatesInput = {
   OR?: Prisma.MessageScalarWhereWithAggregatesInput[]
   NOT?: Prisma.MessageScalarWhereWithAggregatesInput | Prisma.MessageScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Message"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"Message"> | string
   contactId?: Prisma.StringWithAggregatesFilter<"Message"> | string
+  salesRepId?: Prisma.StringNullableWithAggregatesFilter<"Message"> | string | null
+  whatsappNumberId?: Prisma.StringWithAggregatesFilter<"Message"> | string
   direction?: Prisma.EnumMessageDirectionWithAggregatesFilter<"Message"> | $Enums.MessageDirection
   message?: Prisma.StringWithAggregatesFilter<"Message"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Message"> | Date | string
+  readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Message"> | Date | string | null
 }
 
 export type MessageCreateInput = {
@@ -233,15 +290,23 @@ export type MessageCreateInput = {
   direction: $Enums.MessageDirection
   message: string
   createdAt?: Date | string
+  readAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMessagesInput
   contact: Prisma.ContactCreateNestedOneWithoutMessagesInput
+  salesRep?: Prisma.SalesRepCreateNestedOneWithoutMessagesInput
+  whatsappNumber: Prisma.WhatsAppNumberCreateNestedOneWithoutMessagesInput
 }
 
 export type MessageUncheckedCreateInput = {
   id?: string
+  organizationId: string
   contactId: string
+  salesRepId?: string | null
+  whatsappNumberId: string
   direction: $Enums.MessageDirection
   message: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type MessageUpdateInput = {
@@ -249,23 +314,35 @@ export type MessageUpdateInput = {
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMessagesNestedInput
   contact?: Prisma.ContactUpdateOneRequiredWithoutMessagesNestedInput
+  salesRep?: Prisma.SalesRepUpdateOneWithoutMessagesNestedInput
+  whatsappNumber?: Prisma.WhatsAppNumberUpdateOneRequiredWithoutMessagesNestedInput
 }
 
 export type MessageUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MessageCreateManyInput = {
   id?: string
+  organizationId: string
   contactId: string
+  salesRepId?: string | null
+  whatsappNumberId: string
   direction: $Enums.MessageDirection
   message: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type MessageUpdateManyMutationInput = {
@@ -273,14 +350,19 @@ export type MessageUpdateManyMutationInput = {
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MessageUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MessageListRelationFilter = {
@@ -295,26 +377,122 @@ export type MessageOrderByRelationAggregateInput = {
 
 export type MessageCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
+  salesRepId?: Prisma.SortOrder
+  whatsappNumberId?: Prisma.SortOrder
   direction?: Prisma.SortOrder
   message?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
 }
 
 export type MessageMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
+  salesRepId?: Prisma.SortOrder
+  whatsappNumberId?: Prisma.SortOrder
   direction?: Prisma.SortOrder
   message?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
 }
 
 export type MessageMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
+  salesRepId?: Prisma.SortOrder
+  whatsappNumberId?: Prisma.SortOrder
   direction?: Prisma.SortOrder
   message?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
+}
+
+export type MessageCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutOrganizationInput, Prisma.MessageUncheckedCreateWithoutOrganizationInput> | Prisma.MessageCreateWithoutOrganizationInput[] | Prisma.MessageUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutOrganizationInput | Prisma.MessageCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.MessageCreateManyOrganizationInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutOrganizationInput, Prisma.MessageUncheckedCreateWithoutOrganizationInput> | Prisma.MessageCreateWithoutOrganizationInput[] | Prisma.MessageUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutOrganizationInput | Prisma.MessageCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.MessageCreateManyOrganizationInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutOrganizationInput, Prisma.MessageUncheckedCreateWithoutOrganizationInput> | Prisma.MessageCreateWithoutOrganizationInput[] | Prisma.MessageUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutOrganizationInput | Prisma.MessageCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.MessageUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.MessageCreateManyOrganizationInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.MessageUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutOrganizationInput | Prisma.MessageUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
+export type MessageUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutOrganizationInput, Prisma.MessageUncheckedCreateWithoutOrganizationInput> | Prisma.MessageCreateWithoutOrganizationInput[] | Prisma.MessageUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutOrganizationInput | Prisma.MessageCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.MessageUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.MessageCreateManyOrganizationInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.MessageUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutOrganizationInput | Prisma.MessageUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
+export type MessageCreateNestedManyWithoutWhatsappNumberInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutWhatsappNumberInput, Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput> | Prisma.MessageCreateWithoutWhatsappNumberInput[] | Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput | Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput[]
+  createMany?: Prisma.MessageCreateManyWhatsappNumberInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUncheckedCreateNestedManyWithoutWhatsappNumberInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutWhatsappNumberInput, Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput> | Prisma.MessageCreateWithoutWhatsappNumberInput[] | Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput | Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput[]
+  createMany?: Prisma.MessageCreateManyWhatsappNumberInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUpdateManyWithoutWhatsappNumberNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutWhatsappNumberInput, Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput> | Prisma.MessageCreateWithoutWhatsappNumberInput[] | Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput | Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutWhatsappNumberInput | Prisma.MessageUpsertWithWhereUniqueWithoutWhatsappNumberInput[]
+  createMany?: Prisma.MessageCreateManyWhatsappNumberInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutWhatsappNumberInput | Prisma.MessageUpdateWithWhereUniqueWithoutWhatsappNumberInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutWhatsappNumberInput | Prisma.MessageUpdateManyWithWhereWithoutWhatsappNumberInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
+export type MessageUncheckedUpdateManyWithoutWhatsappNumberNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutWhatsappNumberInput, Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput> | Prisma.MessageCreateWithoutWhatsappNumberInput[] | Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput | Prisma.MessageCreateOrConnectWithoutWhatsappNumberInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutWhatsappNumberInput | Prisma.MessageUpsertWithWhereUniqueWithoutWhatsappNumberInput[]
+  createMany?: Prisma.MessageCreateManyWhatsappNumberInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutWhatsappNumberInput | Prisma.MessageUpdateWithWhereUniqueWithoutWhatsappNumberInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutWhatsappNumberInput | Prisma.MessageUpdateManyWithWhereWithoutWhatsappNumberInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
 export type MessageCreateNestedManyWithoutContactInput = {
@@ -359,8 +537,161 @@ export type MessageUncheckedUpdateManyWithoutContactNestedInput = {
   deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
 }
 
+export type MessageCreateNestedManyWithoutSalesRepInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutSalesRepInput, Prisma.MessageUncheckedCreateWithoutSalesRepInput> | Prisma.MessageCreateWithoutSalesRepInput[] | Prisma.MessageUncheckedCreateWithoutSalesRepInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutSalesRepInput | Prisma.MessageCreateOrConnectWithoutSalesRepInput[]
+  createMany?: Prisma.MessageCreateManySalesRepInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUncheckedCreateNestedManyWithoutSalesRepInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutSalesRepInput, Prisma.MessageUncheckedCreateWithoutSalesRepInput> | Prisma.MessageCreateWithoutSalesRepInput[] | Prisma.MessageUncheckedCreateWithoutSalesRepInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutSalesRepInput | Prisma.MessageCreateOrConnectWithoutSalesRepInput[]
+  createMany?: Prisma.MessageCreateManySalesRepInputEnvelope
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+}
+
+export type MessageUpdateManyWithoutSalesRepNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutSalesRepInput, Prisma.MessageUncheckedCreateWithoutSalesRepInput> | Prisma.MessageCreateWithoutSalesRepInput[] | Prisma.MessageUncheckedCreateWithoutSalesRepInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutSalesRepInput | Prisma.MessageCreateOrConnectWithoutSalesRepInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutSalesRepInput | Prisma.MessageUpsertWithWhereUniqueWithoutSalesRepInput[]
+  createMany?: Prisma.MessageCreateManySalesRepInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutSalesRepInput | Prisma.MessageUpdateWithWhereUniqueWithoutSalesRepInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutSalesRepInput | Prisma.MessageUpdateManyWithWhereWithoutSalesRepInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
+export type MessageUncheckedUpdateManyWithoutSalesRepNestedInput = {
+  create?: Prisma.XOR<Prisma.MessageCreateWithoutSalesRepInput, Prisma.MessageUncheckedCreateWithoutSalesRepInput> | Prisma.MessageCreateWithoutSalesRepInput[] | Prisma.MessageUncheckedCreateWithoutSalesRepInput[]
+  connectOrCreate?: Prisma.MessageCreateOrConnectWithoutSalesRepInput | Prisma.MessageCreateOrConnectWithoutSalesRepInput[]
+  upsert?: Prisma.MessageUpsertWithWhereUniqueWithoutSalesRepInput | Prisma.MessageUpsertWithWhereUniqueWithoutSalesRepInput[]
+  createMany?: Prisma.MessageCreateManySalesRepInputEnvelope
+  set?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  disconnect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  delete?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  connect?: Prisma.MessageWhereUniqueInput | Prisma.MessageWhereUniqueInput[]
+  update?: Prisma.MessageUpdateWithWhereUniqueWithoutSalesRepInput | Prisma.MessageUpdateWithWhereUniqueWithoutSalesRepInput[]
+  updateMany?: Prisma.MessageUpdateManyWithWhereWithoutSalesRepInput | Prisma.MessageUpdateManyWithWhereWithoutSalesRepInput[]
+  deleteMany?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+}
+
 export type EnumMessageDirectionFieldUpdateOperationsInput = {
   set?: $Enums.MessageDirection
+}
+
+export type MessageCreateWithoutOrganizationInput = {
+  id?: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+  contact: Prisma.ContactCreateNestedOneWithoutMessagesInput
+  salesRep?: Prisma.SalesRepCreateNestedOneWithoutMessagesInput
+  whatsappNumber: Prisma.WhatsAppNumberCreateNestedOneWithoutMessagesInput
+}
+
+export type MessageUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  contactId: string
+  salesRepId?: string | null
+  whatsappNumberId: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+}
+
+export type MessageCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.MessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessageCreateWithoutOrganizationInput, Prisma.MessageUncheckedCreateWithoutOrganizationInput>
+}
+
+export type MessageCreateManyOrganizationInputEnvelope = {
+  data: Prisma.MessageCreateManyOrganizationInput | Prisma.MessageCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type MessageUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.MessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.MessageUpdateWithoutOrganizationInput, Prisma.MessageUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.MessageCreateWithoutOrganizationInput, Prisma.MessageUncheckedCreateWithoutOrganizationInput>
+}
+
+export type MessageUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.MessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.MessageUpdateWithoutOrganizationInput, Prisma.MessageUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type MessageUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.MessageScalarWhereInput
+  data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type MessageScalarWhereInput = {
+  AND?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+  OR?: Prisma.MessageScalarWhereInput[]
+  NOT?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
+  id?: Prisma.StringFilter<"Message"> | string
+  organizationId?: Prisma.StringFilter<"Message"> | string
+  contactId?: Prisma.StringFilter<"Message"> | string
+  salesRepId?: Prisma.StringNullableFilter<"Message"> | string | null
+  whatsappNumberId?: Prisma.StringFilter<"Message"> | string
+  direction?: Prisma.EnumMessageDirectionFilter<"Message"> | $Enums.MessageDirection
+  message?: Prisma.StringFilter<"Message"> | string
+  createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
+  readAt?: Prisma.DateTimeNullableFilter<"Message"> | Date | string | null
+}
+
+export type MessageCreateWithoutWhatsappNumberInput = {
+  id?: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMessagesInput
+  contact: Prisma.ContactCreateNestedOneWithoutMessagesInput
+  salesRep?: Prisma.SalesRepCreateNestedOneWithoutMessagesInput
+}
+
+export type MessageUncheckedCreateWithoutWhatsappNumberInput = {
+  id?: string
+  organizationId: string
+  contactId: string
+  salesRepId?: string | null
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+}
+
+export type MessageCreateOrConnectWithoutWhatsappNumberInput = {
+  where: Prisma.MessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessageCreateWithoutWhatsappNumberInput, Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput>
+}
+
+export type MessageCreateManyWhatsappNumberInputEnvelope = {
+  data: Prisma.MessageCreateManyWhatsappNumberInput | Prisma.MessageCreateManyWhatsappNumberInput[]
+  skipDuplicates?: boolean
+}
+
+export type MessageUpsertWithWhereUniqueWithoutWhatsappNumberInput = {
+  where: Prisma.MessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.MessageUpdateWithoutWhatsappNumberInput, Prisma.MessageUncheckedUpdateWithoutWhatsappNumberInput>
+  create: Prisma.XOR<Prisma.MessageCreateWithoutWhatsappNumberInput, Prisma.MessageUncheckedCreateWithoutWhatsappNumberInput>
+}
+
+export type MessageUpdateWithWhereUniqueWithoutWhatsappNumberInput = {
+  where: Prisma.MessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.MessageUpdateWithoutWhatsappNumberInput, Prisma.MessageUncheckedUpdateWithoutWhatsappNumberInput>
+}
+
+export type MessageUpdateManyWithWhereWithoutWhatsappNumberInput = {
+  where: Prisma.MessageScalarWhereInput
+  data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutWhatsappNumberInput>
 }
 
 export type MessageCreateWithoutContactInput = {
@@ -368,13 +699,21 @@ export type MessageCreateWithoutContactInput = {
   direction: $Enums.MessageDirection
   message: string
   createdAt?: Date | string
+  readAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMessagesInput
+  salesRep?: Prisma.SalesRepCreateNestedOneWithoutMessagesInput
+  whatsappNumber: Prisma.WhatsAppNumberCreateNestedOneWithoutMessagesInput
 }
 
 export type MessageUncheckedCreateWithoutContactInput = {
   id?: string
+  organizationId: string
+  salesRepId?: string | null
+  whatsappNumberId: string
   direction: $Enums.MessageDirection
   message: string
   createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type MessageCreateOrConnectWithoutContactInput = {
@@ -403,22 +742,151 @@ export type MessageUpdateManyWithWhereWithoutContactInput = {
   data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutContactInput>
 }
 
-export type MessageScalarWhereInput = {
-  AND?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
-  OR?: Prisma.MessageScalarWhereInput[]
-  NOT?: Prisma.MessageScalarWhereInput | Prisma.MessageScalarWhereInput[]
-  id?: Prisma.StringFilter<"Message"> | string
-  contactId?: Prisma.StringFilter<"Message"> | string
-  direction?: Prisma.EnumMessageDirectionFilter<"Message"> | $Enums.MessageDirection
-  message?: Prisma.StringFilter<"Message"> | string
-  createdAt?: Prisma.DateTimeFilter<"Message"> | Date | string
-}
-
-export type MessageCreateManyContactInput = {
+export type MessageCreateWithoutSalesRepInput = {
   id?: string
   direction: $Enums.MessageDirection
   message: string
   createdAt?: Date | string
+  readAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutMessagesInput
+  contact: Prisma.ContactCreateNestedOneWithoutMessagesInput
+  whatsappNumber: Prisma.WhatsAppNumberCreateNestedOneWithoutMessagesInput
+}
+
+export type MessageUncheckedCreateWithoutSalesRepInput = {
+  id?: string
+  organizationId: string
+  contactId: string
+  whatsappNumberId: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+}
+
+export type MessageCreateOrConnectWithoutSalesRepInput = {
+  where: Prisma.MessageWhereUniqueInput
+  create: Prisma.XOR<Prisma.MessageCreateWithoutSalesRepInput, Prisma.MessageUncheckedCreateWithoutSalesRepInput>
+}
+
+export type MessageCreateManySalesRepInputEnvelope = {
+  data: Prisma.MessageCreateManySalesRepInput | Prisma.MessageCreateManySalesRepInput[]
+  skipDuplicates?: boolean
+}
+
+export type MessageUpsertWithWhereUniqueWithoutSalesRepInput = {
+  where: Prisma.MessageWhereUniqueInput
+  update: Prisma.XOR<Prisma.MessageUpdateWithoutSalesRepInput, Prisma.MessageUncheckedUpdateWithoutSalesRepInput>
+  create: Prisma.XOR<Prisma.MessageCreateWithoutSalesRepInput, Prisma.MessageUncheckedCreateWithoutSalesRepInput>
+}
+
+export type MessageUpdateWithWhereUniqueWithoutSalesRepInput = {
+  where: Prisma.MessageWhereUniqueInput
+  data: Prisma.XOR<Prisma.MessageUpdateWithoutSalesRepInput, Prisma.MessageUncheckedUpdateWithoutSalesRepInput>
+}
+
+export type MessageUpdateManyWithWhereWithoutSalesRepInput = {
+  where: Prisma.MessageScalarWhereInput
+  data: Prisma.XOR<Prisma.MessageUpdateManyMutationInput, Prisma.MessageUncheckedUpdateManyWithoutSalesRepInput>
+}
+
+export type MessageCreateManyOrganizationInput = {
+  id?: string
+  contactId: string
+  salesRepId?: string | null
+  whatsappNumberId: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+}
+
+export type MessageUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  contact?: Prisma.ContactUpdateOneRequiredWithoutMessagesNestedInput
+  salesRep?: Prisma.SalesRepUpdateOneWithoutMessagesNestedInput
+  whatsappNumber?: Prisma.WhatsAppNumberUpdateOneRequiredWithoutMessagesNestedInput
+}
+
+export type MessageUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MessageUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MessageCreateManyWhatsappNumberInput = {
+  id?: string
+  organizationId: string
+  contactId: string
+  salesRepId?: string | null
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+}
+
+export type MessageUpdateWithoutWhatsappNumberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMessagesNestedInput
+  contact?: Prisma.ContactUpdateOneRequiredWithoutMessagesNestedInput
+  salesRep?: Prisma.SalesRepUpdateOneWithoutMessagesNestedInput
+}
+
+export type MessageUncheckedUpdateWithoutWhatsappNumberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MessageUncheckedUpdateManyWithoutWhatsappNumberInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MessageCreateManyContactInput = {
+  id?: string
+  organizationId: string
+  salesRepId?: string | null
+  whatsappNumberId: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
 }
 
 export type MessageUpdateWithoutContactInput = {
@@ -426,81 +894,178 @@ export type MessageUpdateWithoutContactInput = {
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMessagesNestedInput
+  salesRep?: Prisma.SalesRepUpdateOneWithoutMessagesNestedInput
+  whatsappNumber?: Prisma.WhatsAppNumberUpdateOneRequiredWithoutMessagesNestedInput
 }
 
 export type MessageUncheckedUpdateWithoutContactInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type MessageUncheckedUpdateManyWithoutContactInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
   direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
   message?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MessageCreateManySalesRepInput = {
+  id?: string
+  organizationId: string
+  contactId: string
+  whatsappNumberId: string
+  direction: $Enums.MessageDirection
+  message: string
+  createdAt?: Date | string
+  readAt?: Date | string | null
+}
+
+export type MessageUpdateWithoutSalesRepInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutMessagesNestedInput
+  contact?: Prisma.ContactUpdateOneRequiredWithoutMessagesNestedInput
+  whatsappNumber?: Prisma.WhatsAppNumberUpdateOneRequiredWithoutMessagesNestedInput
+}
+
+export type MessageUncheckedUpdateWithoutSalesRepInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type MessageUncheckedUpdateManyWithoutSalesRepInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  contactId?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappNumberId?: Prisma.StringFieldUpdateOperationsInput | string
+  direction?: Prisma.EnumMessageDirectionFieldUpdateOperationsInput | $Enums.MessageDirection
+  message?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
 
 export type MessageSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   contactId?: boolean
+  salesRepId?: boolean
+  whatsappNumberId?: boolean
   direction?: boolean
   message?: boolean
   createdAt?: boolean
+  readAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
+  salesRep?: boolean | Prisma.Message$salesRepArgs<ExtArgs>
+  whatsappNumber?: boolean | Prisma.WhatsAppNumberDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
 export type MessageSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   contactId?: boolean
+  salesRepId?: boolean
+  whatsappNumberId?: boolean
   direction?: boolean
   message?: boolean
   createdAt?: boolean
+  readAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
+  salesRep?: boolean | Prisma.Message$salesRepArgs<ExtArgs>
+  whatsappNumber?: boolean | Prisma.WhatsAppNumberDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
 export type MessageSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   contactId?: boolean
+  salesRepId?: boolean
+  whatsappNumberId?: boolean
   direction?: boolean
   message?: boolean
   createdAt?: boolean
+  readAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
+  salesRep?: boolean | Prisma.Message$salesRepArgs<ExtArgs>
+  whatsappNumber?: boolean | Prisma.WhatsAppNumberDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["message"]>
 
 export type MessageSelectScalar = {
   id?: boolean
+  organizationId?: boolean
   contactId?: boolean
+  salesRepId?: boolean
+  whatsappNumberId?: boolean
   direction?: boolean
   message?: boolean
   createdAt?: boolean
+  readAt?: boolean
 }
 
-export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "contactId" | "direction" | "message" | "createdAt", ExtArgs["result"]["message"]>
+export type MessageOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "contactId" | "salesRepId" | "whatsappNumberId" | "direction" | "message" | "createdAt" | "readAt", ExtArgs["result"]["message"]>
 export type MessageInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
+  salesRep?: boolean | Prisma.Message$salesRepArgs<ExtArgs>
+  whatsappNumber?: boolean | Prisma.WhatsAppNumberDefaultArgs<ExtArgs>
 }
 export type MessageIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
+  salesRep?: boolean | Prisma.Message$salesRepArgs<ExtArgs>
+  whatsappNumber?: boolean | Prisma.WhatsAppNumberDefaultArgs<ExtArgs>
 }
 export type MessageIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
+  salesRep?: boolean | Prisma.Message$salesRepArgs<ExtArgs>
+  whatsappNumber?: boolean | Prisma.WhatsAppNumberDefaultArgs<ExtArgs>
 }
 
 export type $MessagePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Message"
   objects: {
+    organization: Prisma.$OrganizationPayload<ExtArgs>
     contact: Prisma.$ContactPayload<ExtArgs>
+    salesRep: Prisma.$SalesRepPayload<ExtArgs> | null
+    whatsappNumber: Prisma.$WhatsAppNumberPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    organizationId: string
     contactId: string
+    salesRepId: string | null
+    whatsappNumberId: string
     direction: $Enums.MessageDirection
     message: string
     createdAt: Date
+    readAt: Date | null
   }, ExtArgs["result"]["message"]>
   composites: {}
 }
@@ -895,7 +1460,10 @@ readonly fields: MessageFieldRefs;
  */
 export interface Prisma__MessageClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contact<T extends Prisma.ContactDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContactDefaultArgs<ExtArgs>>): Prisma.Prisma__ContactClient<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  salesRep<T extends Prisma.Message$salesRepArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Message$salesRepArgs<ExtArgs>>): Prisma.Prisma__SalesRepClient<runtime.Types.Result.GetResult<Prisma.$SalesRepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  whatsappNumber<T extends Prisma.WhatsAppNumberDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WhatsAppNumberDefaultArgs<ExtArgs>>): Prisma.Prisma__WhatsAppNumberClient<runtime.Types.Result.GetResult<Prisma.$WhatsAppNumberPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -926,10 +1494,14 @@ export interface Prisma__MessageClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface MessageFieldRefs {
   readonly id: Prisma.FieldRef<"Message", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Message", 'String'>
   readonly contactId: Prisma.FieldRef<"Message", 'String'>
+  readonly salesRepId: Prisma.FieldRef<"Message", 'String'>
+  readonly whatsappNumberId: Prisma.FieldRef<"Message", 'String'>
   readonly direction: Prisma.FieldRef<"Message", 'MessageDirection'>
   readonly message: Prisma.FieldRef<"Message", 'String'>
   readonly createdAt: Prisma.FieldRef<"Message", 'DateTime'>
+  readonly readAt: Prisma.FieldRef<"Message", 'DateTime'>
 }
     
 
@@ -1323,6 +1895,25 @@ export type MessageDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
    * Limit how many Messages to delete.
    */
   limit?: number
+}
+
+/**
+ * Message.salesRep
+ */
+export type Message$salesRepArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the SalesRep
+   */
+  select?: Prisma.SalesRepSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the SalesRep
+   */
+  omit?: Prisma.SalesRepOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesRepInclude<ExtArgs> | null
+  where?: Prisma.SalesRepWhereInput
 }
 
 /**

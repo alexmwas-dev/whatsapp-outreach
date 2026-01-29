@@ -8,6 +8,11 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/Organization.ts'
+export type * from './models/User.ts'
+export type * from './models/Subscription.ts'
+export type * from './models/WhatsAppNumber.ts'
+export type * from './models/WhatsAppTemplate.ts'
 export type * from './models/Contact.ts'
 export type * from './models/SalesRep.ts'
 export type * from './models/Message.ts'

@@ -1,0 +1,360 @@
+{
+  "info": {
+    "_postman_id": "salesconnect-whatsapp-api",
+    "name": "SalesConnect WhatsApp API",
+    "description": "WhatsApp numbers and templates management for SalesConnect",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "WhatsApp Numbers",
+      "item": [
+        {
+          "name": "Get All WhatsApp Numbers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-numbers"]
+            },
+            "description": "List all WhatsApp numbers for the organization with message counts."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Primary WhatsApp Number",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers/primary",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-numbers", "primary"]
+            },
+            "description": "Get the first active WhatsApp number (used as default for campaigns)."
+          },
+          "response": []
+        },
+        {
+          "name": "Add New WhatsApp Number",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phoneNumber\": \"+1234567890\",\n  \"phoneNumberId\": \"123456789123456789\",\n  \"accessToken\": \"EAAGNz1234...\",\n  \"displayName\": \"Main Support Line\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-numbers"]
+            },
+            "description": "Add a new WhatsApp Business Account number. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get WhatsApp Number Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers/{{numberId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-numbers", "{{numberId}}"]
+            },
+            "description": "Get details of a specific WhatsApp number (access token is never returned)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get WhatsApp Number Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers/{{numberId}}/stats",
+              "host": ["{{base_url}}"],
+              "path": [
+                "organization",
+                "whatsapp-numbers",
+                "{{numberId}}",
+                "stats"
+              ]
+            },
+            "description": "Get statistics for a WhatsApp number (total messages, inbound/outbound, unique contacts)."
+          },
+          "response": []
+        },
+        {
+          "name": "Update WhatsApp Number",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"displayName\": \"Updated Support Line\",\n  \"accessToken\": \"EAAGNz_new_token...\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers/{{numberId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-numbers", "{{numberId}}"]
+            },
+            "description": "Update WhatsApp number display name or access token. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle WhatsApp Number Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers/{{numberId}}/toggle",
+              "host": ["{{base_url}}"],
+              "path": [
+                "organization",
+                "whatsapp-numbers",
+                "{{numberId}}",
+                "toggle"
+              ]
+            },
+            "description": "Toggle WhatsApp number between active and inactive. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete WhatsApp Number",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-numbers/{{numberId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-numbers", "{{numberId}}"]
+            },
+            "description": "Delete a WhatsApp number (only if no messages are associated). Requires OWNER or ADMIN role."
+          },
+          "response": []
+        }
+      ],
+      "description": "WhatsApp number management"
+    },
+    {
+      "name": "WhatsApp Templates",
+      "item": [
+        {
+          "name": "Get All Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-templates",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-templates"]
+            },
+            "description": "List all WhatsApp templates for the organization."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"intro_salesconnect_v1\",\n  \"language\": \"en\",\n  \"category\": \"MARKETING\",\n  \"description\": \"Introduction template for sales outreach\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-templates",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-templates"]
+            },
+            "description": "Create a new WhatsApp template. Template name must match Meta Business Suite. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Template Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-templates/{{templateId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-templates", "{{templateId}}"]
+            },
+            "description": "Get details of a specific template."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Template",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Updated template description\",\n  \"language\": \"en_US\",\n  \"category\": \"UTILITY\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-templates/{{templateId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-templates", "{{templateId}}"]
+            },
+            "description": "Update template details. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Toggle Template Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-templates/{{templateId}}/toggle",
+              "host": ["{{base_url}}"],
+              "path": [
+                "organization",
+                "whatsapp-templates",
+                "{{templateId}}",
+                "toggle"
+              ]
+            },
+            "description": "Toggle template between active and inactive. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Template",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/whatsapp-templates/{{templateId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "whatsapp-templates", "{{templateId}}"]
+            },
+            "description": "Delete a WhatsApp template. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        }
+      ],
+      "description": "WhatsApp template management"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from login or signup"
+    },
+    {
+      "key": "numberId",
+      "value": "",
+      "type": "string",
+      "description": "WhatsApp number ID"
+    },
+    {
+      "key": "templateId",
+      "value": "",
+      "type": "string",
+      "description": "WhatsApp template ID"
+    }
+  ]
+}

@@ -38,206 +38,127 @@ export const receiveMessage = catchAsync(async (req, res) => {
   // Meta requires 200 even if empty
   const value = req.body.entry?.[0]?.changes?.[0]?.value;
 
-  if (value?.statuses) {
-    logger.debug("Webhook status update", {
-      meta: { status: value.statuses[0].status },
-    });
-    return res.sendStatus(200);
-  }
-
-  if (!value?.messages) {
-    logger.debug("Webhook event without message");
-    return res.sendStatus(200);
-  }
+  if (value?.statuses) return res.sendStatus(200);
+  if (!value?.messages) return res.sendStatus(200);
 
   const phone = message.from;
   const text = message.text?.body?.toLowerCase() || "";
 
-  logger.http("Incoming WhatsApp message", {
-    meta: { phone, text },
-  });
+  logger.http("Incoming WhatsApp message", { meta: { phone, text } });
 
   // Fetch contact
-  const contact = await prisma.contact.findUnique({
-    where: { phone },
-  });
-
+  const contact = await prisma.contact.findUnique({ where: { phone } });
   if (!contact) {
     logger.info("Message from unknown contact", { meta: { phone } });
     return res.sendStatus(200);
   }
 
-  /* ----------------------------------
-     HANDLE OPT-OUT / NO
-  ---------------------------------- */
+  /* -------------------------------
+     OPT-OUT
+  ------------------------------- */
   if (
     text.includes("no") ||
-    text.includes("not interested") ||
-    text.includes("stop")
+    text.includes("stop") ||
+    text.includes("not interested")
   ) {
+    await prisma.$transaction([
+      prisma.contact.update({ where: { phone }, data: { status: "CLOSED" } }),
+      prisma.message.create({
+        data: { contactId: contact.id, direction: "INBOUND", message: text },
+      }),
+    ]);
     logger.info("Contact opted out", {
       meta: { contactId: contact.id, phone },
     });
-
-    await prisma.$transaction([
-      prisma.contact.update({
-        where: { phone },
-        data: { status: "CLOSED" },
-      }),
-      prisma.message.create({
-        data: {
-          contactId: contact.id,
-          direction: "INBOUND",
-          message: text,
-        },
-      }),
-    ]);
-
     return res.sendStatus(200);
   }
 
-  /* ----------------------------------
-     HANDLE CONSENT / YES
-  ---------------------------------- */
+  /* -------------------------------
+     CONSENT
+  ------------------------------- */
   if (
     text.includes("yes") ||
     text.includes("sure") ||
-    text.includes("okay") ||
-    text.includes("ok")
+    text.includes("ok") ||
+    text.includes("okay")
   ) {
-    if (!contact.consent && contact.status !== "SAMPLES_SENT") {
-      logger.info("Contact consented", {
-        meta: { contactId: contact.id },
-      });
-
-      // Log inbound
+    // Only act if they haven’t consented yet
+    if (!contact.consent) {
+      // Log inbound message
       await prisma.message.create({
-        data: {
-          contactId: contact.id,
-          direction: "INBOUND",
-          message: text,
-        },
+        data: { contactId: contact.id, direction: "INBOUND", message: text },
       });
 
-      // Update consent
-      await prisma.contact.update({
+      // Update contact consent
+      const updatedContact = await prisma.contact.update({
         where: { phone },
-        data: {
-          consent: true,
-          status: "CONSENTED",
-        },
+        data: { consent: true, status: "CONSENTED" },
       });
+      logger.info("Contact consented", { meta: { contactId: contact.id } });
 
-      /* ----------------------------------
-         AUTO-ASSIGN SALES REP
-      ---------------------------------- */
-      const reps = await prisma.salesRep.findMany({
-        where: { active: true },
-      });
-
-      let assignedRep = null;
-
-      if (reps.length) {
-        assignedRep = reps[Math.floor(Math.random() * reps.length)];
-
-        await prisma.contact.update({
-          where: { id: contact.id },
-          data: {
-            salesRepId: assignedRep.id,
-          },
+      /* -------------------------------
+         ASSIGN SALES REP
+      ------------------------------- */
+      if (!contact.salesRepId) {
+        const reps = await prisma.salesRep.findMany({
+          where: { active: true },
         });
+        if (reps.length > 0) {
+          const assignedRep = reps[Math.floor(Math.random() * reps.length)];
 
-        logger.info("Sales rep assigned", {
-          meta: {
-            repId: assignedRep.id,
-            contactId: contact.id,
-          },
-        });
-      }
+          await prisma.contact.update({
+            where: { id: contact.id },
+            data: { salesRepId: assignedRep.id, status: "ASSIGNED" },
+          });
 
-      // Send samples
-      try {
-        await sendSamples(phone);
-        await prisma.message.create({
-          data: {
-            contactId: contact.id,
-            direction: "OUTBOUND",
-            message: "Sent video samples",
-          },
-        });
+          logger.info("Sales rep assigned", {
+            meta: { repId: assignedRep.id, contactId: contact.id },
+          });
 
-        logger.info("Samples sent", { meta: { contactId: contact.id } });
-      } catch (err) {
-        logger.error("Failed to send samples", { contactId: contact.id, err });
-      }
+          // Notify rep that they now own a contact
+          try {
+            await notifyRep(
+              assignedRep.phone,
+              assignedRep.name,
+              contact.name,
+              contact.phone,
+            );
 
-      await prisma.message.create({
-        data: {
-          contactId: contact.id,
-          direction: "OUTBOUND",
-          message: "Sent video samples",
-        },
-      });
+            await prisma.message.create({
+              data: {
+                contactId: contact.id,
+                direction: "OUTBOUND",
+                message: `You have been assigned to contact ${contact.name}. Please follow up.`,
+                salesRepId: assignedRep.id,
+                whatsappNumberId: updatedContact.salesRep?.id || "", // optional if needed
+              },
+            });
 
-      logger.info("Samples sent", {
-        meta: { contactId: contact.id },
-      });
-
-      // Notify rep
-      if (assignedRep) {
-        try {
-          await notifyRep(
-            assignedRep.phone,
-            assignedRep.name,
-            contact.name,
-            contact.phone,
-          );
-
-          await prisma.message.create({
-            data: {
+            logger.info("Sales rep notified of new contact", {
+              meta: { repPhone: assignedRep.phone },
+            });
+          } catch (err) {
+            logger.error("Failed to notify sales rep", {
+              repPhone: assignedRep.phone,
               contactId: contact.id,
-              direction: "OUTBOUND",
-              message: `Rep notified: ${assignedRep.name}`,
-            },
-          });
-
-          logger.info("Sales rep notified", {
-            meta: { repPhone: assignedRep.phone },
-          });
-        } catch (err) {
-          logger.error("Failed to notify sales rep", {
-            repPhone: assignedRep.phone,
-            contactId: contact.id,
-            err,
-          });
+              err,
+            });
+          }
         }
       }
-      // Final status
-      await prisma.contact.update({
-        where: { phone },
-        data: {
-          status: "SAMPLES_SENT",
-          samplesSentAt: new Date(),
-        },
-      });
     }
 
     return res.sendStatus(200);
   }
 
-  /* ----------------------------------
-     HANDLE OTHER MESSAGES
-  ---------------------------------- */
+  /* -------------------------------
+     OTHER MESSAGES
+  ------------------------------- */
+  await prisma.message.create({
+    data: { contactId: contact.id, direction: "INBOUND", message: text },
+  });
   logger.debug("Unhandled inbound message", {
     meta: { contactId: contact.id, text },
-  });
-
-  await prisma.message.create({
-    data: {
-      contactId: contact.id,
-      direction: "INBOUND",
-      message: text,
-    },
   });
 
   return res.sendStatus(200);

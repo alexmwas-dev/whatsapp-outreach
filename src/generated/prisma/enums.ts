@@ -35,3 +35,40 @@ export const MessageDirection = {
 } as const
 
 export type MessageDirection = (typeof MessageDirection)[keyof typeof MessageDirection]
+
+
+export const UserRole = {
+  OWNER: 'OWNER',
+  ADMIN: 'ADMIN',
+  SALES_REP: 'SALES_REP'
+} as const
+
+export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const SubscriptionStatus = {
+  TRIAL: 'TRIAL',
+  ACTIVE: 'ACTIVE',
+  PAST_DUE: 'PAST_DUE',
+  CANCELED: 'CANCELED'
+} as const
+
+export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const WhatsappStatus = {
+  VERIFIED: 'VERIFIED',
+  PENDING: 'PENDING',
+  REJECTED: 'REJECTED'
+} as const
+
+export type WhatsappStatus = (typeof WhatsappStatus)[keyof typeof WhatsappStatus]
+
+
+export const MessagingTier = {
+  TIER_1: 'TIER_1',
+  TIER_2: 'TIER_2',
+  TIER_3: 'TIER_3'
+} as const
+
+export type MessagingTier = (typeof MessagingTier)[keyof typeof MessagingTier]

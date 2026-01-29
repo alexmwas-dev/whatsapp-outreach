@@ -18,6 +18,31 @@ export { Prisma }
 export * as $Enums from './enums.ts'
 export * from './enums.ts';
 /**
+ * Model Organization
+ * 
+ */
+export type Organization = Prisma.OrganizationModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Subscription
+ * 
+ */
+export type Subscription = Prisma.SubscriptionModel
+/**
+ * Model WhatsAppNumber
+ * 
+ */
+export type WhatsAppNumber = Prisma.WhatsAppNumberModel
+/**
+ * Model WhatsAppTemplate
+ * 
+ */
+export type WhatsAppTemplate = Prisma.WhatsAppTemplateModel
+/**
  * Model Contact
  * 
  */

@@ -26,6 +26,7 @@ export type AggregateCampaign = {
 
 export type CampaignMinAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   name: string | null
   description: string | null
   active: boolean | null
@@ -34,6 +35,7 @@ export type CampaignMinAggregateOutputType = {
 
 export type CampaignMaxAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   name: string | null
   description: string | null
   active: boolean | null
@@ -42,6 +44,7 @@ export type CampaignMaxAggregateOutputType = {
 
 export type CampaignCountAggregateOutputType = {
   id: number
+  organizationId: number
   name: number
   description: number
   active: number
@@ -52,6 +55,7 @@ export type CampaignCountAggregateOutputType = {
 
 export type CampaignMinAggregateInputType = {
   id?: true
+  organizationId?: true
   name?: true
   description?: true
   active?: true
@@ -60,6 +64,7 @@ export type CampaignMinAggregateInputType = {
 
 export type CampaignMaxAggregateInputType = {
   id?: true
+  organizationId?: true
   name?: true
   description?: true
   active?: true
@@ -68,6 +73,7 @@ export type CampaignMaxAggregateInputType = {
 
 export type CampaignCountAggregateInputType = {
   id?: true
+  organizationId?: true
   name?: true
   description?: true
   active?: true
@@ -149,6 +155,7 @@ export type CampaignGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type CampaignGroupByOutputType = {
   id: string
+  organizationId: string
   name: string
   description: string | null
   active: boolean
@@ -178,19 +185,23 @@ export type CampaignWhereInput = {
   OR?: Prisma.CampaignWhereInput[]
   NOT?: Prisma.CampaignWhereInput | Prisma.CampaignWhereInput[]
   id?: Prisma.StringFilter<"Campaign"> | string
+  organizationId?: Prisma.StringFilter<"Campaign"> | string
   name?: Prisma.StringFilter<"Campaign"> | string
   description?: Prisma.StringNullableFilter<"Campaign"> | string | null
   active?: Prisma.BoolFilter<"Campaign"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   contacts?: Prisma.CampaignContactListRelationFilter
 }
 
 export type CampaignOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   contacts?: Prisma.CampaignContactOrderByRelationAggregateInput
 }
 
@@ -199,15 +210,18 @@ export type CampaignWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CampaignWhereInput | Prisma.CampaignWhereInput[]
   OR?: Prisma.CampaignWhereInput[]
   NOT?: Prisma.CampaignWhereInput | Prisma.CampaignWhereInput[]
+  organizationId?: Prisma.StringFilter<"Campaign"> | string
   name?: Prisma.StringFilter<"Campaign"> | string
   description?: Prisma.StringNullableFilter<"Campaign"> | string | null
   active?: Prisma.BoolFilter<"Campaign"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   contacts?: Prisma.CampaignContactListRelationFilter
 }, "id">
 
 export type CampaignOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -222,6 +236,7 @@ export type CampaignScalarWhereWithAggregatesInput = {
   OR?: Prisma.CampaignScalarWhereWithAggregatesInput[]
   NOT?: Prisma.CampaignScalarWhereWithAggregatesInput | Prisma.CampaignScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Campaign"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"Campaign"> | string
   name?: Prisma.StringWithAggregatesFilter<"Campaign"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
   active?: Prisma.BoolWithAggregatesFilter<"Campaign"> | boolean
@@ -234,11 +249,13 @@ export type CampaignCreateInput = {
   description?: string | null
   active?: boolean
   createdAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutCampaignsInput
   contacts?: Prisma.CampaignContactCreateNestedManyWithoutCampaignInput
 }
 
 export type CampaignUncheckedCreateInput = {
   id?: string
+  organizationId: string
   name: string
   description?: string | null
   active?: boolean
@@ -252,11 +269,13 @@ export type CampaignUpdateInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCampaignsNestedInput
   contacts?: Prisma.CampaignContactUpdateManyWithoutCampaignNestedInput
 }
 
 export type CampaignUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -266,6 +285,7 @@ export type CampaignUncheckedUpdateInput = {
 
 export type CampaignCreateManyInput = {
   id?: string
+  organizationId: string
   name: string
   description?: string | null
   active?: boolean
@@ -282,14 +302,26 @@ export type CampaignUpdateManyMutationInput = {
 
 export type CampaignUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type CampaignListRelationFilter = {
+  every?: Prisma.CampaignWhereInput
+  some?: Prisma.CampaignWhereInput
+  none?: Prisma.CampaignWhereInput
+}
+
+export type CampaignOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
 export type CampaignCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -298,6 +330,7 @@ export type CampaignCountOrderByAggregateInput = {
 
 export type CampaignMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -306,6 +339,7 @@ export type CampaignMaxOrderByAggregateInput = {
 
 export type CampaignMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
   active?: Prisma.SortOrder
@@ -315,6 +349,48 @@ export type CampaignMinOrderByAggregateInput = {
 export type CampaignScalarRelationFilter = {
   is?: Prisma.CampaignWhereInput
   isNot?: Prisma.CampaignWhereInput
+}
+
+export type CampaignCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutOrganizationInput, Prisma.CampaignUncheckedCreateWithoutOrganizationInput> | Prisma.CampaignCreateWithoutOrganizationInput[] | Prisma.CampaignUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutOrganizationInput | Prisma.CampaignCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.CampaignCreateManyOrganizationInputEnvelope
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+}
+
+export type CampaignUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutOrganizationInput, Prisma.CampaignUncheckedCreateWithoutOrganizationInput> | Prisma.CampaignCreateWithoutOrganizationInput[] | Prisma.CampaignUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutOrganizationInput | Prisma.CampaignCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.CampaignCreateManyOrganizationInputEnvelope
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+}
+
+export type CampaignUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutOrganizationInput, Prisma.CampaignUncheckedCreateWithoutOrganizationInput> | Prisma.CampaignCreateWithoutOrganizationInput[] | Prisma.CampaignUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutOrganizationInput | Prisma.CampaignCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.CampaignUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.CampaignUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.CampaignCreateManyOrganizationInputEnvelope
+  set?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  disconnect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  delete?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  update?: Prisma.CampaignUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.CampaignUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.CampaignUpdateManyWithWhereWithoutOrganizationInput | Prisma.CampaignUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
+}
+
+export type CampaignUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutOrganizationInput, Prisma.CampaignUncheckedCreateWithoutOrganizationInput> | Prisma.CampaignCreateWithoutOrganizationInput[] | Prisma.CampaignUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutOrganizationInput | Prisma.CampaignCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.CampaignUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.CampaignUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.CampaignCreateManyOrganizationInputEnvelope
+  set?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  disconnect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  delete?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  update?: Prisma.CampaignUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.CampaignUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.CampaignUpdateManyWithWhereWithoutOrganizationInput | Prisma.CampaignUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
 }
 
 export type CampaignCreateNestedOneWithoutContactsInput = {
@@ -331,16 +407,74 @@ export type CampaignUpdateOneRequiredWithoutContactsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CampaignUpdateToOneWithWhereWithoutContactsInput, Prisma.CampaignUpdateWithoutContactsInput>, Prisma.CampaignUncheckedUpdateWithoutContactsInput>
 }
 
+export type CampaignCreateWithoutOrganizationInput = {
+  id?: string
+  name: string
+  description?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  contacts?: Prisma.CampaignContactCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  name: string
+  description?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  contacts?: Prisma.CampaignContactUncheckedCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutOrganizationInput, Prisma.CampaignUncheckedCreateWithoutOrganizationInput>
+}
+
+export type CampaignCreateManyOrganizationInputEnvelope = {
+  data: Prisma.CampaignCreateManyOrganizationInput | Prisma.CampaignCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type CampaignUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  update: Prisma.XOR<Prisma.CampaignUpdateWithoutOrganizationInput, Prisma.CampaignUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutOrganizationInput, Prisma.CampaignUncheckedCreateWithoutOrganizationInput>
+}
+
+export type CampaignUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  data: Prisma.XOR<Prisma.CampaignUpdateWithoutOrganizationInput, Prisma.CampaignUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type CampaignUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.CampaignScalarWhereInput
+  data: Prisma.XOR<Prisma.CampaignUpdateManyMutationInput, Prisma.CampaignUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type CampaignScalarWhereInput = {
+  AND?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
+  OR?: Prisma.CampaignScalarWhereInput[]
+  NOT?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
+  id?: Prisma.StringFilter<"Campaign"> | string
+  organizationId?: Prisma.StringFilter<"Campaign"> | string
+  name?: Prisma.StringFilter<"Campaign"> | string
+  description?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  active?: Prisma.BoolFilter<"Campaign"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+}
+
 export type CampaignCreateWithoutContactsInput = {
   id?: string
   name: string
   description?: string | null
   active?: boolean
   createdAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutCampaignsInput
 }
 
 export type CampaignUncheckedCreateWithoutContactsInput = {
   id?: string
+  organizationId: string
   name: string
   description?: string | null
   active?: boolean
@@ -369,9 +503,45 @@ export type CampaignUpdateWithoutContactsInput = {
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCampaignsNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutContactsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type CampaignCreateManyOrganizationInput = {
+  id?: string
+  name: string
+  description?: string | null
+  active?: boolean
+  createdAt?: Date | string
+}
+
+export type CampaignUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contacts?: Prisma.CampaignContactUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contacts?: Prisma.CampaignContactUncheckedUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -412,53 +582,67 @@ export type CampaignCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Typ
 
 export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   description?: boolean
   active?: boolean
   createdAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.Campaign$contactsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
 export type CampaignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   description?: boolean
   active?: boolean
   createdAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
 export type CampaignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   description?: boolean
   active?: boolean
   createdAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
 export type CampaignSelectScalar = {
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   description?: boolean
   active?: boolean
   createdAt?: boolean
 }
 
-export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "active" | "createdAt", ExtArgs["result"]["campaign"]>
+export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "description" | "active" | "createdAt", ExtArgs["result"]["campaign"]>
 export type CampaignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.Campaign$contactsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type CampaignIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type CampaignIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type CampaignIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+}
+export type CampaignIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+}
 
 export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Campaign"
   objects: {
+    organization: Prisma.$OrganizationPayload<ExtArgs>
     contacts: Prisma.$CampaignContactPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    organizationId: string
     name: string
     description: string | null
     active: boolean
@@ -857,6 +1041,7 @@ readonly fields: CampaignFieldRefs;
  */
 export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contacts<T extends Prisma.Campaign$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -888,6 +1073,7 @@ export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends runtime
  */
 export interface CampaignFieldRefs {
   readonly id: Prisma.FieldRef<"Campaign", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Campaign", 'String'>
   readonly name: Prisma.FieldRef<"Campaign", 'String'>
   readonly description: Prisma.FieldRef<"Campaign", 'String'>
   readonly active: Prisma.FieldRef<"Campaign", 'Boolean'>
@@ -1141,6 +1327,10 @@ export type CampaignCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    */
   data: Prisma.CampaignCreateManyInput | Prisma.CampaignCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CampaignIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1211,6 +1401,10 @@ export type CampaignUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many Campaigns to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CampaignIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**

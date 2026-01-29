@@ -26,6 +26,7 @@ export type AggregateContact = {
 
 export type ContactMinAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   name: string | null
   phone: string | null
   email: string | null
@@ -41,6 +42,7 @@ export type ContactMinAggregateOutputType = {
 
 export type ContactMaxAggregateOutputType = {
   id: string | null
+  organizationId: string | null
   name: string | null
   phone: string | null
   email: string | null
@@ -56,6 +58,7 @@ export type ContactMaxAggregateOutputType = {
 
 export type ContactCountAggregateOutputType = {
   id: number
+  organizationId: number
   name: number
   phone: number
   email: number
@@ -73,6 +76,7 @@ export type ContactCountAggregateOutputType = {
 
 export type ContactMinAggregateInputType = {
   id?: true
+  organizationId?: true
   name?: true
   phone?: true
   email?: true
@@ -88,6 +92,7 @@ export type ContactMinAggregateInputType = {
 
 export type ContactMaxAggregateInputType = {
   id?: true
+  organizationId?: true
   name?: true
   phone?: true
   email?: true
@@ -103,6 +108,7 @@ export type ContactMaxAggregateInputType = {
 
 export type ContactCountAggregateInputType = {
   id?: true
+  organizationId?: true
   name?: true
   phone?: true
   email?: true
@@ -191,6 +197,7 @@ export type ContactGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ContactGroupByOutputType = {
   id: string
+  organizationId: string
   name: string
   phone: string
   email: string | null
@@ -227,6 +234,7 @@ export type ContactWhereInput = {
   OR?: Prisma.ContactWhereInput[]
   NOT?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
   id?: Prisma.StringFilter<"Contact"> | string
+  organizationId?: Prisma.StringFilter<"Contact"> | string
   name?: Prisma.StringFilter<"Contact"> | string
   phone?: Prisma.StringFilter<"Contact"> | string
   email?: Prisma.StringNullableFilter<"Contact"> | string | null
@@ -238,6 +246,7 @@ export type ContactWhereInput = {
   salesRepId?: Prisma.StringNullableFilter<"Contact"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   salesRep?: Prisma.XOR<Prisma.SalesRepNullableScalarRelationFilter, Prisma.SalesRepWhereInput> | null
   messages?: Prisma.MessageListRelationFilter
   campaigns?: Prisma.CampaignContactListRelationFilter
@@ -245,6 +254,7 @@ export type ContactWhereInput = {
 
 export type ContactOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -256,6 +266,7 @@ export type ContactOrderByWithRelationInput = {
   salesRepId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organization?: Prisma.OrganizationOrderByWithRelationInput
   salesRep?: Prisma.SalesRepOrderByWithRelationInput
   messages?: Prisma.MessageOrderByRelationAggregateInput
   campaigns?: Prisma.CampaignContactOrderByRelationAggregateInput
@@ -263,11 +274,13 @@ export type ContactOrderByWithRelationInput = {
 
 export type ContactWhereUniqueInput = Prisma.AtLeast<{
   id?: string
-  phone?: string
+  organizationId_phone?: Prisma.ContactOrganizationIdPhoneCompoundUniqueInput
   AND?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
   OR?: Prisma.ContactWhereInput[]
   NOT?: Prisma.ContactWhereInput | Prisma.ContactWhereInput[]
+  organizationId?: Prisma.StringFilter<"Contact"> | string
   name?: Prisma.StringFilter<"Contact"> | string
+  phone?: Prisma.StringFilter<"Contact"> | string
   email?: Prisma.StringNullableFilter<"Contact"> | string | null
   status?: Prisma.EnumContactStatusFilter<"Contact"> | $Enums.ContactStatus
   consent?: Prisma.BoolFilter<"Contact"> | boolean
@@ -277,13 +290,15 @@ export type ContactWhereUniqueInput = Prisma.AtLeast<{
   salesRepId?: Prisma.StringNullableFilter<"Contact"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   salesRep?: Prisma.XOR<Prisma.SalesRepNullableScalarRelationFilter, Prisma.SalesRepWhereInput> | null
   messages?: Prisma.MessageListRelationFilter
   campaigns?: Prisma.CampaignContactListRelationFilter
-}, "id" | "phone">
+}, "id" | "organizationId_phone">
 
 export type ContactOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -305,6 +320,7 @@ export type ContactScalarWhereWithAggregatesInput = {
   OR?: Prisma.ContactScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ContactScalarWhereWithAggregatesInput | Prisma.ContactScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"Contact"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   name?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   phone?: Prisma.StringWithAggregatesFilter<"Contact"> | string
   email?: Prisma.StringNullableWithAggregatesFilter<"Contact"> | string | null
@@ -330,6 +346,7 @@ export type ContactCreateInput = {
   followUpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   salesRep?: Prisma.SalesRepCreateNestedOneWithoutContactsInput
   messages?: Prisma.MessageCreateNestedManyWithoutContactInput
   campaigns?: Prisma.CampaignContactCreateNestedManyWithoutContactInput
@@ -337,6 +354,7 @@ export type ContactCreateInput = {
 
 export type ContactUncheckedCreateInput = {
   id?: string
+  organizationId: string
   name: string
   phone: string
   email?: string | null
@@ -364,6 +382,7 @@ export type ContactUpdateInput = {
   followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   salesRep?: Prisma.SalesRepUpdateOneWithoutContactsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutContactNestedInput
   campaigns?: Prisma.CampaignContactUpdateManyWithoutContactNestedInput
@@ -371,6 +390,7 @@ export type ContactUpdateInput = {
 
 export type ContactUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -388,6 +408,7 @@ export type ContactUncheckedUpdateInput = {
 
 export type ContactCreateManyInput = {
   id?: string
+  organizationId: string
   name: string
   phone: string
   email?: string | null
@@ -417,6 +438,7 @@ export type ContactUpdateManyMutationInput = {
 
 export type ContactUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -430,8 +452,24 @@ export type ContactUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type ContactListRelationFilter = {
+  every?: Prisma.ContactWhereInput
+  some?: Prisma.ContactWhereInput
+  none?: Prisma.ContactWhereInput
+}
+
+export type ContactOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
+}
+
+export type ContactOrganizationIdPhoneCompoundUniqueInput = {
+  organizationId: string
+  phone: string
+}
+
 export type ContactCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -447,6 +485,7 @@ export type ContactCountOrderByAggregateInput = {
 
 export type ContactMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -462,6 +501,7 @@ export type ContactMaxOrderByAggregateInput = {
 
 export type ContactMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -475,43 +515,55 @@ export type ContactMinOrderByAggregateInput = {
   updatedAt?: Prisma.SortOrder
 }
 
-export type ContactListRelationFilter = {
-  every?: Prisma.ContactWhereInput
-  some?: Prisma.ContactWhereInput
-  none?: Prisma.ContactWhereInput
-}
-
-export type ContactOrderByRelationAggregateInput = {
-  _count?: Prisma.SortOrder
-}
-
 export type ContactScalarRelationFilter = {
   is?: Prisma.ContactWhereInput
   isNot?: Prisma.ContactWhereInput
 }
 
-export type StringFieldUpdateOperationsInput = {
-  set?: string
+export type ContactCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutOrganizationInput, Prisma.ContactUncheckedCreateWithoutOrganizationInput> | Prisma.ContactCreateWithoutOrganizationInput[] | Prisma.ContactUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutOrganizationInput | Prisma.ContactCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.ContactCreateManyOrganizationInputEnvelope
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
 }
 
-export type NullableStringFieldUpdateOperationsInput = {
-  set?: string | null
+export type ContactUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutOrganizationInput, Prisma.ContactUncheckedCreateWithoutOrganizationInput> | Prisma.ContactCreateWithoutOrganizationInput[] | Prisma.ContactUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutOrganizationInput | Prisma.ContactCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.ContactCreateManyOrganizationInputEnvelope
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+}
+
+export type ContactUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutOrganizationInput, Prisma.ContactUncheckedCreateWithoutOrganizationInput> | Prisma.ContactCreateWithoutOrganizationInput[] | Prisma.ContactUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutOrganizationInput | Prisma.ContactCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.ContactUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.ContactUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.ContactCreateManyOrganizationInputEnvelope
+  set?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  disconnect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  delete?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  update?: Prisma.ContactUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.ContactUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.ContactUpdateManyWithWhereWithoutOrganizationInput | Prisma.ContactUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
+}
+
+export type ContactUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.ContactCreateWithoutOrganizationInput, Prisma.ContactUncheckedCreateWithoutOrganizationInput> | Prisma.ContactCreateWithoutOrganizationInput[] | Prisma.ContactUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.ContactCreateOrConnectWithoutOrganizationInput | Prisma.ContactCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.ContactUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.ContactUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.ContactCreateManyOrganizationInputEnvelope
+  set?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  disconnect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  delete?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  connect?: Prisma.ContactWhereUniqueInput | Prisma.ContactWhereUniqueInput[]
+  update?: Prisma.ContactUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.ContactUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.ContactUpdateManyWithWhereWithoutOrganizationInput | Prisma.ContactUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
 }
 
 export type EnumContactStatusFieldUpdateOperationsInput = {
   set?: $Enums.ContactStatus
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type DateTimeFieldUpdateOperationsInput = {
-  set?: Date | string
 }
 
 export type ContactCreateNestedManyWithoutSalesRepInput = {
@@ -584,6 +636,85 @@ export type ContactUpdateOneRequiredWithoutCampaignsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContactUpdateToOneWithWhereWithoutCampaignsInput, Prisma.ContactUpdateWithoutCampaignsInput>, Prisma.ContactUncheckedUpdateWithoutCampaignsInput>
 }
 
+export type ContactCreateWithoutOrganizationInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  status?: $Enums.ContactStatus
+  consent?: boolean
+  converted?: boolean
+  samplesSentAt?: Date | string | null
+  followUpSentAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  salesRep?: Prisma.SalesRepCreateNestedOneWithoutContactsInput
+  messages?: Prisma.MessageCreateNestedManyWithoutContactInput
+  campaigns?: Prisma.CampaignContactCreateNestedManyWithoutContactInput
+}
+
+export type ContactUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  status?: $Enums.ContactStatus
+  consent?: boolean
+  converted?: boolean
+  samplesSentAt?: Date | string | null
+  followUpSentAt?: Date | string | null
+  salesRepId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutContactInput
+  campaigns?: Prisma.CampaignContactUncheckedCreateNestedManyWithoutContactInput
+}
+
+export type ContactCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.ContactWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContactCreateWithoutOrganizationInput, Prisma.ContactUncheckedCreateWithoutOrganizationInput>
+}
+
+export type ContactCreateManyOrganizationInputEnvelope = {
+  data: Prisma.ContactCreateManyOrganizationInput | Prisma.ContactCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type ContactUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.ContactWhereUniqueInput
+  update: Prisma.XOR<Prisma.ContactUpdateWithoutOrganizationInput, Prisma.ContactUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.ContactCreateWithoutOrganizationInput, Prisma.ContactUncheckedCreateWithoutOrganizationInput>
+}
+
+export type ContactUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.ContactWhereUniqueInput
+  data: Prisma.XOR<Prisma.ContactUpdateWithoutOrganizationInput, Prisma.ContactUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type ContactUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.ContactScalarWhereInput
+  data: Prisma.XOR<Prisma.ContactUpdateManyMutationInput, Prisma.ContactUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type ContactScalarWhereInput = {
+  AND?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
+  OR?: Prisma.ContactScalarWhereInput[]
+  NOT?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
+  id?: Prisma.StringFilter<"Contact"> | string
+  organizationId?: Prisma.StringFilter<"Contact"> | string
+  name?: Prisma.StringFilter<"Contact"> | string
+  phone?: Prisma.StringFilter<"Contact"> | string
+  email?: Prisma.StringNullableFilter<"Contact"> | string | null
+  status?: Prisma.EnumContactStatusFilter<"Contact"> | $Enums.ContactStatus
+  consent?: Prisma.BoolFilter<"Contact"> | boolean
+  converted?: Prisma.BoolFilter<"Contact"> | boolean
+  samplesSentAt?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
+  followUpSentAt?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
+  salesRepId?: Prisma.StringNullableFilter<"Contact"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
+}
+
 export type ContactCreateWithoutSalesRepInput = {
   id?: string
   name: string
@@ -596,12 +727,14 @@ export type ContactCreateWithoutSalesRepInput = {
   followUpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   messages?: Prisma.MessageCreateNestedManyWithoutContactInput
   campaigns?: Prisma.CampaignContactCreateNestedManyWithoutContactInput
 }
 
 export type ContactUncheckedCreateWithoutSalesRepInput = {
   id?: string
+  organizationId: string
   name: string
   phone: string
   email?: string | null
@@ -642,24 +775,6 @@ export type ContactUpdateManyWithWhereWithoutSalesRepInput = {
   data: Prisma.XOR<Prisma.ContactUpdateManyMutationInput, Prisma.ContactUncheckedUpdateManyWithoutSalesRepInput>
 }
 
-export type ContactScalarWhereInput = {
-  AND?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
-  OR?: Prisma.ContactScalarWhereInput[]
-  NOT?: Prisma.ContactScalarWhereInput | Prisma.ContactScalarWhereInput[]
-  id?: Prisma.StringFilter<"Contact"> | string
-  name?: Prisma.StringFilter<"Contact"> | string
-  phone?: Prisma.StringFilter<"Contact"> | string
-  email?: Prisma.StringNullableFilter<"Contact"> | string | null
-  status?: Prisma.EnumContactStatusFilter<"Contact"> | $Enums.ContactStatus
-  consent?: Prisma.BoolFilter<"Contact"> | boolean
-  converted?: Prisma.BoolFilter<"Contact"> | boolean
-  samplesSentAt?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
-  followUpSentAt?: Prisma.DateTimeNullableFilter<"Contact"> | Date | string | null
-  salesRepId?: Prisma.StringNullableFilter<"Contact"> | string | null
-  createdAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
-  updatedAt?: Prisma.DateTimeFilter<"Contact"> | Date | string
-}
-
 export type ContactCreateWithoutMessagesInput = {
   id?: string
   name: string
@@ -672,12 +787,14 @@ export type ContactCreateWithoutMessagesInput = {
   followUpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   salesRep?: Prisma.SalesRepCreateNestedOneWithoutContactsInput
   campaigns?: Prisma.CampaignContactCreateNestedManyWithoutContactInput
 }
 
 export type ContactUncheckedCreateWithoutMessagesInput = {
   id?: string
+  organizationId: string
   name: string
   phone: string
   email?: string | null
@@ -720,12 +837,14 @@ export type ContactUpdateWithoutMessagesInput = {
   followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   salesRep?: Prisma.SalesRepUpdateOneWithoutContactsNestedInput
   campaigns?: Prisma.CampaignContactUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -752,12 +871,14 @@ export type ContactCreateWithoutCampaignsInput = {
   followUpSentAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutContactsInput
   salesRep?: Prisma.SalesRepCreateNestedOneWithoutContactsInput
   messages?: Prisma.MessageCreateNestedManyWithoutContactInput
 }
 
 export type ContactUncheckedCreateWithoutCampaignsInput = {
   id?: string
+  organizationId: string
   name: string
   phone: string
   email?: string | null
@@ -800,12 +921,14 @@ export type ContactUpdateWithoutCampaignsInput = {
   followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   salesRep?: Prisma.SalesRepUpdateOneWithoutContactsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutCampaignsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -820,8 +943,73 @@ export type ContactUncheckedUpdateWithoutCampaignsInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutContactNestedInput
 }
 
+export type ContactCreateManyOrganizationInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  status?: $Enums.ContactStatus
+  consent?: boolean
+  converted?: boolean
+  samplesSentAt?: Date | string | null
+  followUpSentAt?: Date | string | null
+  salesRepId?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ContactUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  consent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  converted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  samplesSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  salesRep?: Prisma.SalesRepUpdateOneWithoutContactsNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutContactNestedInput
+  campaigns?: Prisma.CampaignContactUpdateManyWithoutContactNestedInput
+}
+
+export type ContactUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  consent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  converted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  samplesSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutContactNestedInput
+  campaigns?: Prisma.CampaignContactUncheckedUpdateManyWithoutContactNestedInput
+}
+
+export type ContactUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContactStatusFieldUpdateOperationsInput | $Enums.ContactStatus
+  consent?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  converted?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  samplesSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  salesRepId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
 export type ContactCreateManySalesRepInput = {
   id?: string
+  organizationId: string
   name: string
   phone: string
   email?: string | null
@@ -846,12 +1034,14 @@ export type ContactUpdateWithoutSalesRepInput = {
   followUpSentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutContactsNestedInput
   messages?: Prisma.MessageUpdateManyWithoutContactNestedInput
   campaigns?: Prisma.CampaignContactUpdateManyWithoutContactNestedInput
 }
 
 export type ContactUncheckedUpdateWithoutSalesRepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -868,6 +1058,7 @@ export type ContactUncheckedUpdateWithoutSalesRepInput = {
 
 export type ContactUncheckedUpdateManyWithoutSalesRepInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -922,6 +1113,7 @@ export type ContactCountOutputTypeCountCampaignsArgs<ExtArgs extends runtime.Typ
 
 export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
@@ -933,6 +1125,7 @@ export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   salesRepId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   salesRep?: boolean | Prisma.Contact$salesRepArgs<ExtArgs>
   messages?: boolean | Prisma.Contact$messagesArgs<ExtArgs>
   campaigns?: boolean | Prisma.Contact$campaignsArgs<ExtArgs>
@@ -941,6 +1134,7 @@ export type ContactSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type ContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
@@ -952,11 +1146,13 @@ export type ContactSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
   salesRepId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   salesRep?: boolean | Prisma.Contact$salesRepArgs<ExtArgs>
 }, ExtArgs["result"]["contact"]>
 
 export type ContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
@@ -968,11 +1164,13 @@ export type ContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
   salesRepId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   salesRep?: boolean | Prisma.Contact$salesRepArgs<ExtArgs>
 }, ExtArgs["result"]["contact"]>
 
 export type ContactSelectScalar = {
   id?: boolean
+  organizationId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
@@ -986,29 +1184,34 @@ export type ContactSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "email" | "status" | "consent" | "converted" | "samplesSentAt" | "followUpSentAt" | "salesRepId" | "createdAt" | "updatedAt", ExtArgs["result"]["contact"]>
+export type ContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "phone" | "email" | "status" | "consent" | "converted" | "samplesSentAt" | "followUpSentAt" | "salesRepId" | "createdAt" | "updatedAt", ExtArgs["result"]["contact"]>
 export type ContactInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   salesRep?: boolean | Prisma.Contact$salesRepArgs<ExtArgs>
   messages?: boolean | Prisma.Contact$messagesArgs<ExtArgs>
   campaigns?: boolean | Prisma.Contact$campaignsArgs<ExtArgs>
   _count?: boolean | Prisma.ContactCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ContactIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   salesRep?: boolean | Prisma.Contact$salesRepArgs<ExtArgs>
 }
 export type ContactIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   salesRep?: boolean | Prisma.Contact$salesRepArgs<ExtArgs>
 }
 
 export type $ContactPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Contact"
   objects: {
+    organization: Prisma.$OrganizationPayload<ExtArgs>
     salesRep: Prisma.$SalesRepPayload<ExtArgs> | null
     messages: Prisma.$MessagePayload<ExtArgs>[]
     campaigns: Prisma.$CampaignContactPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    organizationId: string
     name: string
     phone: string
     email: string | null
@@ -1414,6 +1617,7 @@ readonly fields: ContactFieldRefs;
  */
 export interface Prisma__ContactClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   salesRep<T extends Prisma.Contact$salesRepArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$salesRepArgs<ExtArgs>>): Prisma.Prisma__SalesRepClient<runtime.Types.Result.GetResult<Prisma.$SalesRepPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   messages<T extends Prisma.Contact$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   campaigns<T extends Prisma.Contact$campaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contact$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -1447,6 +1651,7 @@ export interface Prisma__ContactClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ContactFieldRefs {
   readonly id: Prisma.FieldRef<"Contact", 'String'>
+  readonly organizationId: Prisma.FieldRef<"Contact", 'String'>
   readonly name: Prisma.FieldRef<"Contact", 'String'>
   readonly phone: Prisma.FieldRef<"Contact", 'String'>
   readonly email: Prisma.FieldRef<"Contact", 'String'>

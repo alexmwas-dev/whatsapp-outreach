@@ -33,16 +33,167 @@ enum MessageDirection {
   OUTBOUND
 }
 
+enum UserRole {
+  OWNER
+  ADMIN
+  SALES_REP
+
+}
+
+enum SubscriptionStatus {
+  TRIAL
+  ACTIVE
+  PAST_DUE
+  CANCELED
+}
+enum WhatsappStatus {
+  VERIFIED
+  PENDING
+  REJECTED
+}
+enum MessagingTier {
+  TIER_1
+  TIER_2
+  TIER_3
+}
+enum WhatsappSetupStep {
+  WABA_CONNECTED
+  WEBHOOK_CONFIGURED
+  PHONE_NUMBER_ADDED
+  PHONE_NUMBER_VERIFIED
+}
+
+
+/* =========================
+   ORGANIZATIONS (TENANTS)
+========================= */
+
+model Organization {
+  id              String   @id @default(uuid())
+  name            String
+  slug            String   @unique
+  plan            String   @default("FREE")
+
+  whatsappStepsCompleted    WhatsappSetupStep[]
+  whatsappBusinessAccountId String?  // Meta WABA ID
+  whatsappStatus            WhatsappStatus?  @default(PENDING)
+  messagingTier             MessagingTier?  // TIER_1 | TIER_2 | TIER_3
+  webhookVerifyToken        String?  // for webhook validation
+
+  users           User[]
+  contacts        Contact[]
+  salesReps       SalesRep[]
+  campaigns       Campaign[]
+  messages        Message[]
+  whatsAppNumbers WhatsAppNumber[]
+  subscription    Subscription?
+  whatsappTemplates WhatsAppTemplate[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+/* =========================
+   USERS (AUTH & ACCESS)
+========================= */
+
+model User {
+  id             String   @id @default(uuid())
+  name           String
+  email          String   @unique
+  password       String
+  role           UserRole @default(ADMIN)
+
+  organizationId String?   
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  salesRep       SalesRep?
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([organizationId])
+}
+
+/* =========================
+   SUBSCRIPTIONS
+========================= */
+
+model Subscription {
+  id                   String   @id @default(uuid())
+  organizationId       String   @unique
+  organization         Organization @relation(fields: [organizationId], references: [id])
+
+  status               SubscriptionStatus @default(TRIAL)
+  plan                 String
+  messageLimit         Int
+  messagesUsed         Int      @default(0)
+
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+
+  provider             String   // stripe | paystack | flutterwave
+  providerRef          String?
+
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+}
+
+/* =========================
+   WHATSAPP NUMBERS
+========================= */
+
+model WhatsAppNumber {
+  id             String       @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  phoneNumber    String       @unique
+  phoneNumberId  String       // WhatsApp Business API ID
+  accessToken    String
+  displayName    String?      // optional display name
+  accessTokenExpiresAt DateTime? 
+  active         Boolean      @default(true)
+
+  messages       Message[]
+
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  @@index([organizationId])
+}
+model WhatsAppTemplate {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  name           String   // exact Meta template name
+  language       String   // en, en_US
+  category       String   // MARKETING, UTILITY
+  description    String?
+
+  active         Boolean  @default(true)
+
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@unique([organizationId, name])
+}
+
+
 /* =========================
    CONTACTS (LEADS)
 ========================= */
 
 model Contact {
   id               String        @id @default(uuid())
+  organizationId   String
+  organization     Organization  @relation(fields: [organizationId], references: [id])
+
   name             String
-  phone            String        @unique
+  phone            String
   email            String?
-  
+
   status           ContactStatus @default(NEW)
   consent          Boolean       @default(false)
   converted        Boolean       @default(false)
@@ -59,8 +210,10 @@ model Contact {
   createdAt        DateTime      @default(now())
   updatedAt        DateTime      @updatedAt
 
+  @@unique([organizationId, phone])
   @@index([phone])
   @@index([status])
+  @@index([organizationId])
 }
 
 /* =========================
@@ -68,49 +221,78 @@ model Contact {
 ========================= */
 
 model SalesRep {
-  id          String     @id @default(uuid())
-  name        String
-  phone       String     @unique
-  email       String?
-  active      Boolean    @default(true)
+  id             String     @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
 
-  contacts    Contact[]
+  userId         String     @unique
+  user           User       @relation(fields: [userId], references: [id])
 
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  name           String
+  phone          String     @unique
+  email          String?
+  active         Boolean    @default(true)
+
+  contacts       Contact[]
+  messages       Message[]
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([organizationId])
 }
+
 
 /* =========================
    MESSAGES (LOGS)
 ========================= */
 
 model Message {
-  id          String           @id @default(uuid())
-  contactId   String
-  contact     Contact         @relation(fields: [contactId], references: [id], onDelete: Cascade)
+  id                 String           @id @default(uuid())
+  organizationId     String
+  organization       Organization     @relation(fields: [organizationId], references: [id])
 
-  direction   MessageDirection
-  message     String
+  contactId          String
+  contact            Contact          @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime         @default(now())
+  salesRepId         String?
+  salesRep           SalesRep?        @relation(fields: [salesRepId], references: [id])
+
+  whatsappNumberId   String
+  whatsappNumber     WhatsAppNumber   @relation(fields: [whatsappNumberId], references: [id])
+
+  direction          MessageDirection
+  message            String
+
+  createdAt          DateTime         @default(now())
+  readAt             DateTime?
 
   @@index([contactId])
   @@index([direction])
+  @@index([organizationId])
+  @@index([salesRepId])
+  @@index([whatsappNumberId])
 }
 
+
 /* =========================
-   CAMPAIGNS (OPTIONAL BUT SMART)
+   CAMPAIGNS
 ========================= */
 
 model Campaign {
-  id          String     @id @default(uuid())
-  name        String
-  description String?
+  id             String     @id @default(uuid())
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id])
 
-  contacts    CampaignContact[]
+  name           String
+  description    String?
 
-  active      Boolean    @default(true)
-  createdAt   DateTime   @default(now())
+  contacts       CampaignContact[]
+
+  active         Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+
+  @@index([organizationId])
 }
 
 /* =========================

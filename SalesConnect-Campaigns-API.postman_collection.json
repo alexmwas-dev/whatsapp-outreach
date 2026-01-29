@@ -1,0 +1,75 @@
+{
+  "info": {
+    "_postman_id": "salesconnect-campaigns-api",
+    "name": "SalesConnect Campaigns API",
+    "description": "Campaign sending and statistics endpoints for SalesConnect",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Campaigns",
+      "item": [
+        {
+          "name": "Send Campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"templateName\": \"intro_salesconnect_v1\",\n  \"limit\": 20,\n  \"delay\": 60000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/campaigns/send",
+              "host": ["{{base_url}}"],
+              "path": ["campaigns", "send"]
+            },
+            "description": "Send campaign to contacts using specified template and WhatsApp number. Automatically uses the organization's active WhatsApp number.\n\nParameters:\n- templateName (optional): Name of the template to use. If not provided, uses first active template\n- limit (optional, default 20): Maximum number of contacts to send to\n- delay (optional, default 60000): Delay in milliseconds between messages (to avoid rate limiting)\n\nProcess:\n1. Fetches org's active WhatsApp number\n2. Fetches org's active template\n3. Fetches NEW contacts (up to limit)\n4. Sends template to each contact\n5. Updates contact status to INTRO_SENT\n6. Waits for specified delay before next message"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Campaign Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/campaigns/stats",
+              "host": ["{{base_url}}"],
+              "path": ["campaigns", "stats"]
+            },
+            "description": "Get campaign statistics including contact status breakdown and total messages sent."
+          },
+          "response": []
+        }
+      ],
+      "description": "Campaign sending and tracking"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from login or signup"
+    }
+  ]
+}

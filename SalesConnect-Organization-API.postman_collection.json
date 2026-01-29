@@ -1,0 +1,217 @@
+{
+  "info": {
+    "_postman_id": "salesconnect-organization-api",
+    "name": "SalesConnect Organization API",
+    "description": "Organization management, team members, and statistics endpoints for SalesConnect",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Organization",
+      "item": [
+        {
+          "name": "Get Organization Details",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization",
+              "host": ["{{base_url}}"],
+              "path": ["organization"]
+            },
+            "description": "Retrieve organization details including team members and subscription info."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Organization",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Company Name\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization",
+              "host": ["{{base_url}}"],
+              "path": ["organization"]
+            },
+            "description": "Update organization name. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Organization Statistics",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/stats",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "stats"]
+            },
+            "description": "Get organization usage statistics (total contacts, campaigns, messages sent)."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Activity Log",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/activity",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "activity"]
+            },
+            "description": "Get recent message activity log for the organization."
+          },
+          "response": []
+        }
+      ],
+      "description": "Organization management and statistics"
+    },
+    {
+      "name": "Team Members",
+      "item": [
+        {
+          "name": "Get Team Members",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/team",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "team"]
+            },
+            "description": "List all team members with their roles."
+          },
+          "response": []
+        },
+        {
+          "name": "Invite Team Member",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Smith\",\n  \"email\": \"jane@company.com\",\n  \"role\": \"SALES_REP\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/team/invite",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "team", "invite"]
+            },
+            "description": "Invite a new team member. Role can be ADMIN or SALES_REP. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Update Team Member Role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"ADMIN\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/team/{{memberId}}/role",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "team", "{{memberId}}", "role"]
+            },
+            "description": "Update a team member's role. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
+          "name": "Remove Team Member",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/organization/team/{{memberId}}",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "team", "{{memberId}}"]
+            },
+            "description": "Remove a team member from the organization. Requires OWNER role only."
+          },
+          "response": []
+        }
+      ],
+      "description": "Team member management"
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from login or signup"
+    },
+    {
+      "key": "memberId",
+      "value": "",
+      "type": "string",
+      "description": "Team member ID"
+    }
+  ]
+}

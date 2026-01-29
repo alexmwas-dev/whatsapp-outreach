@@ -1,93 +1,121 @@
-// WhatsApp service placeholdeimport axios from "axios";
 import axios from "axios";
-import { WHATSAPP_API_URL } from "../config/whatsapp.js";
+import logger from "../utils/loogger.js";
+import { AppError } from "../utils/AppError.js";
+import { assertWhatsAppTokenValid } from "../utils/verifyAccessToken.js";
 
-export async function sendIntroTemplate(
+/**
+ * Send WhatsApp template message
+ * @param {Object} options - Configuration object
+ * @param {string} options.phone - Recipient phone number (E.164 format)
+ * @param {string} options.templateName - Name of the template in Meta
+ * @param {string} options.language - Language code (e.g., "en", "en_US")
+ * @param {Array<string>} options.params - Template parameters for body variables
+ * @param {Object} options.waNumber - WhatsApp number object with phoneNumberId and accessToken
+ * @returns {Promise<Object>} API response
+ */
+export async function sendTemplate({
   phone,
-  contactName,
-  repName,
-  agencyName,
-) {
+  templateName,
+  language,
+  params = [],
+  waNumber,
+}) {
+  assertWhatsAppTokenValid(waNumber);
+
   try {
-    const response = await axios.post(
-      WHATSAPP_API_URL,
-      {
-        messaging_product: "whatsapp",
-        to: phone,
-        type: "template",
-        template: {
-          name: "intro_marketing_agency", // the template name in Meta
-          language: { code: "en" },
-          components: [
-            {
-              type: "body",
-              parameters: [
-                { type: "text", text: contactName }, // {{1}}
-                { type: "text", text: repName }, // {{2}}
-                { type: "text", text: agencyName }, // {{3}}
-              ],
-            },
-          ],
-        },
+    const url = `https://graph.facebook.com/v18.0/${waNumber.phoneNumberId}/messages`;
+
+    const payload = {
+      messaging_product: "whatsapp",
+      to: phone,
+      type: "template",
+      template: {
+        name: templateName,
+        language: { code: language },
+        components: [
+          {
+            type: "body",
+            parameters: params.map((text) => ({
+              type: "text",
+              text: String(text),
+            })),
+          },
+        ],
       },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-          "Content-Type": "application/json",
-        },
+    };
+
+    const response = await axios.post(url, payload, {
+      headers: {
+        Authorization: `Bearer ${waNumber.accessToken}`,
+        "Content-Type": "application/json",
       },
-    );
+    });
+
+    logger.info("WhatsApp template sent successfully", {
+      meta: {
+        templateName,
+        phone,
+        messageId: response.data.messages?.[0]?.id,
+      },
+    });
 
     return response.data;
   } catch (error) {
-    console.error(
-      "Error sending WhatsApp template:",
-      error.response?.data || error.message,
-    );
+    const errorDetails = error.response?.data || error.message;
+    logger.error("Error sending WhatsApp template", {
+      meta: {
+        templateName,
+        phone,
+        error: errorDetails,
+      },
+    });
     throw error;
   }
 }
 
-export async function sendHelloWorldTemplate(phone) {
-  // Log .env variables if they exist
-  console.log("WHATSAPP_API_URL:", WHATSAPP_API_URL || "Not set");
-  console.log(
-    "WHATSAPP_TOKEN:",
-    process.env.WHATSAPP_TOKEN ? "[SET]" : "Not set",
-  );
-
-  if (!WHATSAPP_API_URL || !process.env.WHATSAPP_TOKEN) {
-    console.warn("⚠️ Missing required WhatsApp environment variables!");
-    return;
-  }
-
+/**
+ * Send text message (not template)
+ * @param {Object} options - Configuration object
+ * @param {string} options.phone - Recipient phone number (E.164 format)
+ * @param {string} options.text - Message text
+ * @param {Object} options.waNumber - WhatsApp number object
+ * @returns {Promise<Object>} API response
+ */
+export async function sendTextMessage({ phone, text, waNumber }) {
+  assertWhatsAppTokenValid(waNumber);
   try {
-    const response = await axios.post(
-      WHATSAPP_API_URL,
-      {
-        messaging_product: "whatsapp",
-        to: phone,
-        type: "template",
-        template: {
-          name: "hello_world",
-          language: { code: "en_US" },
-        },
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${process.env.WHATSAPP_TOKEN}`,
-          "Content-Type": "application/json",
-        },
-      },
-    );
+    const url = `https://graph.facebook.com/v18.0/${waNumber.phoneNumberId}/messages`;
 
-    console.log("WhatsApp API response:", response.data);
+    const payload = {
+      messaging_product: "whatsapp",
+      to: phone,
+      type: "text",
+      text: {
+        preview_url: false,
+        body: text,
+      },
+    };
+
+    const response = await axios.post(url, payload, {
+      headers: {
+        Authorization: `Bearer ${waNumber.accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    logger.info("WhatsApp text message sent successfully", {
+      meta: {
+        phone,
+        messageId: response.data.messages?.[0]?.id,
+      },
+    });
+
     return response.data;
-  } catch (err) {
-    console.error(
-      "Error sending WhatsApp template:",
-      err.response?.data || err.message,
-    );
-    throw err;
+  } catch (error) {
+    const errorDetails = error.response?.data || error.message;
+    logger.error("Error sending WhatsApp text message", {
+      meta: { phone, error: errorDetails },
+    });
+    throw error;
   }
 }

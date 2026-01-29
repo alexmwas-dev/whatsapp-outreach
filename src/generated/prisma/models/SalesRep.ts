@@ -26,6 +26,8 @@ export type AggregateSalesRep = {
 
 export type SalesRepMinAggregateOutputType = {
   id: string | null
+  organizationId: string | null
+  userId: string | null
   name: string | null
   phone: string | null
   email: string | null
@@ -36,6 +38,8 @@ export type SalesRepMinAggregateOutputType = {
 
 export type SalesRepMaxAggregateOutputType = {
   id: string | null
+  organizationId: string | null
+  userId: string | null
   name: string | null
   phone: string | null
   email: string | null
@@ -46,6 +50,8 @@ export type SalesRepMaxAggregateOutputType = {
 
 export type SalesRepCountAggregateOutputType = {
   id: number
+  organizationId: number
+  userId: number
   name: number
   phone: number
   email: number
@@ -58,6 +64,8 @@ export type SalesRepCountAggregateOutputType = {
 
 export type SalesRepMinAggregateInputType = {
   id?: true
+  organizationId?: true
+  userId?: true
   name?: true
   phone?: true
   email?: true
@@ -68,6 +76,8 @@ export type SalesRepMinAggregateInputType = {
 
 export type SalesRepMaxAggregateInputType = {
   id?: true
+  organizationId?: true
+  userId?: true
   name?: true
   phone?: true
   email?: true
@@ -78,6 +88,8 @@ export type SalesRepMaxAggregateInputType = {
 
 export type SalesRepCountAggregateInputType = {
   id?: true
+  organizationId?: true
+  userId?: true
   name?: true
   phone?: true
   email?: true
@@ -161,6 +173,8 @@ export type SalesRepGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type SalesRepGroupByOutputType = {
   id: string
+  organizationId: string
+  userId: string
   name: string
   phone: string
   email: string | null
@@ -192,42 +206,59 @@ export type SalesRepWhereInput = {
   OR?: Prisma.SalesRepWhereInput[]
   NOT?: Prisma.SalesRepWhereInput | Prisma.SalesRepWhereInput[]
   id?: Prisma.StringFilter<"SalesRep"> | string
+  organizationId?: Prisma.StringFilter<"SalesRep"> | string
+  userId?: Prisma.StringFilter<"SalesRep"> | string
   name?: Prisma.StringFilter<"SalesRep"> | string
   phone?: Prisma.StringFilter<"SalesRep"> | string
   email?: Prisma.StringNullableFilter<"SalesRep"> | string | null
   active?: Prisma.BoolFilter<"SalesRep"> | boolean
   createdAt?: Prisma.DateTimeFilter<"SalesRep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SalesRep"> | Date | string
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   contacts?: Prisma.ContactListRelationFilter
+  messages?: Prisma.MessageListRelationFilter
 }
 
 export type SalesRepOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  organization?: Prisma.OrganizationOrderByWithRelationInput
+  user?: Prisma.UserOrderByWithRelationInput
   contacts?: Prisma.ContactOrderByRelationAggregateInput
+  messages?: Prisma.MessageOrderByRelationAggregateInput
 }
 
 export type SalesRepWhereUniqueInput = Prisma.AtLeast<{
   id?: string
+  userId?: string
   phone?: string
   AND?: Prisma.SalesRepWhereInput | Prisma.SalesRepWhereInput[]
   OR?: Prisma.SalesRepWhereInput[]
   NOT?: Prisma.SalesRepWhereInput | Prisma.SalesRepWhereInput[]
+  organizationId?: Prisma.StringFilter<"SalesRep"> | string
   name?: Prisma.StringFilter<"SalesRep"> | string
   email?: Prisma.StringNullableFilter<"SalesRep"> | string | null
   active?: Prisma.BoolFilter<"SalesRep"> | boolean
   createdAt?: Prisma.DateTimeFilter<"SalesRep"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"SalesRep"> | Date | string
+  organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   contacts?: Prisma.ContactListRelationFilter
-}, "id" | "phone">
+  messages?: Prisma.MessageListRelationFilter
+}, "id" | "userId" | "phone">
 
 export type SalesRepOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -244,6 +275,8 @@ export type SalesRepScalarWhereWithAggregatesInput = {
   OR?: Prisma.SalesRepScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SalesRepScalarWhereWithAggregatesInput | Prisma.SalesRepScalarWhereWithAggregatesInput[]
   id?: Prisma.StringWithAggregatesFilter<"SalesRep"> | string
+  organizationId?: Prisma.StringWithAggregatesFilter<"SalesRep"> | string
+  userId?: Prisma.StringWithAggregatesFilter<"SalesRep"> | string
   name?: Prisma.StringWithAggregatesFilter<"SalesRep"> | string
   phone?: Prisma.StringWithAggregatesFilter<"SalesRep"> | string
   email?: Prisma.StringNullableWithAggregatesFilter<"SalesRep"> | string | null
@@ -260,11 +293,16 @@ export type SalesRepCreateInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutSalesRepsInput
+  user: Prisma.UserCreateNestedOneWithoutSalesRepInput
   contacts?: Prisma.ContactCreateNestedManyWithoutSalesRepInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSalesRepInput
 }
 
 export type SalesRepUncheckedCreateInput = {
   id?: string
+  organizationId: string
+  userId: string
   name: string
   phone: string
   email?: string | null
@@ -272,6 +310,7 @@ export type SalesRepUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSalesRepInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSalesRepInput
 }
 
 export type SalesRepUpdateInput = {
@@ -282,11 +321,16 @@ export type SalesRepUpdateInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSalesRepsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSalesRepNestedInput
   contacts?: Prisma.ContactUpdateManyWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSalesRepNestedInput
 }
 
 export type SalesRepUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -294,10 +338,13 @@ export type SalesRepUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSalesRepNestedInput
 }
 
 export type SalesRepCreateManyInput = {
   id?: string
+  organizationId: string
+  userId: string
   name: string
   phone: string
   email?: string | null
@@ -318,12 +365,24 @@ export type SalesRepUpdateManyMutationInput = {
 
 export type SalesRepUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SalesRepListRelationFilter = {
+  every?: Prisma.SalesRepWhereInput
+  some?: Prisma.SalesRepWhereInput
+  none?: Prisma.SalesRepWhereInput
+}
+
+export type SalesRepOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type SalesRepNullableScalarRelationFilter = {
@@ -333,6 +392,8 @@ export type SalesRepNullableScalarRelationFilter = {
 
 export type SalesRepCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -343,6 +404,8 @@ export type SalesRepCountOrderByAggregateInput = {
 
 export type SalesRepMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
@@ -353,12 +416,88 @@ export type SalesRepMaxOrderByAggregateInput = {
 
 export type SalesRepMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  organizationId?: Prisma.SortOrder
+  userId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   phone?: Prisma.SortOrder
   email?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type SalesRepCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutOrganizationInput, Prisma.SalesRepUncheckedCreateWithoutOrganizationInput> | Prisma.SalesRepCreateWithoutOrganizationInput[] | Prisma.SalesRepUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutOrganizationInput | Prisma.SalesRepCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.SalesRepCreateManyOrganizationInputEnvelope
+  connect?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+}
+
+export type SalesRepUncheckedCreateNestedManyWithoutOrganizationInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutOrganizationInput, Prisma.SalesRepUncheckedCreateWithoutOrganizationInput> | Prisma.SalesRepCreateWithoutOrganizationInput[] | Prisma.SalesRepUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutOrganizationInput | Prisma.SalesRepCreateOrConnectWithoutOrganizationInput[]
+  createMany?: Prisma.SalesRepCreateManyOrganizationInputEnvelope
+  connect?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+}
+
+export type SalesRepUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutOrganizationInput, Prisma.SalesRepUncheckedCreateWithoutOrganizationInput> | Prisma.SalesRepCreateWithoutOrganizationInput[] | Prisma.SalesRepUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutOrganizationInput | Prisma.SalesRepCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.SalesRepUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.SalesRepUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.SalesRepCreateManyOrganizationInputEnvelope
+  set?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  disconnect?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  delete?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  connect?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  update?: Prisma.SalesRepUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.SalesRepUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.SalesRepUpdateManyWithWhereWithoutOrganizationInput | Prisma.SalesRepUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.SalesRepScalarWhereInput | Prisma.SalesRepScalarWhereInput[]
+}
+
+export type SalesRepUncheckedUpdateManyWithoutOrganizationNestedInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutOrganizationInput, Prisma.SalesRepUncheckedCreateWithoutOrganizationInput> | Prisma.SalesRepCreateWithoutOrganizationInput[] | Prisma.SalesRepUncheckedCreateWithoutOrganizationInput[]
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutOrganizationInput | Prisma.SalesRepCreateOrConnectWithoutOrganizationInput[]
+  upsert?: Prisma.SalesRepUpsertWithWhereUniqueWithoutOrganizationInput | Prisma.SalesRepUpsertWithWhereUniqueWithoutOrganizationInput[]
+  createMany?: Prisma.SalesRepCreateManyOrganizationInputEnvelope
+  set?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  disconnect?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  delete?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  connect?: Prisma.SalesRepWhereUniqueInput | Prisma.SalesRepWhereUniqueInput[]
+  update?: Prisma.SalesRepUpdateWithWhereUniqueWithoutOrganizationInput | Prisma.SalesRepUpdateWithWhereUniqueWithoutOrganizationInput[]
+  updateMany?: Prisma.SalesRepUpdateManyWithWhereWithoutOrganizationInput | Prisma.SalesRepUpdateManyWithWhereWithoutOrganizationInput[]
+  deleteMany?: Prisma.SalesRepScalarWhereInput | Prisma.SalesRepScalarWhereInput[]
+}
+
+export type SalesRepCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutUserInput, Prisma.SalesRepUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutUserInput
+  connect?: Prisma.SalesRepWhereUniqueInput
+}
+
+export type SalesRepUncheckedCreateNestedOneWithoutUserInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutUserInput, Prisma.SalesRepUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutUserInput
+  connect?: Prisma.SalesRepWhereUniqueInput
+}
+
+export type SalesRepUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutUserInput, Prisma.SalesRepUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutUserInput
+  upsert?: Prisma.SalesRepUpsertWithoutUserInput
+  disconnect?: Prisma.SalesRepWhereInput | boolean
+  delete?: Prisma.SalesRepWhereInput | boolean
+  connect?: Prisma.SalesRepWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SalesRepUpdateToOneWithWhereWithoutUserInput, Prisma.SalesRepUpdateWithoutUserInput>, Prisma.SalesRepUncheckedUpdateWithoutUserInput>
+}
+
+export type SalesRepUncheckedUpdateOneWithoutUserNestedInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutUserInput, Prisma.SalesRepUncheckedCreateWithoutUserInput>
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutUserInput
+  upsert?: Prisma.SalesRepUpsertWithoutUserInput
+  disconnect?: Prisma.SalesRepWhereInput | boolean
+  delete?: Prisma.SalesRepWhereInput | boolean
+  connect?: Prisma.SalesRepWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SalesRepUpdateToOneWithWhereWithoutUserInput, Prisma.SalesRepUpdateWithoutUserInput>, Prisma.SalesRepUncheckedUpdateWithoutUserInput>
 }
 
 export type SalesRepCreateNestedOneWithoutContactsInput = {
@@ -377,6 +516,157 @@ export type SalesRepUpdateOneWithoutContactsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.SalesRepUpdateToOneWithWhereWithoutContactsInput, Prisma.SalesRepUpdateWithoutContactsInput>, Prisma.SalesRepUncheckedUpdateWithoutContactsInput>
 }
 
+export type SalesRepCreateNestedOneWithoutMessagesInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutMessagesInput, Prisma.SalesRepUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutMessagesInput
+  connect?: Prisma.SalesRepWhereUniqueInput
+}
+
+export type SalesRepUpdateOneWithoutMessagesNestedInput = {
+  create?: Prisma.XOR<Prisma.SalesRepCreateWithoutMessagesInput, Prisma.SalesRepUncheckedCreateWithoutMessagesInput>
+  connectOrCreate?: Prisma.SalesRepCreateOrConnectWithoutMessagesInput
+  upsert?: Prisma.SalesRepUpsertWithoutMessagesInput
+  disconnect?: Prisma.SalesRepWhereInput | boolean
+  delete?: Prisma.SalesRepWhereInput | boolean
+  connect?: Prisma.SalesRepWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.SalesRepUpdateToOneWithWhereWithoutMessagesInput, Prisma.SalesRepUpdateWithoutMessagesInput>, Prisma.SalesRepUncheckedUpdateWithoutMessagesInput>
+}
+
+export type SalesRepCreateWithoutOrganizationInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  user: Prisma.UserCreateNestedOneWithoutSalesRepInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutSalesRepInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSalesRepInput
+}
+
+export type SalesRepUncheckedCreateWithoutOrganizationInput = {
+  id?: string
+  userId: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSalesRepInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSalesRepInput
+}
+
+export type SalesRepCreateOrConnectWithoutOrganizationInput = {
+  where: Prisma.SalesRepWhereUniqueInput
+  create: Prisma.XOR<Prisma.SalesRepCreateWithoutOrganizationInput, Prisma.SalesRepUncheckedCreateWithoutOrganizationInput>
+}
+
+export type SalesRepCreateManyOrganizationInputEnvelope = {
+  data: Prisma.SalesRepCreateManyOrganizationInput | Prisma.SalesRepCreateManyOrganizationInput[]
+  skipDuplicates?: boolean
+}
+
+export type SalesRepUpsertWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.SalesRepWhereUniqueInput
+  update: Prisma.XOR<Prisma.SalesRepUpdateWithoutOrganizationInput, Prisma.SalesRepUncheckedUpdateWithoutOrganizationInput>
+  create: Prisma.XOR<Prisma.SalesRepCreateWithoutOrganizationInput, Prisma.SalesRepUncheckedCreateWithoutOrganizationInput>
+}
+
+export type SalesRepUpdateWithWhereUniqueWithoutOrganizationInput = {
+  where: Prisma.SalesRepWhereUniqueInput
+  data: Prisma.XOR<Prisma.SalesRepUpdateWithoutOrganizationInput, Prisma.SalesRepUncheckedUpdateWithoutOrganizationInput>
+}
+
+export type SalesRepUpdateManyWithWhereWithoutOrganizationInput = {
+  where: Prisma.SalesRepScalarWhereInput
+  data: Prisma.XOR<Prisma.SalesRepUpdateManyMutationInput, Prisma.SalesRepUncheckedUpdateManyWithoutOrganizationInput>
+}
+
+export type SalesRepScalarWhereInput = {
+  AND?: Prisma.SalesRepScalarWhereInput | Prisma.SalesRepScalarWhereInput[]
+  OR?: Prisma.SalesRepScalarWhereInput[]
+  NOT?: Prisma.SalesRepScalarWhereInput | Prisma.SalesRepScalarWhereInput[]
+  id?: Prisma.StringFilter<"SalesRep"> | string
+  organizationId?: Prisma.StringFilter<"SalesRep"> | string
+  userId?: Prisma.StringFilter<"SalesRep"> | string
+  name?: Prisma.StringFilter<"SalesRep"> | string
+  phone?: Prisma.StringFilter<"SalesRep"> | string
+  email?: Prisma.StringNullableFilter<"SalesRep"> | string | null
+  active?: Prisma.BoolFilter<"SalesRep"> | boolean
+  createdAt?: Prisma.DateTimeFilter<"SalesRep"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"SalesRep"> | Date | string
+}
+
+export type SalesRepCreateWithoutUserInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutSalesRepsInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutSalesRepInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSalesRepInput
+}
+
+export type SalesRepUncheckedCreateWithoutUserInput = {
+  id?: string
+  organizationId: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSalesRepInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSalesRepInput
+}
+
+export type SalesRepCreateOrConnectWithoutUserInput = {
+  where: Prisma.SalesRepWhereUniqueInput
+  create: Prisma.XOR<Prisma.SalesRepCreateWithoutUserInput, Prisma.SalesRepUncheckedCreateWithoutUserInput>
+}
+
+export type SalesRepUpsertWithoutUserInput = {
+  update: Prisma.XOR<Prisma.SalesRepUpdateWithoutUserInput, Prisma.SalesRepUncheckedUpdateWithoutUserInput>
+  create: Prisma.XOR<Prisma.SalesRepCreateWithoutUserInput, Prisma.SalesRepUncheckedCreateWithoutUserInput>
+  where?: Prisma.SalesRepWhereInput
+}
+
+export type SalesRepUpdateToOneWithWhereWithoutUserInput = {
+  where?: Prisma.SalesRepWhereInput
+  data: Prisma.XOR<Prisma.SalesRepUpdateWithoutUserInput, Prisma.SalesRepUncheckedUpdateWithoutUserInput>
+}
+
+export type SalesRepUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSalesRepsNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSalesRepNestedInput
+}
+
+export type SalesRepUncheckedUpdateWithoutUserInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSalesRepNestedInput
+}
+
 export type SalesRepCreateWithoutContactsInput = {
   id?: string
   name: string
@@ -385,16 +675,22 @@ export type SalesRepCreateWithoutContactsInput = {
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutSalesRepsInput
+  user: Prisma.UserCreateNestedOneWithoutSalesRepInput
+  messages?: Prisma.MessageCreateNestedManyWithoutSalesRepInput
 }
 
 export type SalesRepUncheckedCreateWithoutContactsInput = {
   id?: string
+  organizationId: string
+  userId: string
   name: string
   phone: string
   email?: string | null
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutSalesRepInput
 }
 
 export type SalesRepCreateOrConnectWithoutContactsInput = {
@@ -421,10 +717,132 @@ export type SalesRepUpdateWithoutContactsInput = {
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSalesRepsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSalesRepNestedInput
 }
 
 export type SalesRepUncheckedUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSalesRepNestedInput
+}
+
+export type SalesRepCreateWithoutMessagesInput = {
+  id?: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutSalesRepsInput
+  user: Prisma.UserCreateNestedOneWithoutSalesRepInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutSalesRepInput
+}
+
+export type SalesRepUncheckedCreateWithoutMessagesInput = {
+  id?: string
+  organizationId: string
+  userId: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutSalesRepInput
+}
+
+export type SalesRepCreateOrConnectWithoutMessagesInput = {
+  where: Prisma.SalesRepWhereUniqueInput
+  create: Prisma.XOR<Prisma.SalesRepCreateWithoutMessagesInput, Prisma.SalesRepUncheckedCreateWithoutMessagesInput>
+}
+
+export type SalesRepUpsertWithoutMessagesInput = {
+  update: Prisma.XOR<Prisma.SalesRepUpdateWithoutMessagesInput, Prisma.SalesRepUncheckedUpdateWithoutMessagesInput>
+  create: Prisma.XOR<Prisma.SalesRepCreateWithoutMessagesInput, Prisma.SalesRepUncheckedCreateWithoutMessagesInput>
+  where?: Prisma.SalesRepWhereInput
+}
+
+export type SalesRepUpdateToOneWithWhereWithoutMessagesInput = {
+  where?: Prisma.SalesRepWhereInput
+  data: Prisma.XOR<Prisma.SalesRepUpdateWithoutMessagesInput, Prisma.SalesRepUncheckedUpdateWithoutMessagesInput>
+}
+
+export type SalesRepUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutSalesRepsNestedInput
+  user?: Prisma.UserUpdateOneRequiredWithoutSalesRepNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutSalesRepNestedInput
+}
+
+export type SalesRepUncheckedUpdateWithoutMessagesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutSalesRepNestedInput
+}
+
+export type SalesRepCreateManyOrganizationInput = {
+  id?: string
+  userId: string
+  name: string
+  phone: string
+  email?: string | null
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type SalesRepUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutSalesRepNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutSalesRepNestedInput
+}
+
+export type SalesRepUncheckedUpdateWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  phone?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutSalesRepNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutSalesRepNestedInput
+}
+
+export type SalesRepUncheckedUpdateManyWithoutOrganizationInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  userId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   phone?: Prisma.StringFieldUpdateOperationsInput | string
   email?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -440,10 +858,12 @@ export type SalesRepUncheckedUpdateWithoutContactsInput = {
 
 export type SalesRepCountOutputType = {
   contacts: number
+  messages: number
 }
 
 export type SalesRepCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contacts?: boolean | SalesRepCountOutputTypeCountContactsArgs
+  messages?: boolean | SalesRepCountOutputTypeCountMessagesArgs
 }
 
 /**
@@ -463,41 +883,63 @@ export type SalesRepCountOutputTypeCountContactsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.ContactWhereInput
 }
 
+/**
+ * SalesRepCountOutputType without action
+ */
+export type SalesRepCountOutputTypeCountMessagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MessageWhereInput
+}
+
 
 export type SalesRepSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
+  userId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.SalesRep$contactsArgs<ExtArgs>
+  messages?: boolean | Prisma.SalesRep$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.SalesRepCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["salesRep"]>
 
 export type SalesRepSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
+  userId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["salesRep"]>
 
 export type SalesRepSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  organizationId?: boolean
+  userId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["salesRep"]>
 
 export type SalesRepSelectScalar = {
   id?: boolean
+  organizationId?: boolean
+  userId?: boolean
   name?: boolean
   phone?: boolean
   email?: boolean
@@ -506,21 +948,35 @@ export type SalesRepSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SalesRepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "phone" | "email" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["salesRep"]>
+export type SalesRepOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "userId" | "name" | "phone" | "email" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["salesRep"]>
 export type SalesRepInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   contacts?: boolean | Prisma.SalesRep$contactsArgs<ExtArgs>
+  messages?: boolean | Prisma.SalesRep$messagesArgs<ExtArgs>
   _count?: boolean | Prisma.SalesRepCountOutputTypeDefaultArgs<ExtArgs>
 }
-export type SalesRepIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
-export type SalesRepIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
+export type SalesRepIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
+export type SalesRepIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+}
 
 export type $SalesRepPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SalesRep"
   objects: {
+    organization: Prisma.$OrganizationPayload<ExtArgs>
+    user: Prisma.$UserPayload<ExtArgs>
     contacts: Prisma.$ContactPayload<ExtArgs>[]
+    messages: Prisma.$MessagePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
+    organizationId: string
+    userId: string
     name: string
     phone: string
     email: string | null
@@ -921,7 +1377,10 @@ readonly fields: SalesRepFieldRefs;
  */
 export interface Prisma__SalesRepClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  user<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contacts<T extends Prisma.SalesRep$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SalesRep$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  messages<T extends Prisma.SalesRep$messagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.SalesRep$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -952,6 +1411,8 @@ export interface Prisma__SalesRepClient<T, Null = never, ExtArgs extends runtime
  */
 export interface SalesRepFieldRefs {
   readonly id: Prisma.FieldRef<"SalesRep", 'String'>
+  readonly organizationId: Prisma.FieldRef<"SalesRep", 'String'>
+  readonly userId: Prisma.FieldRef<"SalesRep", 'String'>
   readonly name: Prisma.FieldRef<"SalesRep", 'String'>
   readonly phone: Prisma.FieldRef<"SalesRep", 'String'>
   readonly email: Prisma.FieldRef<"SalesRep", 'String'>
@@ -1207,6 +1668,10 @@ export type SalesRepCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    */
   data: Prisma.SalesRepCreateManyInput | Prisma.SalesRepCreateManyInput[]
   skipDuplicates?: boolean
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesRepIncludeCreateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1277,6 +1742,10 @@ export type SalesRepUpdateManyAndReturnArgs<ExtArgs extends runtime.Types.Extens
    * Limit how many SalesReps to update.
    */
   limit?: number
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.SalesRepIncludeUpdateManyAndReturn<ExtArgs> | null
 }
 
 /**
@@ -1367,6 +1836,30 @@ export type SalesRep$contactsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.ContactScalarFieldEnum | Prisma.ContactScalarFieldEnum[]
+}
+
+/**
+ * SalesRep.messages
+ */
+export type SalesRep$messagesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Message
+   */
+  select?: Prisma.MessageSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Message
+   */
+  omit?: Prisma.MessageOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MessageInclude<ExtArgs> | null
+  where?: Prisma.MessageWhereInput
+  orderBy?: Prisma.MessageOrderByWithRelationInput | Prisma.MessageOrderByWithRelationInput[]
+  cursor?: Prisma.MessageWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MessageScalarFieldEnum | Prisma.MessageScalarFieldEnum[]
 }
 
 /**
