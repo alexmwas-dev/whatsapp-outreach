@@ -55,6 +55,7 @@ export type OrganizationCountAggregateOutputType = {
   name: number
   slug: number
   plan: number
+  whatsappStepsCompleted: number
   whatsappBusinessAccountId: number
   whatsappStatus: number
   messagingTier: number
@@ -96,6 +97,7 @@ export type OrganizationCountAggregateInputType = {
   name?: true
   slug?: true
   plan?: true
+  whatsappStepsCompleted?: true
   whatsappBusinessAccountId?: true
   whatsappStatus?: true
   messagingTier?: true
@@ -182,6 +184,7 @@ export type OrganizationGroupByOutputType = {
   name: string
   slug: string
   plan: string
+  whatsappStepsCompleted: $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId: string | null
   whatsappStatus: $Enums.WhatsappStatus | null
   messagingTier: $Enums.MessagingTier | null
@@ -216,6 +219,7 @@ export type OrganizationWhereInput = {
   name?: Prisma.StringFilter<"Organization"> | string
   slug?: Prisma.StringFilter<"Organization"> | string
   plan?: Prisma.StringFilter<"Organization"> | string
+  whatsappStepsCompleted?: Prisma.EnumWhatsappSetupStepNullableListFilter<"Organization">
   whatsappBusinessAccountId?: Prisma.StringNullableFilter<"Organization"> | string | null
   whatsappStatus?: Prisma.EnumWhatsappStatusNullableFilter<"Organization"> | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.EnumMessagingTierNullableFilter<"Organization"> | $Enums.MessagingTier | null
@@ -237,6 +241,7 @@ export type OrganizationOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   plan?: Prisma.SortOrder
+  whatsappStepsCompleted?: Prisma.SortOrder
   whatsappBusinessAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   whatsappStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   messagingTier?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -261,6 +266,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.OrganizationWhereInput | Prisma.OrganizationWhereInput[]
   name?: Prisma.StringFilter<"Organization"> | string
   plan?: Prisma.StringFilter<"Organization"> | string
+  whatsappStepsCompleted?: Prisma.EnumWhatsappSetupStepNullableListFilter<"Organization">
   whatsappBusinessAccountId?: Prisma.StringNullableFilter<"Organization"> | string | null
   whatsappStatus?: Prisma.EnumWhatsappStatusNullableFilter<"Organization"> | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.EnumMessagingTierNullableFilter<"Organization"> | $Enums.MessagingTier | null
@@ -282,6 +288,7 @@ export type OrganizationOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   plan?: Prisma.SortOrder
+  whatsappStepsCompleted?: Prisma.SortOrder
   whatsappBusinessAccountId?: Prisma.SortOrderInput | Prisma.SortOrder
   whatsappStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   messagingTier?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -301,6 +308,7 @@ export type OrganizationScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   slug?: Prisma.StringWithAggregatesFilter<"Organization"> | string
   plan?: Prisma.StringWithAggregatesFilter<"Organization"> | string
+  whatsappStepsCompleted?: Prisma.EnumWhatsappSetupStepNullableListFilter<"Organization">
   whatsappBusinessAccountId?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
   whatsappStatus?: Prisma.EnumWhatsappStatusNullableWithAggregatesFilter<"Organization"> | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.EnumMessagingTierNullableWithAggregatesFilter<"Organization"> | $Enums.MessagingTier | null
@@ -314,6 +322,7 @@ export type OrganizationCreateInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -335,6 +344,7 @@ export type OrganizationUncheckedCreateInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -356,6 +366,7 @@ export type OrganizationUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -377,6 +388,7 @@ export type OrganizationUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -398,6 +410,7 @@ export type OrganizationCreateManyInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -411,6 +424,7 @@ export type OrganizationUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -424,6 +438,7 @@ export type OrganizationUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -432,11 +447,20 @@ export type OrganizationUncheckedUpdateManyInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+export type EnumWhatsappSetupStepNullableListFilter<$PrismaModel = never> = {
+  equals?: $Enums.WhatsappSetupStep[] | Prisma.ListEnumWhatsappSetupStepFieldRefInput<$PrismaModel> | null
+  has?: $Enums.WhatsappSetupStep | Prisma.EnumWhatsappSetupStepFieldRefInput<$PrismaModel> | null
+  hasEvery?: $Enums.WhatsappSetupStep[] | Prisma.ListEnumWhatsappSetupStepFieldRefInput<$PrismaModel>
+  hasSome?: $Enums.WhatsappSetupStep[] | Prisma.ListEnumWhatsappSetupStepFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
+}
+
 export type OrganizationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
   slug?: Prisma.SortOrder
   plan?: Prisma.SortOrder
+  whatsappStepsCompleted?: Prisma.SortOrder
   whatsappBusinessAccountId?: Prisma.SortOrder
   whatsappStatus?: Prisma.SortOrder
   messagingTier?: Prisma.SortOrder
@@ -481,8 +505,17 @@ export type OrganizationScalarRelationFilter = {
   isNot?: Prisma.OrganizationWhereInput
 }
 
+export type OrganizationCreatewhatsappStepsCompletedInput = {
+  set: $Enums.WhatsappSetupStep[]
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
+}
+
+export type OrganizationUpdatewhatsappStepsCompletedInput = {
+  set?: $Enums.WhatsappSetupStep[]
+  push?: $Enums.WhatsappSetupStep | $Enums.WhatsappSetupStep[]
 }
 
 export type NullableStringFieldUpdateOperationsInput = {
@@ -620,6 +653,7 @@ export type OrganizationCreateWithoutUsersInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -640,6 +674,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -676,6 +711,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -696,6 +732,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -716,6 +753,7 @@ export type OrganizationCreateWithoutSubscriptionInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -736,6 +774,7 @@ export type OrganizationUncheckedCreateWithoutSubscriptionInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -772,6 +811,7 @@ export type OrganizationUpdateWithoutSubscriptionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -792,6 +832,7 @@ export type OrganizationUncheckedUpdateWithoutSubscriptionInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -812,6 +853,7 @@ export type OrganizationCreateWithoutWhatsAppNumbersInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -832,6 +874,7 @@ export type OrganizationUncheckedCreateWithoutWhatsAppNumbersInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -868,6 +911,7 @@ export type OrganizationUpdateWithoutWhatsAppNumbersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -888,6 +932,7 @@ export type OrganizationUncheckedUpdateWithoutWhatsAppNumbersInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -908,6 +953,7 @@ export type OrganizationCreateWithoutWhatsappTemplatesInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -928,6 +974,7 @@ export type OrganizationUncheckedCreateWithoutWhatsappTemplatesInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -964,6 +1011,7 @@ export type OrganizationUpdateWithoutWhatsappTemplatesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -984,6 +1032,7 @@ export type OrganizationUncheckedUpdateWithoutWhatsappTemplatesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1004,6 +1053,7 @@ export type OrganizationCreateWithoutContactsInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1024,6 +1074,7 @@ export type OrganizationUncheckedCreateWithoutContactsInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1060,6 +1111,7 @@ export type OrganizationUpdateWithoutContactsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1080,6 +1132,7 @@ export type OrganizationUncheckedUpdateWithoutContactsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1100,6 +1153,7 @@ export type OrganizationCreateWithoutSalesRepsInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1120,6 +1174,7 @@ export type OrganizationUncheckedCreateWithoutSalesRepsInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1156,6 +1211,7 @@ export type OrganizationUpdateWithoutSalesRepsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1176,6 +1232,7 @@ export type OrganizationUncheckedUpdateWithoutSalesRepsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1196,6 +1253,7 @@ export type OrganizationCreateWithoutMessagesInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1216,6 +1274,7 @@ export type OrganizationUncheckedCreateWithoutMessagesInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1252,6 +1311,7 @@ export type OrganizationUpdateWithoutMessagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1272,6 +1332,7 @@ export type OrganizationUncheckedUpdateWithoutMessagesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1292,6 +1353,7 @@ export type OrganizationCreateWithoutCampaignsInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1312,6 +1374,7 @@ export type OrganizationUncheckedCreateWithoutCampaignsInput = {
   name: string
   slug: string
   plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: string | null
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
@@ -1348,6 +1411,7 @@ export type OrganizationUpdateWithoutCampaignsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1368,6 +1432,7 @@ export type OrganizationUncheckedUpdateWithoutCampaignsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
   whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
@@ -1473,6 +1538,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   name?: boolean
   slug?: boolean
   plan?: boolean
+  whatsappStepsCompleted?: boolean
   whatsappBusinessAccountId?: boolean
   whatsappStatus?: boolean
   messagingTier?: boolean
@@ -1495,6 +1561,7 @@ export type OrganizationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   name?: boolean
   slug?: boolean
   plan?: boolean
+  whatsappStepsCompleted?: boolean
   whatsappBusinessAccountId?: boolean
   whatsappStatus?: boolean
   messagingTier?: boolean
@@ -1508,6 +1575,7 @@ export type OrganizationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   name?: boolean
   slug?: boolean
   plan?: boolean
+  whatsappStepsCompleted?: boolean
   whatsappBusinessAccountId?: boolean
   whatsappStatus?: boolean
   messagingTier?: boolean
@@ -1521,6 +1589,7 @@ export type OrganizationSelectScalar = {
   name?: boolean
   slug?: boolean
   plan?: boolean
+  whatsappStepsCompleted?: boolean
   whatsappBusinessAccountId?: boolean
   whatsappStatus?: boolean
   messagingTier?: boolean
@@ -1529,7 +1598,7 @@ export type OrganizationSelectScalar = {
   updatedAt?: boolean
 }
 
-export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "whatsappBusinessAccountId" | "whatsappStatus" | "messagingTier" | "webhookVerifyToken" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "whatsappStepsCompleted" | "whatsappBusinessAccountId" | "whatsappStatus" | "messagingTier" | "webhookVerifyToken" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
 export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Organization$usersArgs<ExtArgs>
   contacts?: boolean | Prisma.Organization$contactsArgs<ExtArgs>
@@ -1561,6 +1630,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     name: string
     slug: string
     plan: string
+    whatsappStepsCompleted: $Enums.WhatsappSetupStep[]
     whatsappBusinessAccountId: string | null
     whatsappStatus: $Enums.WhatsappStatus | null
     messagingTier: $Enums.MessagingTier | null
@@ -2002,6 +2072,7 @@ export interface OrganizationFieldRefs {
   readonly name: Prisma.FieldRef<"Organization", 'String'>
   readonly slug: Prisma.FieldRef<"Organization", 'String'>
   readonly plan: Prisma.FieldRef<"Organization", 'String'>
+  readonly whatsappStepsCompleted: Prisma.FieldRef<"Organization", 'WhatsappSetupStep[]'>
   readonly whatsappBusinessAccountId: Prisma.FieldRef<"Organization", 'String'>
   readonly whatsappStatus: Prisma.FieldRef<"Organization", 'WhatsappStatus'>
   readonly messagingTier: Prisma.FieldRef<"Organization", 'MessagingTier'>

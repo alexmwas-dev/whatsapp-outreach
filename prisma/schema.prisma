@@ -149,7 +149,7 @@ model WhatsAppNumber {
   organization   Organization @relation(fields: [organizationId], references: [id])
 
   phoneNumber    String       @unique
-  phoneNumberId  String       // WhatsApp Business API ID
+  phoneNumberId  String       @unique  // WhatsApp Business API ID
   accessToken    String
   displayName    String?      // optional display name
   accessTokenExpiresAt DateTime? 
@@ -171,6 +171,8 @@ model WhatsAppTemplate {
   language       String   // en, en_US
   category       String   // MARKETING, UTILITY
   description    String?
+  bodyParamsCount Int @default(1)
+
 
   active         Boolean  @default(true)
 

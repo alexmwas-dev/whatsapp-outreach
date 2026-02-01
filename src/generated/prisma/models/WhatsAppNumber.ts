@@ -244,11 +244,11 @@ export type WhatsAppNumberOrderByWithRelationInput = {
 export type WhatsAppNumberWhereUniqueInput = Prisma.AtLeast<{
   id?: string
   phoneNumber?: string
+  phoneNumberId?: string
   AND?: Prisma.WhatsAppNumberWhereInput | Prisma.WhatsAppNumberWhereInput[]
   OR?: Prisma.WhatsAppNumberWhereInput[]
   NOT?: Prisma.WhatsAppNumberWhereInput | Prisma.WhatsAppNumberWhereInput[]
   organizationId?: Prisma.StringFilter<"WhatsAppNumber"> | string
-  phoneNumberId?: Prisma.StringFilter<"WhatsAppNumber"> | string
   accessToken?: Prisma.StringFilter<"WhatsAppNumber"> | string
   displayName?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   accessTokenExpiresAt?: Prisma.DateTimeNullableFilter<"WhatsAppNumber"> | Date | string | null
@@ -257,7 +257,7 @@ export type WhatsAppNumberWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
   messages?: Prisma.MessageListRelationFilter
-}, "id" | "phoneNumber">
+}, "id" | "phoneNumber" | "phoneNumberId">
 
 export type WhatsAppNumberOrderByWithAggregationInput = {
   id?: Prisma.SortOrder

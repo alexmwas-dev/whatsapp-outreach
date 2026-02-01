@@ -20,8 +20,18 @@ export type WhatsAppTemplateModel = runtime.Types.Result.DefaultSelection<Prisma
 
 export type AggregateWhatsAppTemplate = {
   _count: WhatsAppTemplateCountAggregateOutputType | null
+  _avg: WhatsAppTemplateAvgAggregateOutputType | null
+  _sum: WhatsAppTemplateSumAggregateOutputType | null
   _min: WhatsAppTemplateMinAggregateOutputType | null
   _max: WhatsAppTemplateMaxAggregateOutputType | null
+}
+
+export type WhatsAppTemplateAvgAggregateOutputType = {
+  bodyParamsCount: number | null
+}
+
+export type WhatsAppTemplateSumAggregateOutputType = {
+  bodyParamsCount: number | null
 }
 
 export type WhatsAppTemplateMinAggregateOutputType = {
@@ -31,6 +41,7 @@ export type WhatsAppTemplateMinAggregateOutputType = {
   language: string | null
   category: string | null
   description: string | null
+  bodyParamsCount: number | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -43,6 +54,7 @@ export type WhatsAppTemplateMaxAggregateOutputType = {
   language: string | null
   category: string | null
   description: string | null
+  bodyParamsCount: number | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -55,12 +67,21 @@ export type WhatsAppTemplateCountAggregateOutputType = {
   language: number
   category: number
   description: number
+  bodyParamsCount: number
   active: number
   createdAt: number
   updatedAt: number
   _all: number
 }
 
+
+export type WhatsAppTemplateAvgAggregateInputType = {
+  bodyParamsCount?: true
+}
+
+export type WhatsAppTemplateSumAggregateInputType = {
+  bodyParamsCount?: true
+}
 
 export type WhatsAppTemplateMinAggregateInputType = {
   id?: true
@@ -69,6 +90,7 @@ export type WhatsAppTemplateMinAggregateInputType = {
   language?: true
   category?: true
   description?: true
+  bodyParamsCount?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -81,6 +103,7 @@ export type WhatsAppTemplateMaxAggregateInputType = {
   language?: true
   category?: true
   description?: true
+  bodyParamsCount?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -93,6 +116,7 @@ export type WhatsAppTemplateCountAggregateInputType = {
   language?: true
   category?: true
   description?: true
+  bodyParamsCount?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -137,6 +161,18 @@ export type WhatsAppTemplateAggregateArgs<ExtArgs extends runtime.Types.Extensio
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: WhatsAppTemplateAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: WhatsAppTemplateSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: WhatsAppTemplateMinAggregateInputType
@@ -167,6 +203,8 @@ export type WhatsAppTemplateGroupByArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   _count?: WhatsAppTemplateCountAggregateInputType | true
+  _avg?: WhatsAppTemplateAvgAggregateInputType
+  _sum?: WhatsAppTemplateSumAggregateInputType
   _min?: WhatsAppTemplateMinAggregateInputType
   _max?: WhatsAppTemplateMaxAggregateInputType
 }
@@ -178,10 +216,13 @@ export type WhatsAppTemplateGroupByOutputType = {
   language: string
   category: string
   description: string | null
+  bodyParamsCount: number
   active: boolean
   createdAt: Date
   updatedAt: Date
   _count: WhatsAppTemplateCountAggregateOutputType | null
+  _avg: WhatsAppTemplateAvgAggregateOutputType | null
+  _sum: WhatsAppTemplateSumAggregateOutputType | null
   _min: WhatsAppTemplateMinAggregateOutputType | null
   _max: WhatsAppTemplateMaxAggregateOutputType | null
 }
@@ -211,6 +252,7 @@ export type WhatsAppTemplateWhereInput = {
   language?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   category?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  bodyParamsCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
@@ -224,6 +266,7 @@ export type WhatsAppTemplateOrderByWithRelationInput = {
   language?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  bodyParamsCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -241,6 +284,7 @@ export type WhatsAppTemplateWhereUniqueInput = Prisma.AtLeast<{
   language?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   category?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  bodyParamsCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
@@ -254,12 +298,15 @@ export type WhatsAppTemplateOrderByWithAggregationInput = {
   language?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  bodyParamsCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.WhatsAppTemplateCountOrderByAggregateInput
+  _avg?: Prisma.WhatsAppTemplateAvgOrderByAggregateInput
   _max?: Prisma.WhatsAppTemplateMaxOrderByAggregateInput
   _min?: Prisma.WhatsAppTemplateMinOrderByAggregateInput
+  _sum?: Prisma.WhatsAppTemplateSumOrderByAggregateInput
 }
 
 export type WhatsAppTemplateScalarWhereWithAggregatesInput = {
@@ -272,6 +319,7 @@ export type WhatsAppTemplateScalarWhereWithAggregatesInput = {
   language?: Prisma.StringWithAggregatesFilter<"WhatsAppTemplate"> | string
   category?: Prisma.StringWithAggregatesFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppTemplate"> | string | null
+  bodyParamsCount?: Prisma.IntWithAggregatesFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolWithAggregatesFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WhatsAppTemplate"> | Date | string
@@ -283,6 +331,7 @@ export type WhatsAppTemplateCreateInput = {
   language: string
   category: string
   description?: string | null
+  bodyParamsCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -296,6 +345,7 @@ export type WhatsAppTemplateUncheckedCreateInput = {
   language: string
   category: string
   description?: string | null
+  bodyParamsCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -307,6 +357,7 @@ export type WhatsAppTemplateUpdateInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -320,6 +371,7 @@ export type WhatsAppTemplateUncheckedUpdateInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -332,6 +384,7 @@ export type WhatsAppTemplateCreateManyInput = {
   language: string
   category: string
   description?: string | null
+  bodyParamsCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -343,6 +396,7 @@ export type WhatsAppTemplateUpdateManyMutationInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -355,6 +409,7 @@ export type WhatsAppTemplateUncheckedUpdateManyInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -382,9 +437,14 @@ export type WhatsAppTemplateCountOrderByAggregateInput = {
   language?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  bodyParamsCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type WhatsAppTemplateAvgOrderByAggregateInput = {
+  bodyParamsCount?: Prisma.SortOrder
 }
 
 export type WhatsAppTemplateMaxOrderByAggregateInput = {
@@ -394,6 +454,7 @@ export type WhatsAppTemplateMaxOrderByAggregateInput = {
   language?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  bodyParamsCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -406,9 +467,14 @@ export type WhatsAppTemplateMinOrderByAggregateInput = {
   language?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  bodyParamsCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type WhatsAppTemplateSumOrderByAggregateInput = {
+  bodyParamsCount?: Prisma.SortOrder
 }
 
 export type WhatsAppTemplateCreateNestedManyWithoutOrganizationInput = {
@@ -459,6 +525,7 @@ export type WhatsAppTemplateCreateWithoutOrganizationInput = {
   language: string
   category: string
   description?: string | null
+  bodyParamsCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -470,6 +537,7 @@ export type WhatsAppTemplateUncheckedCreateWithoutOrganizationInput = {
   language: string
   category: string
   description?: string | null
+  bodyParamsCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -511,6 +579,7 @@ export type WhatsAppTemplateScalarWhereInput = {
   language?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   category?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  bodyParamsCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
@@ -522,6 +591,7 @@ export type WhatsAppTemplateCreateManyOrganizationInput = {
   language: string
   category: string
   description?: string | null
+  bodyParamsCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -533,6 +603,7 @@ export type WhatsAppTemplateUpdateWithoutOrganizationInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -544,6 +615,7 @@ export type WhatsAppTemplateUncheckedUpdateWithoutOrganizationInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -555,6 +627,7 @@ export type WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationInput = {
   language?: Prisma.StringFieldUpdateOperationsInput | string
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -569,6 +642,7 @@ export type WhatsAppTemplateSelect<ExtArgs extends runtime.Types.Extensions.Inte
   language?: boolean
   category?: boolean
   description?: boolean
+  bodyParamsCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -582,6 +656,7 @@ export type WhatsAppTemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   language?: boolean
   category?: boolean
   description?: boolean
+  bodyParamsCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -595,6 +670,7 @@ export type WhatsAppTemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   language?: boolean
   category?: boolean
   description?: boolean
+  bodyParamsCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -608,12 +684,13 @@ export type WhatsAppTemplateSelectScalar = {
   language?: boolean
   category?: boolean
   description?: boolean
+  bodyParamsCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WhatsAppTemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "language" | "category" | "description" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["whatsAppTemplate"]>
+export type WhatsAppTemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "language" | "category" | "description" | "bodyParamsCount" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["whatsAppTemplate"]>
 export type WhatsAppTemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
 }
@@ -636,6 +713,7 @@ export type $WhatsAppTemplatePayload<ExtArgs extends runtime.Types.Extensions.In
     language: string
     category: string
     description: string | null
+    bodyParamsCount: number
     active: boolean
     createdAt: Date
     updatedAt: Date
@@ -1069,6 +1147,7 @@ export interface WhatsAppTemplateFieldRefs {
   readonly language: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly category: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly description: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
+  readonly bodyParamsCount: Prisma.FieldRef<"WhatsAppTemplate", 'Int'>
   readonly active: Prisma.FieldRef<"WhatsAppTemplate", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WhatsAppTemplate", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WhatsAppTemplate", 'DateTime'>

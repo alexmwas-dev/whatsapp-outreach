@@ -1197,6 +1197,7 @@ export const OrganizationScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   plan: 'plan',
+  whatsappStepsCompleted: 'whatsappStepsCompleted',
   whatsappBusinessAccountId: 'whatsappBusinessAccountId',
   whatsappStatus: 'whatsappStatus',
   messagingTier: 'messagingTier',
@@ -1263,6 +1264,7 @@ export const WhatsAppTemplateScalarFieldEnum = {
   language: 'language',
   category: 'category',
   description: 'description',
+  bodyParamsCount: 'bodyParamsCount',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1383,6 +1385,20 @@ export type StringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 
  * Reference to a field of type 'String[]'
  */
 export type ListStringFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'String[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WhatsappSetupStep[]'
+ */
+export type ListEnumWhatsappSetupStepFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WhatsappSetupStep[]'>
+    
+
+
+/**
+ * Reference to a field of type 'WhatsappSetupStep'
+ */
+export type EnumWhatsappSetupStepFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'WhatsappSetupStep'>
     
 
 

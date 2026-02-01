@@ -14,134 +14,218 @@ export const verifyWebhook = catchAsync(async (req, res) => {
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
-  console.log("Env token:", JSON.stringify(process.env.VERIFY_TOKEN));
-  console.log("Received token:", JSON.stringify(token));
-
-  if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
-    logger.info("Webhook verified successfully");
-    return res.status(200).send(challenge);
+  // Check mode
+  if (mode !== "subscribe") {
+    throw new AppError("Invalid mode", 400);
   }
 
-  logger.warn("Webhook verification failed", {
-    meta: { mode, token },
+  // Look up organization by token
+  const org = await prisma.organization.findFirst({
+    where: { webhookVerifyToken: token },
   });
 
-  throw new AppError("Webhook verification failed", 403);
+  if (!org) {
+    throw new AppError("Invalid verify token", 403);
+  }
+
+  // ✅ Mark WhatsApp as VERIFIED
+  await prisma.organization.update({
+    where: { id: org.id },
+    data: {
+      whatsappStatus: "VERIFIED",
+      whatsappStepsCompleted: {
+        push: "WEBHOOK_CONFIGURED",
+      },
+    },
+  });
+
+  logger.info("Webhook verified successfully", { orgId: org.id });
+
+  // Respond with challenge (Meta expects plain text)
+  return res.status(200).send(challenge);
 });
 
 /**
  * Receive incoming WhatsApp messages
  */
 export const receiveMessage = catchAsync(async (req, res) => {
-  const message = req.body.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+  const entry = req.body.entry?.[0];
+  const change = entry?.changes?.[0];
+  const value = change?.value;
+  const message = value?.messages?.[0];
 
   // Meta requires 200 even if empty
-  const value = req.body.entry?.[0]?.changes?.[0]?.value;
+  if (!value) return res.sendStatus(200);
 
-  if (value?.statuses) return res.sendStatus(200);
-  if (!value?.messages) return res.sendStatus(200);
-
-  const phone = message.from;
-  const text = message.text?.body?.toLowerCase() || "";
-
-  logger.http("Incoming WhatsApp message", { meta: { phone, text } });
-
-  // Fetch contact
-  const contact = await prisma.contact.findUnique({ where: { phone } });
-  if (!contact) {
-    logger.info("Message from unknown contact", { meta: { phone } });
+  // Status updates (delivery / read receipts)
+  if (value.statuses) {
+    logger.info("Webhook status update", { meta: value.statuses });
     return res.sendStatus(200);
   }
 
-  /* -------------------------------
+  if (!message) return res.sendStatus(200);
+
+  /* --------------------------------
+     RESOLVE WHATSAPP NUMBER
+  --------------------------------- */
+  const phoneNumberId = value?.metadata?.phone_number_id;
+
+  const whatsappNumber = await prisma.whatsAppNumber.findUnique({
+    where: { phoneNumberId },
+  });
+
+  if (!whatsappNumber) {
+    logger.error("Incoming message for unknown WhatsApp number", {
+      meta: { phoneNumberId },
+    });
+    return res.sendStatus(200);
+  }
+
+  /* --------------------------------
+     NORMALIZE SENDER
+  --------------------------------- */
+  const rawFrom = message.from || "";
+  const cleanedFrom = rawFrom.replace(/[^0-9]/g, "");
+  const variants = [cleanedFrom, `+${cleanedFrom}`];
+
+  const text = message.text?.body?.toLowerCase().trim() || "";
+
+  logger.http("Incoming WhatsApp message", {
+    meta: { from: rawFrom, cleanedFrom, text },
+  });
+
+  /* --------------------------------
+     FIND CONTACT
+  --------------------------------- */
+  const contact = await prisma.contact.findFirst({
+    where: {
+      organizationId: whatsappNumber.organizationId,
+      OR: variants.map((p) => ({ phone: p })),
+    },
+  });
+
+  if (!contact) {
+    logger.info("Message from unknown contact", {
+      meta: { phone: cleanedFrom },
+    });
+    return res.sendStatus(200);
+  }
+
+  /* --------------------------------
      OPT-OUT
-  ------------------------------- */
+  --------------------------------- */
   if (
     text.includes("no") ||
     text.includes("stop") ||
     text.includes("not interested")
   ) {
     await prisma.$transaction([
-      prisma.contact.update({ where: { phone }, data: { status: "CLOSED" } }),
+      prisma.contact.update({
+        where: { id: contact.id },
+        data: { status: "DECLINED", consent: false },
+      }),
       prisma.message.create({
-        data: { contactId: contact.id, direction: "INBOUND", message: text },
+        data: {
+          organizationId: whatsappNumber.organizationId,
+          whatsappNumberId: whatsappNumber.id,
+          contactId: contact.id,
+          direction: "INBOUND",
+          message: text,
+        },
       }),
     ]);
+
     logger.info("Contact opted out", {
-      meta: { contactId: contact.id, phone },
+      meta: { contactId: contact.id },
     });
+
     return res.sendStatus(200);
   }
 
-  /* -------------------------------
+  /* --------------------------------
      CONSENT
-  ------------------------------- */
-  if (
-    text.includes("yes") ||
-    text.includes("sure") ||
-    text.includes("ok") ||
-    text.includes("okay")
-  ) {
-    // Only act if they haven’t consented yet
+  --------------------------------- */
+  if (["yes", "sure", "ok", "okay"].some((w) => text.includes(w))) {
     if (!contact.consent) {
-      // Log inbound message
+      // Log inbound consent message
       await prisma.message.create({
-        data: { contactId: contact.id, direction: "INBOUND", message: text },
+        data: {
+          organizationId: whatsappNumber.organizationId,
+          whatsappNumberId: whatsappNumber.id,
+          contactId: contact.id,
+          direction: "INBOUND",
+          message: text,
+        },
       });
 
-      // Update contact consent
-      const updatedContact = await prisma.contact.update({
-        where: { phone },
+      let updatedContact = await prisma.contact.update({
+        where: { id: contact.id },
         data: { consent: true, status: "CONSENTED" },
       });
-      logger.info("Contact consented", { meta: { contactId: contact.id } });
 
-      /* -------------------------------
+      logger.info("Contact consented", {
+        meta: { contactId: contact.id },
+      });
+
+      /* --------------------------------
          ASSIGN SALES REP
-      ------------------------------- */
-      if (!contact.salesRepId) {
+      --------------------------------- */
+      if (!updatedContact.salesRepId) {
         const reps = await prisma.salesRep.findMany({
-          where: { active: true },
+          where: {
+            organizationId: whatsappNumber.organizationId,
+            active: true,
+          },
         });
+
         if (reps.length > 0) {
           const assignedRep = reps[Math.floor(Math.random() * reps.length)];
 
-          await prisma.contact.update({
+          updatedContact = await prisma.contact.update({
             where: { id: contact.id },
-            data: { salesRepId: assignedRep.id, status: "ASSIGNED" },
+            data: {
+              salesRepId: assignedRep.id,
+              status: "ASSIGNED",
+            },
           });
 
           logger.info("Sales rep assigned", {
-            meta: { repId: assignedRep.id, contactId: contact.id },
+            meta: {
+              repId: assignedRep.id,
+              contactId: contact.id,
+            },
           });
 
-          // Notify rep that they now own a contact
           try {
-            await notifyRep(
-              assignedRep.phone,
-              assignedRep.name,
-              contact.name,
-              contact.phone,
-            );
+            await notifyRep({
+              repPhone: assignedRep.phone,
+              repName: assignedRep.name,
+              leadName: updatedContact.name,
+              leadPhone: updatedContact.phone,
+              waNumber: whatsappNumber,
+            });
 
             await prisma.message.create({
               data: {
+                organizationId: whatsappNumber.organizationId,
+                whatsappNumberId: whatsappNumber.id,
                 contactId: contact.id,
-                direction: "OUTBOUND",
-                message: `You have been assigned to contact ${contact.name}. Please follow up.`,
                 salesRepId: assignedRep.id,
-                whatsappNumberId: updatedContact.salesRep?.id || "", // optional if needed
+                direction: "OUTBOUND",
+                message: `You have been assigned to contact ${updatedContact.name}. Please follow up.`,
               },
             });
 
-            logger.info("Sales rep notified of new contact", {
+            logger.info("Sales rep notified", {
               meta: { repPhone: assignedRep.phone },
             });
           } catch (err) {
             logger.error("Failed to notify sales rep", {
-              repPhone: assignedRep.phone,
-              contactId: contact.id,
-              err,
+              meta: {
+                repPhone: assignedRep.phone,
+                contactId: contact.id,
+                err,
+              },
             });
           }
         }
@@ -151,12 +235,19 @@ export const receiveMessage = catchAsync(async (req, res) => {
     return res.sendStatus(200);
   }
 
-  /* -------------------------------
+  /* --------------------------------
      OTHER MESSAGES
-  ------------------------------- */
+  --------------------------------- */
   await prisma.message.create({
-    data: { contactId: contact.id, direction: "INBOUND", message: text },
+    data: {
+      organizationId: whatsappNumber.organizationId,
+      whatsappNumberId: whatsappNumber.id,
+      contactId: contact.id,
+      direction: "INBOUND",
+      message: text,
+    },
   });
+
   logger.debug("Unhandled inbound message", {
     meta: { contactId: contact.id, text },
   });

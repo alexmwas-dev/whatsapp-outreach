@@ -72,3 +72,13 @@ export const MessagingTier = {
 } as const
 
 export type MessagingTier = (typeof MessagingTier)[keyof typeof MessagingTier]
+
+
+export const WhatsappSetupStep = {
+  WABA_CONNECTED: 'WABA_CONNECTED',
+  WEBHOOK_CONFIGURED: 'WEBHOOK_CONFIGURED',
+  PHONE_NUMBER_ADDED: 'PHONE_NUMBER_ADDED',
+  PHONE_NUMBER_VERIFIED: 'PHONE_NUMBER_VERIFIED'
+} as const
+
+export type WhatsappSetupStep = (typeof WhatsappSetupStep)[keyof typeof WhatsappSetupStep]

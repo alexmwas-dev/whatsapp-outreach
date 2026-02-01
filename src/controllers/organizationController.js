@@ -227,7 +227,7 @@ export const inviteTeamMember = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
   const orgName = req.organization.name;
   const userId = req.user.id;
-  const { email, name, role } = req.body;
+  const { email, name, role, phone } = req.body;
 
   if (!email || !name || !role) {
     throw new AppError("Email, name, and role are required", 400);
@@ -261,6 +261,21 @@ export const inviteTeamMember = catchAsync(async (req, res) => {
       organizationId: orgId,
     },
   });
+
+  if (role === "SALES_REP") {
+    if (!phone) {
+      throw new AppError("Phone number is required for sales reps", 400);
+    }
+
+    await prisma.salesRep.create({
+      data: {
+        name: newUser.name,
+        phone,
+        organizationId: orgId,
+        userId: newUser.id,
+      },
+    });
+  }
 
   // 📧 Send invite email
   try {
@@ -421,6 +436,59 @@ export const removeTeamMember = catchAsync(async (req, res) => {
 });
 
 /**
+ * ADD CONTACTS TO ORGANIZATION
+ * - Accepts either a single contact (name, phone, email, salesRepId)
+ *   or an array under `contacts`.
+ */
+export const addContactsToOrganization = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const { contacts, name, phone, email, salesRepId } = req.body;
+
+  // Bulk create
+  if (contacts && Array.isArray(contacts)) {
+    const prepared = contacts.map((c) => ({
+      name: c.name,
+      phone: c.phone,
+      email: c.email || null,
+      salesRepId: c.salesRepId || null,
+      organizationId: orgId,
+    }));
+
+    if (prepared.some((c) => !c.name || !c.phone)) {
+      throw new AppError("Each contact requires name and phone", 400);
+    }
+
+    const result = await prisma.contact.createMany({
+      data: prepared,
+      skipDuplicates: true,
+    });
+
+    res.status(201).json({
+      status: "success",
+      data: { created: result.count },
+    });
+    return;
+  }
+
+  // Single create
+  if (!name || !phone) {
+    throw new AppError("name and phone are required", 400);
+  }
+
+  const contact = await prisma.contact.create({
+    data: {
+      name,
+      phone,
+      email: email || null,
+      salesRepId: salesRepId || null,
+      organizationId: orgId,
+    },
+  });
+
+  res.status(201).json({ status: "success", data: contact });
+});
+
+/**
  * GET ORGANIZATION STATS & USAGE
  */
 export const getOrganizationStats = catchAsync(async (req, res) => {
@@ -532,6 +600,79 @@ export const getActivityLog = catchAsync(async (req, res) => {
         contactPhone: msg.contact.phone,
         timestamp: msg.createdAt,
       })),
+    },
+  });
+});
+
+/**
+ * ADD SALES REP TO ORGANIZATION
+ */
+export const addSalesRep = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const { userId, phone } = req.body;
+
+  // Permissions
+  if (!["OWNER", "ADMIN"].includes(req.user.role)) {
+    throw new AppError("Only OWNER or ADMIN can add sales reps", 403);
+  }
+
+  if (!userId || !phone) {
+    throw new AppError("User ID and phone are required", 400);
+  }
+
+  // Fetch user
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    include: { salesRep: true },
+  });
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  if (user.organizationId !== orgId) {
+    throw new AppError("User does not belong to this organization", 403);
+  }
+
+  if (user.role !== "SALES_REP") {
+    throw new AppError("User must have SALES_REP role", 400);
+  }
+
+  if (user.salesRep) {
+    throw new AppError("User is already a sales rep", 409);
+  }
+
+  // Create sales rep
+  const salesRep = await prisma.salesRep.create({
+    data: {
+      phone,
+      organizationId: orgId,
+      userId: user.id,
+    },
+  });
+
+  logger.info("Sales rep added", {
+    meta: {
+      salesRepId: salesRep.id,
+      userId: user.id,
+      organizationId: orgId,
+    },
+  });
+
+  res.status(201).json({
+    status: "success",
+    message: "Sales rep added successfully",
+    data: {
+      salesRep: {
+        id: salesRep.id,
+        phone: salesRep.phone,
+        active: salesRep.active,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+        },
+      },
     },
   });
 });

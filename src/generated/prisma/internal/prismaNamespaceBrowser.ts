@@ -84,6 +84,7 @@ export const OrganizationScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   plan: 'plan',
+  whatsappStepsCompleted: 'whatsappStepsCompleted',
   whatsappBusinessAccountId: 'whatsappBusinessAccountId',
   whatsappStatus: 'whatsappStatus',
   messagingTier: 'messagingTier',
@@ -150,6 +151,7 @@ export const WhatsAppTemplateScalarFieldEnum = {
   language: 'language',
   category: 'category',
   description: 'description',
+  bodyParamsCount: 'bodyParamsCount',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

@@ -18,9 +18,16 @@ export async function sendTemplate({
   templateName,
   language,
   params = [],
+  expectedParams,
   waNumber,
 }) {
   assertWhatsAppTokenValid(waNumber);
+
+  if (expectedParams != null && params.length !== expectedParams) {
+    throw new Error(
+      `Template expects ${expectedParams} params, got ${params.length}`,
+    );
+  }
 
   try {
     const url = `https://graph.facebook.com/v18.0/${waNumber.phoneNumberId}/messages`;

@@ -1,0 +1,428 @@
+{
+  "info": {
+    "_postman_id": "messages-api-collection",
+    "name": "SalesConnect Messages API",
+    "description": "Sales rep messaging endpoints for chatting with assigned contacts",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get Assigned Contacts",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/messages/contacts",
+          "host": ["{{baseUrl}}"],
+          "path": ["messages", "contacts"],
+          "query": [
+            {
+              "key": "status",
+              "value": "ASSIGNED",
+              "description": "Filter by contact status (optional)",
+              "disabled": true
+            }
+          ]
+        },
+        "description": "Get all contacts assigned to the sales rep with unread message counts"
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/messages/contacts",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "contacts"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"contacts\": [\n            {\n                \"id\": \"uuid-here\",\n                \"name\": \"John Doe\",\n                \"phone\": \"+1234567890\",\n                \"email\": \"john@example.com\",\n                \"status\": \"ASSIGNED\",\n                \"consent\": true,\n                \"converted\": false,\n                \"unreadCount\": 3,\n                \"totalMessages\": 15,\n                \"createdAt\": \"2026-01-29T10:00:00.000Z\",\n                \"updatedAt\": \"2026-01-30T14:30:00.000Z\"\n            }\n        ]\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Assigned Contacts (Filtered by Status)",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/messages/contacts?status=ASSIGNED",
+          "host": ["{{baseUrl}}"],
+          "path": ["messages", "contacts"],
+          "query": [
+            {
+              "key": "status",
+              "value": "ASSIGNED"
+            }
+          ]
+        },
+        "description": "Get assigned contacts filtered by status"
+      },
+      "response": []
+    },
+    {
+      "name": "Get Unread Message Count",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/messages/unread-count",
+          "host": ["{{baseUrl}}"],
+          "path": ["messages", "unread-count"]
+        },
+        "description": "Get total number of unread messages for the sales rep"
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/messages/unread-count",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "unread-count"]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"unreadCount\": 5\n    }\n}"
+        }
+      ]
+    },
+    {
+      "name": "Get Messages for Contact",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+          "host": ["{{baseUrl}}"],
+          "path": ["messages", "contacts", ":contactId", "messages"],
+          "variable": [
+            {
+              "key": "contactId",
+              "value": "{{contactId}}",
+              "description": "Contact UUID"
+            }
+          ]
+        },
+        "description": "Get all messages for a specific contact. Automatically marks unread inbound messages as read."
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "contacts", ":contactId", "messages"],
+              "variable": [
+                {
+                  "key": "contactId",
+                  "value": "uuid-here"
+                }
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"contact\": {\n            \"id\": \"uuid-here\",\n            \"name\": \"John Doe\",\n            \"phone\": \"+1234567890\",\n            \"status\": \"ASSIGNED\"\n        },\n        \"messages\": [\n            {\n                \"id\": \"msg-uuid-1\",\n                \"organizationId\": \"org-uuid\",\n                \"contactId\": \"uuid-here\",\n                \"salesRepId\": \"rep-uuid\",\n                \"whatsappNumberId\": \"wa-uuid\",\n                \"direction\": \"OUTBOUND\",\n                \"message\": \"Hello! How can I help you today?\",\n                \"createdAt\": \"2026-01-30T10:00:00.000Z\",\n                \"readAt\": null,\n                \"salesRep\": {\n                    \"id\": \"rep-uuid\",\n                    \"name\": \"Sales Rep Name\"\n                },\n                \"whatsappNumber\": {\n                    \"phoneNumber\": \"+1234567890\",\n                    \"displayName\": \"Business Name\"\n                }\n            },\n            {\n                \"id\": \"msg-uuid-2\",\n                \"organizationId\": \"org-uuid\",\n                \"contactId\": \"uuid-here\",\n                \"salesRepId\": \"rep-uuid\",\n                \"whatsappNumberId\": \"wa-uuid\",\n                \"direction\": \"INBOUND\",\n                \"message\": \"I'm interested in your product\",\n                \"createdAt\": \"2026-01-30T10:05:00.000Z\",\n                \"readAt\": \"2026-01-30T10:06:00.000Z\",\n                \"salesRep\": {\n                    \"id\": \"rep-uuid\",\n                    \"name\": \"Sales Rep Name\"\n                },\n                \"whatsappNumber\": {\n                    \"phoneNumber\": \"+1234567890\",\n                    \"displayName\": \"Business Name\"\n                }\n            }\n        ]\n    }\n}"
+        },
+        {
+          "name": "Contact Not Found",
+          "originalRequest": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "contacts", ":contactId", "messages"],
+              "variable": [
+                {
+                  "key": "contactId",
+                  "value": "invalid-uuid"
+                }
+              ]
+            }
+          },
+          "status": "Not Found",
+          "code": 404,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"error\",\n    \"message\": \"Contact not found or not assigned to you\"\n}"
+        }
+      ]
+    },
+    {
+      "name": "Send Message to Contact",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{token}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n    \"message\": \"Thank you for your interest! Let me tell you more about our product.\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+          "host": ["{{baseUrl}}"],
+          "path": ["messages", "contacts", ":contactId", "messages"],
+          "variable": [
+            {
+              "key": "contactId",
+              "value": "{{contactId}}",
+              "description": "Contact UUID"
+            }
+          ]
+        },
+        "description": "Send a message to an assigned contact via WhatsApp"
+      },
+      "response": [
+        {
+          "name": "Success Response",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"Thank you for your interest!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "contacts", ":contactId", "messages"],
+              "variable": [
+                {
+                  "key": "contactId",
+                  "value": "uuid-here"
+                }
+              ]
+            }
+          },
+          "status": "Created",
+          "code": 201,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"success\",\n    \"data\": {\n        \"message\": {\n            \"id\": \"msg-uuid\",\n            \"organizationId\": \"org-uuid\",\n            \"contactId\": \"uuid-here\",\n            \"salesRepId\": \"rep-uuid\",\n            \"whatsappNumberId\": \"wa-uuid\",\n            \"direction\": \"OUTBOUND\",\n            \"message\": \"Thank you for your interest!\",\n            \"createdAt\": \"2026-01-30T10:10:00.000Z\",\n            \"readAt\": null,\n            \"salesRep\": {\n                \"id\": \"rep-uuid\",\n                \"name\": \"Sales Rep Name\"\n            },\n            \"whatsappNumber\": {\n                \"phoneNumber\": \"+1234567890\",\n                \"displayName\": \"Business Name\"\n            }\n        }\n    }\n}"
+        },
+        {
+          "name": "Message Required",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "contacts", ":contactId", "messages"],
+              "variable": [
+                {
+                  "key": "contactId",
+                  "value": "uuid-here"
+                }
+              ]
+            }
+          },
+          "status": "Bad Request",
+          "code": 400,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"error\",\n    \"message\": \"Message is required\"\n}"
+        },
+        {
+          "name": "Contact Not Consented",
+          "originalRequest": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"message\": \"Hello!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/messages/contacts/:contactId/messages",
+              "host": ["{{baseUrl}}"],
+              "path": ["messages", "contacts", ":contactId", "messages"],
+              "variable": [
+                {
+                  "key": "contactId",
+                  "value": "uuid-here"
+                }
+              ]
+            }
+          },
+          "status": "Forbidden",
+          "code": 403,
+          "_postman_previewlanguage": "json",
+          "header": [
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "cookie": [],
+          "body": "{\n    \"status\": \"error\",\n    \"message\": \"Contact has not consented to receive messages\"\n}"
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "your-jwt-token-here",
+      "type": "string"
+    },
+    {
+      "key": "contactId",
+      "value": "contact-uuid-here",
+      "type": "string"
+    }
+  ]
+}

@@ -6,10 +6,12 @@ import {
   inviteTeamMember,
   updateTeamMemberRole,
   removeTeamMember,
+  addContactsToOrganization,
   getOrganizationStats,
   getActivityLog,
   createOrganization,
   connectWhatsAppBusiness,
+  addSalesRep,
 } from "../controllers/organizationController.js";
 import whatsappNumberRoutes from "./whatsappNumberRoutes.js";
 import whatsappTemplateRoutes from "./whatsappTemplateRoutes.js";
@@ -47,6 +49,15 @@ router.put(
 router.delete("/team/:memberId", authorize("OWNER"), removeTeamMember);
 
 /**
+ * Contacts for organization
+ */
+router.post(
+  "/contacts",
+  authorize("OWNER", "ADMIN", "SALES_REP"),
+  addContactsToOrganization,
+);
+
+/**
  * WhatsApp Numbers endpoints
  */
 router.use("/whatsapp-numbers", whatsappNumberRoutes);
@@ -55,5 +66,8 @@ router.use("/whatsapp-numbers", whatsappNumberRoutes);
  * WhatsApp Templates endpoints
  */
 router.use("/whatsapp-templates", whatsappTemplateRoutes);
+
+//sales reps
+router.post("/sales-reps", authorize("OWNER", "ADMIN"), addSalesRep);
 
 export default router;

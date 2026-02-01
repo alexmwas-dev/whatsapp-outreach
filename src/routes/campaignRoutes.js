@@ -5,6 +5,8 @@ import {
   getCampaignStats,
   createContactAndAttachToCampaign,
   createCampaign,
+  getAllCampaigns,
+  getCampaignById,
 } from "../controllers/campaignController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 

@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes.js";
 import organizationRoutes from "./routes/organizationRoutes.js";
 import campaignRoutes from "./routes/campaignRoutes.js";
 import webhookRoutes from "./routes/webhookRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/auth", authRoutes);
 app.use("/organization", organizationRoutes);
 app.use("/campaign", campaignRoutes);
 app.use("/webhook", webhookRoutes);
+app.use("/messages", messageRoutes);
 
 // 4️⃣ Global error handler (ALWAYS LAST)
 app.use(errorHandler);

@@ -4,6 +4,7 @@ import { sleep } from "../utils/sleep.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
 import logger from "../utils/loogger.js";
+import { ensurePlus } from "../utils/ensurePlus.js";
 
 /**
  * Send campaign using organization's active template and WhatsApp number
@@ -19,6 +20,12 @@ export const sendCampaign = catchAsync(async (req, res) => {
   const { campaignId, templateName, limit = 20, delay = 60000 } = req.body;
 
   if (!organizationId) throw new AppError("Organization not found", 400);
+
+  // Fetch organization name to include in template params
+  const org = await prisma.organization.findUnique({
+    where: { id: organizationId },
+  });
+  const orgName = org ? org.name : "Your Organization";
 
   // Step 1: Get WhatsApp number
   const waNumber = await prisma.whatsAppNumber.findFirst({
@@ -66,22 +73,19 @@ export const sendCampaign = catchAsync(async (req, res) => {
   let errorCount = 0;
   const errors = [];
 
-  for (const contact of contacts) {
-    try {
-      const cleanPhone = contact.phone.replace(/[^0-9+]/g, "");
-      const phoneWithPlus = cleanPhone.startsWith("+")
-        ? cleanPhone
-        : "+" + cleanPhone;
+  for (let i = 0; i < contacts.length; i++) {
+    const contact = contacts[i];
 
+    try {
       await sendTemplate({
-        phone: phoneWithPlus,
+        phone: ensurePlus(contact.phone),
         templateName: template.name,
         language: template.language,
-        params: [contact.name],
+        params: [contact.name, waNumber.displayName, orgName],
+        expectedParams: template.bodyParamsCount,
         waNumber,
       });
 
-      // Log in campaignContact if campaign exists
       if (campaignId) {
         await prisma.campaignContact.upsert({
           where: {
@@ -98,8 +102,19 @@ export const sendCampaign = catchAsync(async (req, res) => {
       });
 
       successCount++;
-      if (contacts.indexOf(contact) < contacts.length - 1) await sleep(delay);
+
+      // avoid indexOf() inside loop (O(n))
+      if (i < contacts.length - 1) {
+        await sleep(delay);
+      }
     } catch (err) {
+      logger.error("Campaign send failed", {
+        contactId: contact.id,
+        phone: ensurePlus(contact.phone),
+        error: err.message,
+        stack: err.stack,
+      });
+
       errorCount++;
       errors.push({
         contactId: contact.id,
