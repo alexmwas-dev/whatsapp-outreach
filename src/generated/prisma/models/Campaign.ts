@@ -20,8 +20,28 @@ export type CampaignModel = runtime.Types.Result.DefaultSelection<Prisma.$Campai
 
 export type AggregateCampaign = {
   _count: CampaignCountAggregateOutputType | null
+  _avg: CampaignAvgAggregateOutputType | null
+  _sum: CampaignSumAggregateOutputType | null
   _min: CampaignMinAggregateOutputType | null
   _max: CampaignMaxAggregateOutputType | null
+}
+
+export type CampaignAvgAggregateOutputType = {
+  messagesSent: number | null
+  messagesDelivered: number | null
+  messagesRead: number | null
+  messagesFailed: number | null
+  sendLimit: number | null
+  sendDelayMs: number | null
+}
+
+export type CampaignSumAggregateOutputType = {
+  messagesSent: number | null
+  messagesDelivered: number | null
+  messagesRead: number | null
+  messagesFailed: number | null
+  sendLimit: number | null
+  sendDelayMs: number | null
 }
 
 export type CampaignMinAggregateOutputType = {
@@ -29,8 +49,27 @@ export type CampaignMinAggregateOutputType = {
   organizationId: string | null
   name: string | null
   description: string | null
+  templateId: string | null
+  templateName: string | null
+  status: $Enums.CampaignStatus | null
+  state: string | null
+  messagesSent: number | null
+  messagesDelivered: number | null
+  messagesRead: number | null
+  messagesFailed: number | null
+  sendLimit: number | null
+  sendDelayMs: number | null
+  queueRequestedAt: Date | null
+  startedAt: Date | null
+  pausedAt: Date | null
+  canceledAt: Date | null
+  lastProgressAt: Date | null
+  lastError: string | null
+  workerLockId: string | null
+  workerLockedAt: Date | null
   active: boolean | null
   createdAt: Date | null
+  completedAt: Date | null
 }
 
 export type CampaignMaxAggregateOutputType = {
@@ -38,8 +77,27 @@ export type CampaignMaxAggregateOutputType = {
   organizationId: string | null
   name: string | null
   description: string | null
+  templateId: string | null
+  templateName: string | null
+  status: $Enums.CampaignStatus | null
+  state: string | null
+  messagesSent: number | null
+  messagesDelivered: number | null
+  messagesRead: number | null
+  messagesFailed: number | null
+  sendLimit: number | null
+  sendDelayMs: number | null
+  queueRequestedAt: Date | null
+  startedAt: Date | null
+  pausedAt: Date | null
+  canceledAt: Date | null
+  lastProgressAt: Date | null
+  lastError: string | null
+  workerLockId: string | null
+  workerLockedAt: Date | null
   active: boolean | null
   createdAt: Date | null
+  completedAt: Date | null
 }
 
 export type CampaignCountAggregateOutputType = {
@@ -47,19 +105,75 @@ export type CampaignCountAggregateOutputType = {
   organizationId: number
   name: number
   description: number
+  templateId: number
+  templateName: number
+  status: number
+  state: number
+  messagesSent: number
+  messagesDelivered: number
+  messagesRead: number
+  messagesFailed: number
+  sendLimit: number
+  sendDelayMs: number
+  queueRequestedAt: number
+  startedAt: number
+  pausedAt: number
+  canceledAt: number
+  lastProgressAt: number
+  lastError: number
+  workerLockId: number
+  workerLockedAt: number
   active: number
   createdAt: number
+  completedAt: number
   _all: number
 }
 
+
+export type CampaignAvgAggregateInputType = {
+  messagesSent?: true
+  messagesDelivered?: true
+  messagesRead?: true
+  messagesFailed?: true
+  sendLimit?: true
+  sendDelayMs?: true
+}
+
+export type CampaignSumAggregateInputType = {
+  messagesSent?: true
+  messagesDelivered?: true
+  messagesRead?: true
+  messagesFailed?: true
+  sendLimit?: true
+  sendDelayMs?: true
+}
 
 export type CampaignMinAggregateInputType = {
   id?: true
   organizationId?: true
   name?: true
   description?: true
+  templateId?: true
+  templateName?: true
+  status?: true
+  state?: true
+  messagesSent?: true
+  messagesDelivered?: true
+  messagesRead?: true
+  messagesFailed?: true
+  sendLimit?: true
+  sendDelayMs?: true
+  queueRequestedAt?: true
+  startedAt?: true
+  pausedAt?: true
+  canceledAt?: true
+  lastProgressAt?: true
+  lastError?: true
+  workerLockId?: true
+  workerLockedAt?: true
   active?: true
   createdAt?: true
+  completedAt?: true
 }
 
 export type CampaignMaxAggregateInputType = {
@@ -67,8 +181,27 @@ export type CampaignMaxAggregateInputType = {
   organizationId?: true
   name?: true
   description?: true
+  templateId?: true
+  templateName?: true
+  status?: true
+  state?: true
+  messagesSent?: true
+  messagesDelivered?: true
+  messagesRead?: true
+  messagesFailed?: true
+  sendLimit?: true
+  sendDelayMs?: true
+  queueRequestedAt?: true
+  startedAt?: true
+  pausedAt?: true
+  canceledAt?: true
+  lastProgressAt?: true
+  lastError?: true
+  workerLockId?: true
+  workerLockedAt?: true
   active?: true
   createdAt?: true
+  completedAt?: true
 }
 
 export type CampaignCountAggregateInputType = {
@@ -76,8 +209,27 @@ export type CampaignCountAggregateInputType = {
   organizationId?: true
   name?: true
   description?: true
+  templateId?: true
+  templateName?: true
+  status?: true
+  state?: true
+  messagesSent?: true
+  messagesDelivered?: true
+  messagesRead?: true
+  messagesFailed?: true
+  sendLimit?: true
+  sendDelayMs?: true
+  queueRequestedAt?: true
+  startedAt?: true
+  pausedAt?: true
+  canceledAt?: true
+  lastProgressAt?: true
+  lastError?: true
+  workerLockId?: true
+  workerLockedAt?: true
   active?: true
   createdAt?: true
+  completedAt?: true
   _all?: true
 }
 
@@ -119,6 +271,18 @@ export type CampaignAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CampaignAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CampaignSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CampaignMinAggregateInputType
@@ -149,6 +313,8 @@ export type CampaignGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: CampaignCountAggregateInputType | true
+  _avg?: CampaignAvgAggregateInputType
+  _sum?: CampaignSumAggregateInputType
   _min?: CampaignMinAggregateInputType
   _max?: CampaignMaxAggregateInputType
 }
@@ -158,9 +324,30 @@ export type CampaignGroupByOutputType = {
   organizationId: string
   name: string
   description: string | null
+  templateId: string | null
+  templateName: string | null
+  status: $Enums.CampaignStatus
+  state: string
+  messagesSent: number
+  messagesDelivered: number
+  messagesRead: number
+  messagesFailed: number
+  sendLimit: number | null
+  sendDelayMs: number
+  queueRequestedAt: Date | null
+  startedAt: Date | null
+  pausedAt: Date | null
+  canceledAt: Date | null
+  lastProgressAt: Date | null
+  lastError: string | null
+  workerLockId: string | null
+  workerLockedAt: Date | null
   active: boolean
   createdAt: Date
+  completedAt: Date | null
   _count: CampaignCountAggregateOutputType | null
+  _avg: CampaignAvgAggregateOutputType | null
+  _sum: CampaignSumAggregateOutputType | null
   _min: CampaignMinAggregateOutputType | null
   _max: CampaignMaxAggregateOutputType | null
 }
@@ -188,9 +375,29 @@ export type CampaignWhereInput = {
   organizationId?: Prisma.StringFilter<"Campaign"> | string
   name?: Prisma.StringFilter<"Campaign"> | string
   description?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  templateId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  templateName?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  status?: Prisma.EnumCampaignStatusFilter<"Campaign"> | $Enums.CampaignStatus
+  state?: Prisma.StringFilter<"Campaign"> | string
+  messagesSent?: Prisma.IntFilter<"Campaign"> | number
+  messagesDelivered?: Prisma.IntFilter<"Campaign"> | number
+  messagesRead?: Prisma.IntFilter<"Campaign"> | number
+  messagesFailed?: Prisma.IntFilter<"Campaign"> | number
+  sendLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
+  sendDelayMs?: Prisma.IntFilter<"Campaign"> | number
+  queueRequestedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  startedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  pausedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  lastProgressAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  lastError?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  workerLockId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  workerLockedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   active?: Prisma.BoolFilter<"Campaign"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+  completedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  template?: Prisma.XOR<Prisma.WhatsAppTemplateNullableScalarRelationFilter, Prisma.WhatsAppTemplateWhereInput> | null
   contacts?: Prisma.CampaignContactListRelationFilter
 }
 
@@ -199,9 +406,29 @@ export type CampaignOrderByWithRelationInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  templateId?: Prisma.SortOrderInput | Prisma.SortOrder
+  templateName?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
+  queueRequestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pausedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastProgressAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  workerLockId?: Prisma.SortOrderInput | Prisma.SortOrder
+  workerLockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
+  template?: Prisma.WhatsAppTemplateOrderByWithRelationInput
   contacts?: Prisma.CampaignContactOrderByRelationAggregateInput
 }
 
@@ -213,9 +440,29 @@ export type CampaignWhereUniqueInput = Prisma.AtLeast<{
   organizationId?: Prisma.StringFilter<"Campaign"> | string
   name?: Prisma.StringFilter<"Campaign"> | string
   description?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  templateId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  templateName?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  status?: Prisma.EnumCampaignStatusFilter<"Campaign"> | $Enums.CampaignStatus
+  state?: Prisma.StringFilter<"Campaign"> | string
+  messagesSent?: Prisma.IntFilter<"Campaign"> | number
+  messagesDelivered?: Prisma.IntFilter<"Campaign"> | number
+  messagesRead?: Prisma.IntFilter<"Campaign"> | number
+  messagesFailed?: Prisma.IntFilter<"Campaign"> | number
+  sendLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
+  sendDelayMs?: Prisma.IntFilter<"Campaign"> | number
+  queueRequestedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  startedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  pausedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  lastProgressAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  lastError?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  workerLockId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  workerLockedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   active?: Prisma.BoolFilter<"Campaign"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+  completedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  template?: Prisma.XOR<Prisma.WhatsAppTemplateNullableScalarRelationFilter, Prisma.WhatsAppTemplateWhereInput> | null
   contacts?: Prisma.CampaignContactListRelationFilter
 }, "id">
 
@@ -224,11 +471,32 @@ export type CampaignOrderByWithAggregationInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
+  templateId?: Prisma.SortOrderInput | Prisma.SortOrder
+  templateName?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrderInput | Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
+  queueRequestedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  startedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  pausedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  canceledAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastProgressAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  workerLockId?: Prisma.SortOrderInput | Prisma.SortOrder
+  workerLockedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CampaignCountOrderByAggregateInput
+  _avg?: Prisma.CampaignAvgOrderByAggregateInput
   _max?: Prisma.CampaignMaxOrderByAggregateInput
   _min?: Prisma.CampaignMinOrderByAggregateInput
+  _sum?: Prisma.CampaignSumOrderByAggregateInput
 }
 
 export type CampaignScalarWhereWithAggregatesInput = {
@@ -239,17 +507,55 @@ export type CampaignScalarWhereWithAggregatesInput = {
   organizationId?: Prisma.StringWithAggregatesFilter<"Campaign"> | string
   name?: Prisma.StringWithAggregatesFilter<"Campaign"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  templateId?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  templateName?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  status?: Prisma.EnumCampaignStatusWithAggregatesFilter<"Campaign"> | $Enums.CampaignStatus
+  state?: Prisma.StringWithAggregatesFilter<"Campaign"> | string
+  messagesSent?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  messagesDelivered?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  messagesRead?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  messagesFailed?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  sendLimit?: Prisma.IntNullableWithAggregatesFilter<"Campaign"> | number | null
+  sendDelayMs?: Prisma.IntWithAggregatesFilter<"Campaign"> | number
+  queueRequestedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+  startedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+  pausedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+  lastProgressAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
+  lastError?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  workerLockId?: Prisma.StringNullableWithAggregatesFilter<"Campaign"> | string | null
+  workerLockedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
   active?: Prisma.BoolWithAggregatesFilter<"Campaign"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Campaign"> | Date | string
+  completedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Campaign"> | Date | string | null
 }
 
 export type CampaignCreateInput = {
   id?: string
   name: string
   description?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
   organization: Prisma.OrganizationCreateNestedOneWithoutCampaignsInput
+  template?: Prisma.WhatsAppTemplateCreateNestedOneWithoutCampaignsInput
   contacts?: Prisma.CampaignContactCreateNestedManyWithoutCampaignInput
 }
 
@@ -258,8 +564,27 @@ export type CampaignUncheckedCreateInput = {
   organizationId: string
   name: string
   description?: string | null
+  templateId?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
   contacts?: Prisma.CampaignContactUncheckedCreateNestedManyWithoutCampaignInput
 }
 
@@ -267,9 +592,28 @@ export type CampaignUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCampaignsNestedInput
+  template?: Prisma.WhatsAppTemplateUpdateOneWithoutCampaignsNestedInput
   contacts?: Prisma.CampaignContactUpdateManyWithoutCampaignNestedInput
 }
 
@@ -278,8 +622,27 @@ export type CampaignUncheckedUpdateInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.CampaignContactUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
@@ -288,16 +651,53 @@ export type CampaignCreateManyInput = {
   organizationId: string
   name: string
   description?: string | null
+  templateId?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
 }
 
 export type CampaignUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CampaignUncheckedUpdateManyInput = {
@@ -305,8 +705,27 @@ export type CampaignUncheckedUpdateManyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CampaignListRelationFilter = {
@@ -324,8 +743,36 @@ export type CampaignCountOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  templateId?: Prisma.SortOrder
+  templateName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
+  queueRequestedAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  pausedAt?: Prisma.SortOrder
+  canceledAt?: Prisma.SortOrder
+  lastProgressAt?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  workerLockId?: Prisma.SortOrder
+  workerLockedAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+}
+
+export type CampaignAvgOrderByAggregateInput = {
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
 }
 
 export type CampaignMaxOrderByAggregateInput = {
@@ -333,8 +780,27 @@ export type CampaignMaxOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  templateId?: Prisma.SortOrder
+  templateName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
+  queueRequestedAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  pausedAt?: Prisma.SortOrder
+  canceledAt?: Prisma.SortOrder
+  lastProgressAt?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  workerLockId?: Prisma.SortOrder
+  workerLockedAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
 }
 
 export type CampaignMinOrderByAggregateInput = {
@@ -342,8 +808,36 @@ export type CampaignMinOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   description?: Prisma.SortOrder
+  templateId?: Prisma.SortOrder
+  templateName?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  state?: Prisma.SortOrder
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
+  queueRequestedAt?: Prisma.SortOrder
+  startedAt?: Prisma.SortOrder
+  pausedAt?: Prisma.SortOrder
+  canceledAt?: Prisma.SortOrder
+  lastProgressAt?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  workerLockId?: Prisma.SortOrder
+  workerLockedAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
+  completedAt?: Prisma.SortOrder
+}
+
+export type CampaignSumOrderByAggregateInput = {
+  messagesSent?: Prisma.SortOrder
+  messagesDelivered?: Prisma.SortOrder
+  messagesRead?: Prisma.SortOrder
+  messagesFailed?: Prisma.SortOrder
+  sendLimit?: Prisma.SortOrder
+  sendDelayMs?: Prisma.SortOrder
 }
 
 export type CampaignScalarRelationFilter = {
@@ -393,6 +887,52 @@ export type CampaignUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
 }
 
+export type CampaignCreateNestedManyWithoutTemplateInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutTemplateInput, Prisma.CampaignUncheckedCreateWithoutTemplateInput> | Prisma.CampaignCreateWithoutTemplateInput[] | Prisma.CampaignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutTemplateInput | Prisma.CampaignCreateOrConnectWithoutTemplateInput[]
+  createMany?: Prisma.CampaignCreateManyTemplateInputEnvelope
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+}
+
+export type CampaignUncheckedCreateNestedManyWithoutTemplateInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutTemplateInput, Prisma.CampaignUncheckedCreateWithoutTemplateInput> | Prisma.CampaignCreateWithoutTemplateInput[] | Prisma.CampaignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutTemplateInput | Prisma.CampaignCreateOrConnectWithoutTemplateInput[]
+  createMany?: Prisma.CampaignCreateManyTemplateInputEnvelope
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+}
+
+export type CampaignUpdateManyWithoutTemplateNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutTemplateInput, Prisma.CampaignUncheckedCreateWithoutTemplateInput> | Prisma.CampaignCreateWithoutTemplateInput[] | Prisma.CampaignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutTemplateInput | Prisma.CampaignCreateOrConnectWithoutTemplateInput[]
+  upsert?: Prisma.CampaignUpsertWithWhereUniqueWithoutTemplateInput | Prisma.CampaignUpsertWithWhereUniqueWithoutTemplateInput[]
+  createMany?: Prisma.CampaignCreateManyTemplateInputEnvelope
+  set?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  disconnect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  delete?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  update?: Prisma.CampaignUpdateWithWhereUniqueWithoutTemplateInput | Prisma.CampaignUpdateWithWhereUniqueWithoutTemplateInput[]
+  updateMany?: Prisma.CampaignUpdateManyWithWhereWithoutTemplateInput | Prisma.CampaignUpdateManyWithWhereWithoutTemplateInput[]
+  deleteMany?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
+}
+
+export type CampaignUncheckedUpdateManyWithoutTemplateNestedInput = {
+  create?: Prisma.XOR<Prisma.CampaignCreateWithoutTemplateInput, Prisma.CampaignUncheckedCreateWithoutTemplateInput> | Prisma.CampaignCreateWithoutTemplateInput[] | Prisma.CampaignUncheckedCreateWithoutTemplateInput[]
+  connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutTemplateInput | Prisma.CampaignCreateOrConnectWithoutTemplateInput[]
+  upsert?: Prisma.CampaignUpsertWithWhereUniqueWithoutTemplateInput | Prisma.CampaignUpsertWithWhereUniqueWithoutTemplateInput[]
+  createMany?: Prisma.CampaignCreateManyTemplateInputEnvelope
+  set?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  disconnect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  delete?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  connect?: Prisma.CampaignWhereUniqueInput | Prisma.CampaignWhereUniqueInput[]
+  update?: Prisma.CampaignUpdateWithWhereUniqueWithoutTemplateInput | Prisma.CampaignUpdateWithWhereUniqueWithoutTemplateInput[]
+  updateMany?: Prisma.CampaignUpdateManyWithWhereWithoutTemplateInput | Prisma.CampaignUpdateManyWithWhereWithoutTemplateInput[]
+  deleteMany?: Prisma.CampaignScalarWhereInput | Prisma.CampaignScalarWhereInput[]
+}
+
+export type EnumCampaignStatusFieldUpdateOperationsInput = {
+  set?: $Enums.CampaignStatus
+}
+
 export type CampaignCreateNestedOneWithoutContactsInput = {
   create?: Prisma.XOR<Prisma.CampaignCreateWithoutContactsInput, Prisma.CampaignUncheckedCreateWithoutContactsInput>
   connectOrCreate?: Prisma.CampaignCreateOrConnectWithoutContactsInput
@@ -411,8 +951,27 @@ export type CampaignCreateWithoutOrganizationInput = {
   id?: string
   name: string
   description?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
+  template?: Prisma.WhatsAppTemplateCreateNestedOneWithoutCampaignsInput
   contacts?: Prisma.CampaignContactCreateNestedManyWithoutCampaignInput
 }
 
@@ -420,8 +979,27 @@ export type CampaignUncheckedCreateWithoutOrganizationInput = {
   id?: string
   name: string
   description?: string | null
+  templateId?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
   contacts?: Prisma.CampaignContactUncheckedCreateNestedManyWithoutCampaignInput
 }
 
@@ -459,17 +1037,137 @@ export type CampaignScalarWhereInput = {
   organizationId?: Prisma.StringFilter<"Campaign"> | string
   name?: Prisma.StringFilter<"Campaign"> | string
   description?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  templateId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  templateName?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  status?: Prisma.EnumCampaignStatusFilter<"Campaign"> | $Enums.CampaignStatus
+  state?: Prisma.StringFilter<"Campaign"> | string
+  messagesSent?: Prisma.IntFilter<"Campaign"> | number
+  messagesDelivered?: Prisma.IntFilter<"Campaign"> | number
+  messagesRead?: Prisma.IntFilter<"Campaign"> | number
+  messagesFailed?: Prisma.IntFilter<"Campaign"> | number
+  sendLimit?: Prisma.IntNullableFilter<"Campaign"> | number | null
+  sendDelayMs?: Prisma.IntFilter<"Campaign"> | number
+  queueRequestedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  startedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  pausedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  canceledAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  lastProgressAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+  lastError?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  workerLockId?: Prisma.StringNullableFilter<"Campaign"> | string | null
+  workerLockedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
   active?: Prisma.BoolFilter<"Campaign"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Campaign"> | Date | string
+  completedAt?: Prisma.DateTimeNullableFilter<"Campaign"> | Date | string | null
+}
+
+export type CampaignCreateWithoutTemplateInput = {
+  id?: string
+  name: string
+  description?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
+  active?: boolean
+  createdAt?: Date | string
+  completedAt?: Date | string | null
+  organization: Prisma.OrganizationCreateNestedOneWithoutCampaignsInput
+  contacts?: Prisma.CampaignContactCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignUncheckedCreateWithoutTemplateInput = {
+  id?: string
+  organizationId: string
+  name: string
+  description?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
+  active?: boolean
+  createdAt?: Date | string
+  completedAt?: Date | string | null
+  contacts?: Prisma.CampaignContactUncheckedCreateNestedManyWithoutCampaignInput
+}
+
+export type CampaignCreateOrConnectWithoutTemplateInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutTemplateInput, Prisma.CampaignUncheckedCreateWithoutTemplateInput>
+}
+
+export type CampaignCreateManyTemplateInputEnvelope = {
+  data: Prisma.CampaignCreateManyTemplateInput | Prisma.CampaignCreateManyTemplateInput[]
+  skipDuplicates?: boolean
+}
+
+export type CampaignUpsertWithWhereUniqueWithoutTemplateInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  update: Prisma.XOR<Prisma.CampaignUpdateWithoutTemplateInput, Prisma.CampaignUncheckedUpdateWithoutTemplateInput>
+  create: Prisma.XOR<Prisma.CampaignCreateWithoutTemplateInput, Prisma.CampaignUncheckedCreateWithoutTemplateInput>
+}
+
+export type CampaignUpdateWithWhereUniqueWithoutTemplateInput = {
+  where: Prisma.CampaignWhereUniqueInput
+  data: Prisma.XOR<Prisma.CampaignUpdateWithoutTemplateInput, Prisma.CampaignUncheckedUpdateWithoutTemplateInput>
+}
+
+export type CampaignUpdateManyWithWhereWithoutTemplateInput = {
+  where: Prisma.CampaignScalarWhereInput
+  data: Prisma.XOR<Prisma.CampaignUpdateManyMutationInput, Prisma.CampaignUncheckedUpdateManyWithoutTemplateInput>
 }
 
 export type CampaignCreateWithoutContactsInput = {
   id?: string
   name: string
   description?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
   organization: Prisma.OrganizationCreateNestedOneWithoutCampaignsInput
+  template?: Prisma.WhatsAppTemplateCreateNestedOneWithoutCampaignsInput
 }
 
 export type CampaignUncheckedCreateWithoutContactsInput = {
@@ -477,8 +1175,27 @@ export type CampaignUncheckedCreateWithoutContactsInput = {
   organizationId: string
   name: string
   description?: string | null
+  templateId?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
 }
 
 export type CampaignCreateOrConnectWithoutContactsInput = {
@@ -501,9 +1218,28 @@ export type CampaignUpdateWithoutContactsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutCampaignsNestedInput
+  template?: Prisma.WhatsAppTemplateUpdateOneWithoutCampaignsNestedInput
 }
 
 export type CampaignUncheckedUpdateWithoutContactsInput = {
@@ -511,24 +1247,81 @@ export type CampaignUncheckedUpdateWithoutContactsInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 export type CampaignCreateManyOrganizationInput = {
   id?: string
   name: string
   description?: string | null
+  templateId?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
   active?: boolean
   createdAt?: Date | string
+  completedAt?: Date | string | null
 }
 
 export type CampaignUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  template?: Prisma.WhatsAppTemplateUpdateOneWithoutCampaignsNestedInput
   contacts?: Prisma.CampaignContactUpdateManyWithoutCampaignNestedInput
 }
 
@@ -536,8 +1329,27 @@ export type CampaignUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   contacts?: Prisma.CampaignContactUncheckedUpdateManyWithoutCampaignNestedInput
 }
 
@@ -545,8 +1357,137 @@ export type CampaignUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type CampaignCreateManyTemplateInput = {
+  id?: string
+  organizationId: string
+  name: string
+  description?: string | null
+  templateName?: string | null
+  status?: $Enums.CampaignStatus
+  state?: string
+  messagesSent?: number
+  messagesDelivered?: number
+  messagesRead?: number
+  messagesFailed?: number
+  sendLimit?: number | null
+  sendDelayMs?: number
+  queueRequestedAt?: Date | string | null
+  startedAt?: Date | string | null
+  pausedAt?: Date | string | null
+  canceledAt?: Date | string | null
+  lastProgressAt?: Date | string | null
+  lastError?: string | null
+  workerLockId?: string | null
+  workerLockedAt?: Date | string | null
+  active?: boolean
+  createdAt?: Date | string
+  completedAt?: Date | string | null
+}
+
+export type CampaignUpdateWithoutTemplateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutCampaignsNestedInput
+  contacts?: Prisma.CampaignContactUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateWithoutTemplateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  contacts?: Prisma.CampaignContactUncheckedUpdateManyWithoutCampaignNestedInput
+}
+
+export type CampaignUncheckedUpdateManyWithoutTemplateInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  templateName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumCampaignStatusFieldUpdateOperationsInput | $Enums.CampaignStatus
+  state?: Prisma.StringFieldUpdateOperationsInput | string
+  messagesSent?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesDelivered?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesRead?: Prisma.IntFieldUpdateOperationsInput | number
+  messagesFailed?: Prisma.IntFieldUpdateOperationsInput | number
+  sendLimit?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  sendDelayMs?: Prisma.IntFieldUpdateOperationsInput | number
+  queueRequestedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  startedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  pausedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  canceledAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastProgressAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  workerLockedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  completedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
 
 
@@ -585,9 +1526,29 @@ export type CampaignSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   organizationId?: boolean
   name?: boolean
   description?: boolean
+  templateId?: boolean
+  templateName?: boolean
+  status?: boolean
+  state?: boolean
+  messagesSent?: boolean
+  messagesDelivered?: boolean
+  messagesRead?: boolean
+  messagesFailed?: boolean
+  sendLimit?: boolean
+  sendDelayMs?: boolean
+  queueRequestedAt?: boolean
+  startedAt?: boolean
+  pausedAt?: boolean
+  canceledAt?: boolean
+  lastProgressAt?: boolean
+  lastError?: boolean
+  workerLockId?: boolean
+  workerLockedAt?: boolean
   active?: boolean
   createdAt?: boolean
+  completedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.Campaign$templateArgs<ExtArgs>
   contacts?: boolean | Prisma.Campaign$contactsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
@@ -597,9 +1558,29 @@ export type CampaignSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organizationId?: boolean
   name?: boolean
   description?: boolean
+  templateId?: boolean
+  templateName?: boolean
+  status?: boolean
+  state?: boolean
+  messagesSent?: boolean
+  messagesDelivered?: boolean
+  messagesRead?: boolean
+  messagesFailed?: boolean
+  sendLimit?: boolean
+  sendDelayMs?: boolean
+  queueRequestedAt?: boolean
+  startedAt?: boolean
+  pausedAt?: boolean
+  canceledAt?: boolean
+  lastProgressAt?: boolean
+  lastError?: boolean
+  workerLockId?: boolean
+  workerLockedAt?: boolean
   active?: boolean
   createdAt?: boolean
+  completedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.Campaign$templateArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
 export type CampaignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -607,9 +1588,29 @@ export type CampaignSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   organizationId?: boolean
   name?: boolean
   description?: boolean
+  templateId?: boolean
+  templateName?: boolean
+  status?: boolean
+  state?: boolean
+  messagesSent?: boolean
+  messagesDelivered?: boolean
+  messagesRead?: boolean
+  messagesFailed?: boolean
+  sendLimit?: boolean
+  sendDelayMs?: boolean
+  queueRequestedAt?: boolean
+  startedAt?: boolean
+  pausedAt?: boolean
+  canceledAt?: boolean
+  lastProgressAt?: boolean
+  lastError?: boolean
+  workerLockId?: boolean
+  workerLockedAt?: boolean
   active?: boolean
   createdAt?: boolean
+  completedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.Campaign$templateArgs<ExtArgs>
 }, ExtArgs["result"]["campaign"]>
 
 export type CampaignSelectScalar = {
@@ -617,27 +1618,50 @@ export type CampaignSelectScalar = {
   organizationId?: boolean
   name?: boolean
   description?: boolean
+  templateId?: boolean
+  templateName?: boolean
+  status?: boolean
+  state?: boolean
+  messagesSent?: boolean
+  messagesDelivered?: boolean
+  messagesRead?: boolean
+  messagesFailed?: boolean
+  sendLimit?: boolean
+  sendDelayMs?: boolean
+  queueRequestedAt?: boolean
+  startedAt?: boolean
+  pausedAt?: boolean
+  canceledAt?: boolean
+  lastProgressAt?: boolean
+  lastError?: boolean
+  workerLockId?: boolean
+  workerLockedAt?: boolean
   active?: boolean
   createdAt?: boolean
+  completedAt?: boolean
 }
 
-export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "description" | "active" | "createdAt", ExtArgs["result"]["campaign"]>
+export type CampaignOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "description" | "templateId" | "templateName" | "status" | "state" | "messagesSent" | "messagesDelivered" | "messagesRead" | "messagesFailed" | "sendLimit" | "sendDelayMs" | "queueRequestedAt" | "startedAt" | "pausedAt" | "canceledAt" | "lastProgressAt" | "lastError" | "workerLockId" | "workerLockedAt" | "active" | "createdAt" | "completedAt", ExtArgs["result"]["campaign"]>
 export type CampaignInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.Campaign$templateArgs<ExtArgs>
   contacts?: boolean | Prisma.Campaign$contactsArgs<ExtArgs>
   _count?: boolean | Prisma.CampaignCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type CampaignIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.Campaign$templateArgs<ExtArgs>
 }
 export type CampaignIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  template?: boolean | Prisma.Campaign$templateArgs<ExtArgs>
 }
 
 export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Campaign"
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
+    template: Prisma.$WhatsAppTemplatePayload<ExtArgs> | null
     contacts: Prisma.$CampaignContactPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -645,8 +1669,27 @@ export type $CampaignPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     organizationId: string
     name: string
     description: string | null
+    templateId: string | null
+    templateName: string | null
+    status: $Enums.CampaignStatus
+    state: string
+    messagesSent: number
+    messagesDelivered: number
+    messagesRead: number
+    messagesFailed: number
+    sendLimit: number | null
+    sendDelayMs: number
+    queueRequestedAt: Date | null
+    startedAt: Date | null
+    pausedAt: Date | null
+    canceledAt: Date | null
+    lastProgressAt: Date | null
+    lastError: string | null
+    workerLockId: string | null
+    workerLockedAt: Date | null
     active: boolean
     createdAt: Date
+    completedAt: Date | null
   }, ExtArgs["result"]["campaign"]>
   composites: {}
 }
@@ -1042,6 +2085,7 @@ readonly fields: CampaignFieldRefs;
 export interface Prisma__CampaignClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  template<T extends Prisma.Campaign$templateArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$templateArgs<ExtArgs>>): Prisma.Prisma__WhatsAppTemplateClient<runtime.Types.Result.GetResult<Prisma.$WhatsAppTemplatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   contacts<T extends Prisma.Campaign$contactsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Campaign$contactsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignContactPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1076,8 +2120,27 @@ export interface CampaignFieldRefs {
   readonly organizationId: Prisma.FieldRef<"Campaign", 'String'>
   readonly name: Prisma.FieldRef<"Campaign", 'String'>
   readonly description: Prisma.FieldRef<"Campaign", 'String'>
+  readonly templateId: Prisma.FieldRef<"Campaign", 'String'>
+  readonly templateName: Prisma.FieldRef<"Campaign", 'String'>
+  readonly status: Prisma.FieldRef<"Campaign", 'CampaignStatus'>
+  readonly state: Prisma.FieldRef<"Campaign", 'String'>
+  readonly messagesSent: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly messagesDelivered: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly messagesRead: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly messagesFailed: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly sendLimit: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly sendDelayMs: Prisma.FieldRef<"Campaign", 'Int'>
+  readonly queueRequestedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
+  readonly startedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
+  readonly pausedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
+  readonly canceledAt: Prisma.FieldRef<"Campaign", 'DateTime'>
+  readonly lastProgressAt: Prisma.FieldRef<"Campaign", 'DateTime'>
+  readonly lastError: Prisma.FieldRef<"Campaign", 'String'>
+  readonly workerLockId: Prisma.FieldRef<"Campaign", 'String'>
+  readonly workerLockedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
   readonly active: Prisma.FieldRef<"Campaign", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"Campaign", 'DateTime'>
+  readonly completedAt: Prisma.FieldRef<"Campaign", 'DateTime'>
 }
     
 
@@ -1471,6 +2534,25 @@ export type CampaignDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Campaigns to delete.
    */
   limit?: number
+}
+
+/**
+ * Campaign.template
+ */
+export type Campaign$templateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WhatsAppTemplate
+   */
+  select?: Prisma.WhatsAppTemplateSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the WhatsAppTemplate
+   */
+  omit?: Prisma.WhatsAppTemplateOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.WhatsAppTemplateInclude<ExtArgs> | null
+  where?: Prisma.WhatsAppTemplateWhereInput
 }
 
 /**

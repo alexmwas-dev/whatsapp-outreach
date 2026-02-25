@@ -387,6 +387,9 @@ export const ModelName = {
   Organization: 'Organization',
   User: 'User',
   Subscription: 'Subscription',
+  BillingPlan: 'BillingPlan',
+  Promotion: 'Promotion',
+  Payment: 'Payment',
   WhatsAppNumber: 'WhatsAppNumber',
   WhatsAppTemplate: 'WhatsAppTemplate',
   Contact: 'Contact',
@@ -409,7 +412,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "organization" | "user" | "subscription" | "whatsAppNumber" | "whatsAppTemplate" | "contact" | "salesRep" | "message" | "campaign" | "campaignContact"
+    modelProps: "organization" | "user" | "subscription" | "billingPlan" | "promotion" | "payment" | "whatsAppNumber" | "whatsAppTemplate" | "contact" | "salesRep" | "message" | "campaign" | "campaignContact"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -632,6 +635,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.SubscriptionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.SubscriptionCountAggregateOutputType> | number
+        }
+      }
+    }
+    BillingPlan: {
+      payload: Prisma.$BillingPlanPayload<ExtArgs>
+      fields: Prisma.BillingPlanFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BillingPlanFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BillingPlanFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>
+        }
+        findFirst: {
+          args: Prisma.BillingPlanFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BillingPlanFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>
+        }
+        findMany: {
+          args: Prisma.BillingPlanFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>[]
+        }
+        create: {
+          args: Prisma.BillingPlanCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>
+        }
+        createMany: {
+          args: Prisma.BillingPlanCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BillingPlanCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>[]
+        }
+        delete: {
+          args: Prisma.BillingPlanDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>
+        }
+        update: {
+          args: Prisma.BillingPlanUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>
+        }
+        deleteMany: {
+          args: Prisma.BillingPlanDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BillingPlanUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BillingPlanUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>[]
+        }
+        upsert: {
+          args: Prisma.BillingPlanUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BillingPlanPayload>
+        }
+        aggregate: {
+          args: Prisma.BillingPlanAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBillingPlan>
+        }
+        groupBy: {
+          args: Prisma.BillingPlanGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BillingPlanGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BillingPlanCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BillingPlanCountAggregateOutputType> | number
+        }
+      }
+    }
+    Promotion: {
+      payload: Prisma.$PromotionPayload<ExtArgs>
+      fields: Prisma.PromotionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PromotionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PromotionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>
+        }
+        findFirst: {
+          args: Prisma.PromotionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PromotionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>
+        }
+        findMany: {
+          args: Prisma.PromotionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>[]
+        }
+        create: {
+          args: Prisma.PromotionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>
+        }
+        createMany: {
+          args: Prisma.PromotionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PromotionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>[]
+        }
+        delete: {
+          args: Prisma.PromotionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>
+        }
+        update: {
+          args: Prisma.PromotionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>
+        }
+        deleteMany: {
+          args: Prisma.PromotionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PromotionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PromotionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>[]
+        }
+        upsert: {
+          args: Prisma.PromotionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PromotionPayload>
+        }
+        aggregate: {
+          args: Prisma.PromotionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePromotion>
+        }
+        groupBy: {
+          args: Prisma.PromotionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromotionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PromotionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PromotionCountAggregateOutputType> | number
+        }
+      }
+    }
+    Payment: {
+      payload: Prisma.$PaymentPayload<ExtArgs>
+      fields: Prisma.PaymentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PaymentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PaymentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findFirst: {
+          args: Prisma.PaymentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PaymentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        findMany: {
+          args: Prisma.PaymentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        create: {
+          args: Prisma.PaymentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        createMany: {
+          args: Prisma.PaymentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PaymentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        delete: {
+          args: Prisma.PaymentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        update: {
+          args: Prisma.PaymentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        deleteMany: {
+          args: Prisma.PaymentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PaymentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PaymentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>[]
+        }
+        upsert: {
+          args: Prisma.PaymentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PaymentPayload>
+        }
+        aggregate: {
+          args: Prisma.PaymentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePayment>
+        }
+        groupBy: {
+          args: Prisma.PaymentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PaymentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PaymentCountAggregateOutputType> | number
         }
       }
     }
@@ -1202,6 +1427,8 @@ export const OrganizationScalarFieldEnum = {
   whatsappStatus: 'whatsappStatus',
   messagingTier: 'messagingTier',
   webhookVerifyToken: 'webhookVerifyToken',
+  accessToken: 'accessToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1241,6 +1468,74 @@ export const SubscriptionScalarFieldEnum = {
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
 
 
+export const BillingPlanScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  messageLimit: 'messageLimit',
+  amount: 'amount',
+  currency: 'currency',
+  periodDays: 'periodDays',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingPlanScalarFieldEnum = (typeof BillingPlanScalarFieldEnum)[keyof typeof BillingPlanScalarFieldEnum]
+
+
+export const PromotionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  description: 'description',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  active: 'active',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  maxUses: 'maxUses',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PromotionScalarFieldEnum = (typeof PromotionScalarFieldEnum)[keyof typeof PromotionScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  subscriptionId: 'subscriptionId',
+  promotionId: 'promotionId',
+  provider: 'provider',
+  status: 'status',
+  planCode: 'planCode',
+  messageLimit: 'messageLimit',
+  periodDays: 'periodDays',
+  originalAmount: 'originalAmount',
+  discountAmount: 'discountAmount',
+  amount: 'amount',
+  currency: 'currency',
+  promotionCode: 'promotionCode',
+  merchantReference: 'merchantReference',
+  orderTrackingId: 'orderTrackingId',
+  providerReference: 'providerReference',
+  paymentMethod: 'paymentMethod',
+  paymentAccount: 'paymentAccount',
+  paidAt: 'paidAt',
+  expiresAt: 'expiresAt',
+  failureReason: 'failureReason',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
 export const WhatsAppNumberScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
@@ -1250,6 +1545,7 @@ export const WhatsAppNumberScalarFieldEnum = {
   displayName: 'displayName',
   accessTokenExpiresAt: 'accessTokenExpiresAt',
   active: 'active',
+  isPrimary: 'isPrimary',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1262,9 +1558,15 @@ export const WhatsAppTemplateScalarFieldEnum = {
   organizationId: 'organizationId',
   name: 'name',
   language: 'language',
+  content: 'content',
+  metaTemplateId: 'metaTemplateId',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
   category: 'category',
   description: 'description',
   bodyParamsCount: 'bodyParamsCount',
+  bodyParamKeys: 'bodyParamKeys',
+  usageCount: 'usageCount',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -1327,8 +1629,27 @@ export const CampaignScalarFieldEnum = {
   organizationId: 'organizationId',
   name: 'name',
   description: 'description',
+  templateId: 'templateId',
+  templateName: 'templateName',
+  status: 'status',
+  state: 'state',
+  messagesSent: 'messagesSent',
+  messagesDelivered: 'messagesDelivered',
+  messagesRead: 'messagesRead',
+  messagesFailed: 'messagesFailed',
+  sendLimit: 'sendLimit',
+  sendDelayMs: 'sendDelayMs',
+  queueRequestedAt: 'queueRequestedAt',
+  startedAt: 'startedAt',
+  pausedAt: 'pausedAt',
+  canceledAt: 'canceledAt',
+  lastProgressAt: 'lastProgressAt',
+  lastError: 'lastError',
+  workerLockId: 'workerLockId',
+  workerLockedAt: 'workerLockedAt',
   active: 'active',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
 } as const
 
 export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
@@ -1338,7 +1659,15 @@ export const CampaignContactScalarFieldEnum = {
   id: 'id',
   campaignId: 'campaignId',
   contactId: 'contactId',
-  assignedAt: 'assignedAt'
+  assignedAt: 'assignedAt',
+  sendStatus: 'sendStatus',
+  sendAttempts: 'sendAttempts',
+  lastAttemptAt: 'lastAttemptAt',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  readAt: 'readAt',
+  lastError: 'lastError',
+  outboundMessageId: 'outboundMessageId'
 } as const
 
 export type CampaignContactScalarFieldEnum = (typeof CampaignContactScalarFieldEnum)[keyof typeof CampaignContactScalarFieldEnum]
@@ -1350,6 +1679,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -1366,6 +1703,15 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 
 
 
@@ -1494,6 +1840,62 @@ export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel,
 
 
 /**
+ * Reference to a field of type 'Json'
+ */
+export type JsonFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Json'>
+    
+
+
+/**
+ * Reference to a field of type 'QueryMode'
+ */
+export type EnumQueryModeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'QueryMode'>
+    
+
+
+/**
+ * Reference to a field of type 'PromotionDiscountType'
+ */
+export type EnumPromotionDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromotionDiscountType'>
+    
+
+
+/**
+ * Reference to a field of type 'PromotionDiscountType[]'
+ */
+export type ListEnumPromotionDiscountTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PromotionDiscountType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus'
+ */
+export type EnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'PaymentStatus[]'
+ */
+export type ListEnumPaymentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PaymentStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'TemplateStatus'
+ */
+export type EnumTemplateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'TemplateStatus[]'
+ */
+export type ListEnumTemplateStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TemplateStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'ContactStatus'
  */
 export type EnumContactStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ContactStatus'>
@@ -1518,6 +1920,20 @@ export type EnumMessageDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<
  * Reference to a field of type 'MessageDirection[]'
  */
 export type ListEnumMessageDirectionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MessageDirection[]'>
+    
+
+
+/**
+ * Reference to a field of type 'CampaignStatus'
+ */
+export type EnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'CampaignStatus[]'
+ */
+export type ListEnumCampaignStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'CampaignStatus[]'>
     
 
 
@@ -1632,6 +2048,9 @@ export type GlobalOmitConfig = {
   organization?: Prisma.OrganizationOmit
   user?: Prisma.UserOmit
   subscription?: Prisma.SubscriptionOmit
+  billingPlan?: Prisma.BillingPlanOmit
+  promotion?: Prisma.PromotionOmit
+  payment?: Prisma.PaymentOmit
   whatsAppNumber?: Prisma.WhatsAppNumberOmit
   whatsAppTemplate?: Prisma.WhatsAppTemplateOmit
   contact?: Prisma.ContactOmit

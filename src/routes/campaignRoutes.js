@@ -7,6 +7,11 @@ import {
   createCampaign,
   getAllCampaigns,
   getCampaignById,
+  pauseCampaign,
+  resumeCampaign,
+  cancelCampaign,
+  resendCampaign,
+  deleteCampaign,
 } from "../controllers/campaignController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
 
@@ -21,11 +26,16 @@ router.use(authenticate);
 
 // Send campaign to contacts
 router.post("/send", sendCampaign);
+router.post("/:campaignId/pause", pauseCampaign);
+router.post("/:campaignId/resume", resumeCampaign);
+router.post("/:campaignId/cancel", cancelCampaign);
+router.post("/:campaignId/resend", resendCampaign);
+router.delete("/:campaignId", deleteCampaign);
 router.post("/:campaignId/contacts/create", createContactAndAttachToCampaign);
 router.post("/", createCampaign);
 router.get("/", getAllCampaigns);
-router.get("/:campaignId", getCampaignById);
 // Get campaign statistics
 router.get("/stats", getCampaignStats);
+router.get("/:campaignId", getCampaignById);
 
 export default router;

@@ -20,8 +20,18 @@ export type CampaignContactModel = runtime.Types.Result.DefaultSelection<Prisma.
 
 export type AggregateCampaignContact = {
   _count: CampaignContactCountAggregateOutputType | null
+  _avg: CampaignContactAvgAggregateOutputType | null
+  _sum: CampaignContactSumAggregateOutputType | null
   _min: CampaignContactMinAggregateOutputType | null
   _max: CampaignContactMaxAggregateOutputType | null
+}
+
+export type CampaignContactAvgAggregateOutputType = {
+  sendAttempts: number | null
+}
+
+export type CampaignContactSumAggregateOutputType = {
+  sendAttempts: number | null
 }
 
 export type CampaignContactMinAggregateOutputType = {
@@ -29,6 +39,14 @@ export type CampaignContactMinAggregateOutputType = {
   campaignId: string | null
   contactId: string | null
   assignedAt: Date | null
+  sendStatus: string | null
+  sendAttempts: number | null
+  lastAttemptAt: Date | null
+  sentAt: Date | null
+  deliveredAt: Date | null
+  readAt: Date | null
+  lastError: string | null
+  outboundMessageId: string | null
 }
 
 export type CampaignContactMaxAggregateOutputType = {
@@ -36,6 +54,14 @@ export type CampaignContactMaxAggregateOutputType = {
   campaignId: string | null
   contactId: string | null
   assignedAt: Date | null
+  sendStatus: string | null
+  sendAttempts: number | null
+  lastAttemptAt: Date | null
+  sentAt: Date | null
+  deliveredAt: Date | null
+  readAt: Date | null
+  lastError: string | null
+  outboundMessageId: string | null
 }
 
 export type CampaignContactCountAggregateOutputType = {
@@ -43,15 +69,39 @@ export type CampaignContactCountAggregateOutputType = {
   campaignId: number
   contactId: number
   assignedAt: number
+  sendStatus: number
+  sendAttempts: number
+  lastAttemptAt: number
+  sentAt: number
+  deliveredAt: number
+  readAt: number
+  lastError: number
+  outboundMessageId: number
   _all: number
 }
 
+
+export type CampaignContactAvgAggregateInputType = {
+  sendAttempts?: true
+}
+
+export type CampaignContactSumAggregateInputType = {
+  sendAttempts?: true
+}
 
 export type CampaignContactMinAggregateInputType = {
   id?: true
   campaignId?: true
   contactId?: true
   assignedAt?: true
+  sendStatus?: true
+  sendAttempts?: true
+  lastAttemptAt?: true
+  sentAt?: true
+  deliveredAt?: true
+  readAt?: true
+  lastError?: true
+  outboundMessageId?: true
 }
 
 export type CampaignContactMaxAggregateInputType = {
@@ -59,6 +109,14 @@ export type CampaignContactMaxAggregateInputType = {
   campaignId?: true
   contactId?: true
   assignedAt?: true
+  sendStatus?: true
+  sendAttempts?: true
+  lastAttemptAt?: true
+  sentAt?: true
+  deliveredAt?: true
+  readAt?: true
+  lastError?: true
+  outboundMessageId?: true
 }
 
 export type CampaignContactCountAggregateInputType = {
@@ -66,6 +124,14 @@ export type CampaignContactCountAggregateInputType = {
   campaignId?: true
   contactId?: true
   assignedAt?: true
+  sendStatus?: true
+  sendAttempts?: true
+  lastAttemptAt?: true
+  sentAt?: true
+  deliveredAt?: true
+  readAt?: true
+  lastError?: true
+  outboundMessageId?: true
   _all?: true
 }
 
@@ -107,6 +173,18 @@ export type CampaignContactAggregateArgs<ExtArgs extends runtime.Types.Extension
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: CampaignContactAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: CampaignContactSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: CampaignContactMinAggregateInputType
@@ -137,6 +215,8 @@ export type CampaignContactGroupByArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   _count?: CampaignContactCountAggregateInputType | true
+  _avg?: CampaignContactAvgAggregateInputType
+  _sum?: CampaignContactSumAggregateInputType
   _min?: CampaignContactMinAggregateInputType
   _max?: CampaignContactMaxAggregateInputType
 }
@@ -146,7 +226,17 @@ export type CampaignContactGroupByOutputType = {
   campaignId: string
   contactId: string
   assignedAt: Date
+  sendStatus: string
+  sendAttempts: number
+  lastAttemptAt: Date | null
+  sentAt: Date | null
+  deliveredAt: Date | null
+  readAt: Date | null
+  lastError: string | null
+  outboundMessageId: string | null
   _count: CampaignContactCountAggregateOutputType | null
+  _avg: CampaignContactAvgAggregateOutputType | null
+  _sum: CampaignContactSumAggregateOutputType | null
   _min: CampaignContactMinAggregateOutputType | null
   _max: CampaignContactMaxAggregateOutputType | null
 }
@@ -174,6 +264,14 @@ export type CampaignContactWhereInput = {
   campaignId?: Prisma.StringFilter<"CampaignContact"> | string
   contactId?: Prisma.StringFilter<"CampaignContact"> | string
   assignedAt?: Prisma.DateTimeFilter<"CampaignContact"> | Date | string
+  sendStatus?: Prisma.StringFilter<"CampaignContact"> | string
+  sendAttempts?: Prisma.IntFilter<"CampaignContact"> | number
+  lastAttemptAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  sentAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  readAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  lastError?: Prisma.StringNullableFilter<"CampaignContact"> | string | null
+  outboundMessageId?: Prisma.StringNullableFilter<"CampaignContact"> | string | null
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   contact?: Prisma.XOR<Prisma.ContactScalarRelationFilter, Prisma.ContactWhereInput>
 }
@@ -183,6 +281,14 @@ export type CampaignContactOrderByWithRelationInput = {
   campaignId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
+  sendStatus?: Prisma.SortOrder
+  sendAttempts?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  outboundMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
   campaign?: Prisma.CampaignOrderByWithRelationInput
   contact?: Prisma.ContactOrderByWithRelationInput
 }
@@ -196,6 +302,14 @@ export type CampaignContactWhereUniqueInput = Prisma.AtLeast<{
   campaignId?: Prisma.StringFilter<"CampaignContact"> | string
   contactId?: Prisma.StringFilter<"CampaignContact"> | string
   assignedAt?: Prisma.DateTimeFilter<"CampaignContact"> | Date | string
+  sendStatus?: Prisma.StringFilter<"CampaignContact"> | string
+  sendAttempts?: Prisma.IntFilter<"CampaignContact"> | number
+  lastAttemptAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  sentAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  readAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  lastError?: Prisma.StringNullableFilter<"CampaignContact"> | string | null
+  outboundMessageId?: Prisma.StringNullableFilter<"CampaignContact"> | string | null
   campaign?: Prisma.XOR<Prisma.CampaignScalarRelationFilter, Prisma.CampaignWhereInput>
   contact?: Prisma.XOR<Prisma.ContactScalarRelationFilter, Prisma.ContactWhereInput>
 }, "id" | "campaignId_contactId">
@@ -205,9 +319,19 @@ export type CampaignContactOrderByWithAggregationInput = {
   campaignId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
+  sendStatus?: Prisma.SortOrder
+  sendAttempts?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  sentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  readAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastError?: Prisma.SortOrderInput | Prisma.SortOrder
+  outboundMessageId?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CampaignContactCountOrderByAggregateInput
+  _avg?: Prisma.CampaignContactAvgOrderByAggregateInput
   _max?: Prisma.CampaignContactMaxOrderByAggregateInput
   _min?: Prisma.CampaignContactMinOrderByAggregateInput
+  _sum?: Prisma.CampaignContactSumOrderByAggregateInput
 }
 
 export type CampaignContactScalarWhereWithAggregatesInput = {
@@ -218,11 +342,27 @@ export type CampaignContactScalarWhereWithAggregatesInput = {
   campaignId?: Prisma.StringWithAggregatesFilter<"CampaignContact"> | string
   contactId?: Prisma.StringWithAggregatesFilter<"CampaignContact"> | string
   assignedAt?: Prisma.DateTimeWithAggregatesFilter<"CampaignContact"> | Date | string
+  sendStatus?: Prisma.StringWithAggregatesFilter<"CampaignContact"> | string
+  sendAttempts?: Prisma.IntWithAggregatesFilter<"CampaignContact"> | number
+  lastAttemptAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CampaignContact"> | Date | string | null
+  sentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CampaignContact"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CampaignContact"> | Date | string | null
+  readAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CampaignContact"> | Date | string | null
+  lastError?: Prisma.StringNullableWithAggregatesFilter<"CampaignContact"> | string | null
+  outboundMessageId?: Prisma.StringNullableWithAggregatesFilter<"CampaignContact"> | string | null
 }
 
 export type CampaignContactCreateInput = {
   id?: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
   campaign: Prisma.CampaignCreateNestedOneWithoutContactsInput
   contact: Prisma.ContactCreateNestedOneWithoutCampaignsInput
 }
@@ -232,11 +372,27 @@ export type CampaignContactUncheckedCreateInput = {
   campaignId: string
   contactId: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
 }
 
 export type CampaignContactUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutContactsNestedInput
   contact?: Prisma.ContactUpdateOneRequiredWithoutCampaignsNestedInput
 }
@@ -246,6 +402,14 @@ export type CampaignContactUncheckedUpdateInput = {
   campaignId?: Prisma.StringFieldUpdateOperationsInput | string
   contactId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CampaignContactCreateManyInput = {
@@ -253,11 +417,27 @@ export type CampaignContactCreateManyInput = {
   campaignId: string
   contactId: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
 }
 
 export type CampaignContactUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CampaignContactUncheckedUpdateManyInput = {
@@ -265,6 +445,14 @@ export type CampaignContactUncheckedUpdateManyInput = {
   campaignId?: Prisma.StringFieldUpdateOperationsInput | string
   contactId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CampaignContactListRelationFilter = {
@@ -287,6 +475,18 @@ export type CampaignContactCountOrderByAggregateInput = {
   campaignId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
+  sendStatus?: Prisma.SortOrder
+  sendAttempts?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrder
+  sentAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  outboundMessageId?: Prisma.SortOrder
+}
+
+export type CampaignContactAvgOrderByAggregateInput = {
+  sendAttempts?: Prisma.SortOrder
 }
 
 export type CampaignContactMaxOrderByAggregateInput = {
@@ -294,6 +494,14 @@ export type CampaignContactMaxOrderByAggregateInput = {
   campaignId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
+  sendStatus?: Prisma.SortOrder
+  sendAttempts?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrder
+  sentAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  outboundMessageId?: Prisma.SortOrder
 }
 
 export type CampaignContactMinOrderByAggregateInput = {
@@ -301,6 +509,18 @@ export type CampaignContactMinOrderByAggregateInput = {
   campaignId?: Prisma.SortOrder
   contactId?: Prisma.SortOrder
   assignedAt?: Prisma.SortOrder
+  sendStatus?: Prisma.SortOrder
+  sendAttempts?: Prisma.SortOrder
+  lastAttemptAt?: Prisma.SortOrder
+  sentAt?: Prisma.SortOrder
+  deliveredAt?: Prisma.SortOrder
+  readAt?: Prisma.SortOrder
+  lastError?: Prisma.SortOrder
+  outboundMessageId?: Prisma.SortOrder
+}
+
+export type CampaignContactSumOrderByAggregateInput = {
+  sendAttempts?: Prisma.SortOrder
 }
 
 export type CampaignContactCreateNestedManyWithoutContactInput = {
@@ -390,6 +610,14 @@ export type CampaignContactUncheckedUpdateManyWithoutCampaignNestedInput = {
 export type CampaignContactCreateWithoutContactInput = {
   id?: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
   campaign: Prisma.CampaignCreateNestedOneWithoutContactsInput
 }
 
@@ -397,6 +625,14 @@ export type CampaignContactUncheckedCreateWithoutContactInput = {
   id?: string
   campaignId: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
 }
 
 export type CampaignContactCreateOrConnectWithoutContactInput = {
@@ -433,11 +669,27 @@ export type CampaignContactScalarWhereInput = {
   campaignId?: Prisma.StringFilter<"CampaignContact"> | string
   contactId?: Prisma.StringFilter<"CampaignContact"> | string
   assignedAt?: Prisma.DateTimeFilter<"CampaignContact"> | Date | string
+  sendStatus?: Prisma.StringFilter<"CampaignContact"> | string
+  sendAttempts?: Prisma.IntFilter<"CampaignContact"> | number
+  lastAttemptAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  sentAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  deliveredAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  readAt?: Prisma.DateTimeNullableFilter<"CampaignContact"> | Date | string | null
+  lastError?: Prisma.StringNullableFilter<"CampaignContact"> | string | null
+  outboundMessageId?: Prisma.StringNullableFilter<"CampaignContact"> | string | null
 }
 
 export type CampaignContactCreateWithoutCampaignInput = {
   id?: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
   contact: Prisma.ContactCreateNestedOneWithoutCampaignsInput
 }
 
@@ -445,6 +697,14 @@ export type CampaignContactUncheckedCreateWithoutCampaignInput = {
   id?: string
   contactId: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
 }
 
 export type CampaignContactCreateOrConnectWithoutCampaignInput = {
@@ -477,11 +737,27 @@ export type CampaignContactCreateManyContactInput = {
   id?: string
   campaignId: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
 }
 
 export type CampaignContactUpdateWithoutContactInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   campaign?: Prisma.CampaignUpdateOneRequiredWithoutContactsNestedInput
 }
 
@@ -489,23 +765,55 @@ export type CampaignContactUncheckedUpdateWithoutContactInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   campaignId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CampaignContactUncheckedUpdateManyWithoutContactInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   campaignId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CampaignContactCreateManyCampaignInput = {
   id?: string
   contactId: string
   assignedAt?: Date | string
+  sendStatus?: string
+  sendAttempts?: number
+  lastAttemptAt?: Date | string | null
+  sentAt?: Date | string | null
+  deliveredAt?: Date | string | null
+  readAt?: Date | string | null
+  lastError?: string | null
+  outboundMessageId?: string | null
 }
 
 export type CampaignContactUpdateWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   contact?: Prisma.ContactUpdateOneRequiredWithoutCampaignsNestedInput
 }
 
@@ -513,12 +821,28 @@ export type CampaignContactUncheckedUpdateWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contactId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type CampaignContactUncheckedUpdateManyWithoutCampaignInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   contactId?: Prisma.StringFieldUpdateOperationsInput | string
   assignedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  sendStatus?: Prisma.StringFieldUpdateOperationsInput | string
+  sendAttempts?: Prisma.IntFieldUpdateOperationsInput | number
+  lastAttemptAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  sentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  deliveredAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  readAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  lastError?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  outboundMessageId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 
@@ -528,6 +852,14 @@ export type CampaignContactSelect<ExtArgs extends runtime.Types.Extensions.Inter
   campaignId?: boolean
   contactId?: boolean
   assignedAt?: boolean
+  sendStatus?: boolean
+  sendAttempts?: boolean
+  lastAttemptAt?: boolean
+  sentAt?: boolean
+  deliveredAt?: boolean
+  readAt?: boolean
+  lastError?: boolean
+  outboundMessageId?: boolean
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaignContact"]>
@@ -537,6 +869,14 @@ export type CampaignContactSelectCreateManyAndReturn<ExtArgs extends runtime.Typ
   campaignId?: boolean
   contactId?: boolean
   assignedAt?: boolean
+  sendStatus?: boolean
+  sendAttempts?: boolean
+  lastAttemptAt?: boolean
+  sentAt?: boolean
+  deliveredAt?: boolean
+  readAt?: boolean
+  lastError?: boolean
+  outboundMessageId?: boolean
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaignContact"]>
@@ -546,6 +886,14 @@ export type CampaignContactSelectUpdateManyAndReturn<ExtArgs extends runtime.Typ
   campaignId?: boolean
   contactId?: boolean
   assignedAt?: boolean
+  sendStatus?: boolean
+  sendAttempts?: boolean
+  lastAttemptAt?: boolean
+  sentAt?: boolean
+  deliveredAt?: boolean
+  readAt?: boolean
+  lastError?: boolean
+  outboundMessageId?: boolean
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["campaignContact"]>
@@ -555,9 +903,17 @@ export type CampaignContactSelectScalar = {
   campaignId?: boolean
   contactId?: boolean
   assignedAt?: boolean
+  sendStatus?: boolean
+  sendAttempts?: boolean
+  lastAttemptAt?: boolean
+  sentAt?: boolean
+  deliveredAt?: boolean
+  readAt?: boolean
+  lastError?: boolean
+  outboundMessageId?: boolean
 }
 
-export type CampaignContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "campaignId" | "contactId" | "assignedAt", ExtArgs["result"]["campaignContact"]>
+export type CampaignContactOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "campaignId" | "contactId" | "assignedAt" | "sendStatus" | "sendAttempts" | "lastAttemptAt" | "sentAt" | "deliveredAt" | "readAt" | "lastError" | "outboundMessageId", ExtArgs["result"]["campaignContact"]>
 export type CampaignContactInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   campaign?: boolean | Prisma.CampaignDefaultArgs<ExtArgs>
   contact?: boolean | Prisma.ContactDefaultArgs<ExtArgs>
@@ -582,6 +938,14 @@ export type $CampaignContactPayload<ExtArgs extends runtime.Types.Extensions.Int
     campaignId: string
     contactId: string
     assignedAt: Date
+    sendStatus: string
+    sendAttempts: number
+    lastAttemptAt: Date | null
+    sentAt: Date | null
+    deliveredAt: Date | null
+    readAt: Date | null
+    lastError: string | null
+    outboundMessageId: string | null
   }, ExtArgs["result"]["campaignContact"]>
   composites: {}
 }
@@ -1011,6 +1375,14 @@ export interface CampaignContactFieldRefs {
   readonly campaignId: Prisma.FieldRef<"CampaignContact", 'String'>
   readonly contactId: Prisma.FieldRef<"CampaignContact", 'String'>
   readonly assignedAt: Prisma.FieldRef<"CampaignContact", 'DateTime'>
+  readonly sendStatus: Prisma.FieldRef<"CampaignContact", 'String'>
+  readonly sendAttempts: Prisma.FieldRef<"CampaignContact", 'Int'>
+  readonly lastAttemptAt: Prisma.FieldRef<"CampaignContact", 'DateTime'>
+  readonly sentAt: Prisma.FieldRef<"CampaignContact", 'DateTime'>
+  readonly deliveredAt: Prisma.FieldRef<"CampaignContact", 'DateTime'>
+  readonly readAt: Prisma.FieldRef<"CampaignContact", 'DateTime'>
+  readonly lastError: Prisma.FieldRef<"CampaignContact", 'String'>
+  readonly outboundMessageId: Prisma.FieldRef<"CampaignContact", 'String'>
 }
     
 

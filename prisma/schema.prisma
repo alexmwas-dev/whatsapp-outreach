@@ -31,6 +31,7 @@ enum ContactStatus {
 enum MessageDirection {
   INBOUND
   OUTBOUND
+  SYSTEM
 }
 
 enum UserRole {
@@ -45,6 +46,16 @@ enum SubscriptionStatus {
   ACTIVE
   PAST_DUE
   CANCELED
+}
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELED
+}
+enum PromotionDiscountType {
+  PERCENTAGE
+  FIXED
 }
 enum WhatsappStatus {
   VERIFIED
@@ -63,6 +74,18 @@ enum WhatsappSetupStep {
   PHONE_NUMBER_VERIFIED
 }
 
+enum CampaignStatus {
+  DRAFT
+  SENDING
+  COMPLETED
+}
+
+enum TemplateStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
 
 /* =========================
    ORGANIZATIONS (TENANTS)
@@ -79,6 +102,8 @@ model Organization {
   whatsappStatus            WhatsappStatus?  @default(PENDING)
   messagingTier             MessagingTier?  // TIER_1 | TIER_2 | TIER_3
   webhookVerifyToken        String?  // for webhook validation
+  accessToken               String?  // for API calls (if needed)
+  accessTokenExpiresAt     DateTime? // token expiration time
 
   users           User[]
   contacts        Contact[]
@@ -88,6 +113,7 @@ model Organization {
   whatsAppNumbers WhatsAppNumber[]
   subscription    Subscription?
   whatsappTemplates WhatsAppTemplate[]
+  payments        Payment[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -135,8 +161,85 @@ model Subscription {
   provider             String   // stripe | paystack | flutterwave
   providerRef          String?
 
+  payments             Payment[]
+
   createdAt            DateTime @default(now())
   updatedAt            DateTime @updatedAt
+}
+
+model BillingPlan {
+  id           String   @id @default(uuid())
+  code         String   @unique
+  name         String
+  description  String?
+  messageLimit Int
+  amount       Int
+  currency     String   @default("USD")
+  periodDays   Int      @default(30)
+  active       Boolean  @default(true)
+  sortOrder    Int      @default(0)
+  metadata     Json?
+
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([active, sortOrder])
+}
+
+model Promotion {
+  id            String                @id @default(uuid())
+  code          String                @unique
+  description   String?
+  discountType  PromotionDiscountType @default(PERCENTAGE)
+  discountValue Int
+  active        Boolean               @default(true)
+  startsAt      DateTime?
+  endsAt        DateTime?
+  maxUses       Int?
+  metadata      Json?
+
+  payments      Payment[]
+
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+}
+
+model Payment {
+  id                String        @id @default(uuid())
+  organizationId    String
+  organization      Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  subscriptionId    String?
+  subscription      Subscription? @relation(fields: [subscriptionId], references: [id], onDelete: SetNull)
+  promotionId       String?
+  promotion         Promotion?    @relation(fields: [promotionId], references: [id], onDelete: SetNull)
+
+  provider          String        @default("pesapal")
+  status            PaymentStatus @default(PENDING)
+  planCode          String
+  messageLimit      Int
+  periodDays        Int           @default(30)
+  originalAmount    Int?
+  discountAmount    Int           @default(0)
+  amount            Int
+  currency          String        @default("USD")
+  promotionCode     String?
+  merchantReference String        @unique
+  orderTrackingId   String?       @unique
+  providerReference String?
+  paymentMethod     String?
+  paymentAccount    String?
+  paidAt            DateTime?
+  expiresAt         DateTime?
+  failureReason     String?
+  metadata          Json?
+
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+
+  @@index([organizationId, createdAt])
+  @@index([status])
+  @@index([promotionId])
+  @@index([promotionCode])
 }
 
 /* =========================
@@ -150,10 +253,11 @@ model WhatsAppNumber {
 
   phoneNumber    String       @unique
   phoneNumberId  String       @unique  // WhatsApp Business API ID
-  accessToken    String
+  accessToken    String?      // token specific to this number if needed
   displayName    String?      // optional display name
   accessTokenExpiresAt DateTime? 
   active         Boolean      @default(true)
+  isPrimary      Boolean      @default(false)
 
   messages       Message[]
 
@@ -169,15 +273,23 @@ model WhatsAppTemplate {
 
   name           String   // exact Meta template name
   language       String   // en, en_US
+  content        String?
+  metaTemplateId String?
+  status         TemplateStatus @default(PENDING)
+  rejectionReason String?
   category       String   // MARKETING, UTILITY
   description    String?
   bodyParamsCount Int @default(1)
+  bodyParamKeys   Json? 
+  usageCount     Int @default(0)
 
 
   active         Boolean  @default(true)
 
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
+
+  campaigns      Campaign[]
 
   @@unique([organizationId, name])
 }
@@ -289,10 +401,33 @@ model Campaign {
   name           String
   description    String?
 
+  templateId     String?
+  template       WhatsAppTemplate? @relation(fields: [templateId], references: [id])
+  templateName   String?
+  status         CampaignStatus @default(DRAFT)
+  state          String    @default("DRAFT")
+
+  messagesSent      Int      @default(0)
+  messagesDelivered Int      @default(0)
+  messagesRead      Int      @default(0)
+  messagesFailed    Int      @default(0)
+
+  sendLimit         Int?
+  sendDelayMs       Int      @default(500)
+  queueRequestedAt  DateTime?
+  startedAt         DateTime?
+  pausedAt          DateTime?
+  canceledAt        DateTime?
+  lastProgressAt    DateTime?
+  lastError         String?
+  workerLockId      String?
+  workerLockedAt    DateTime?
+
   contacts       CampaignContact[]
 
   active         Boolean    @default(true)
   createdAt      DateTime   @default(now())
+  completedAt    DateTime?
 
   @@index([organizationId])
 }
@@ -311,6 +446,16 @@ model CampaignContact {
   contact     Contact  @relation(fields: [contactId], references: [id], onDelete: Cascade)
 
   assignedAt  DateTime  @default(now())
+  sendStatus  String    @default("PENDING")
+  sendAttempts Int      @default(0)
+  lastAttemptAt DateTime?
+  sentAt      DateTime?
+  deliveredAt DateTime?
+  readAt      DateTime?
+  lastError   String?
+  outboundMessageId String?
 
   @@unique([campaignId, contactId])
+  @@index([campaignId, sendStatus])
+  @@index([outboundMessageId])
 }

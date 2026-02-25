@@ -4,6 +4,12 @@ import logger from "../utils/loogger.js";
 import { prisma } from "../lib/prisma.js";
 import { sendTextMessage } from "../services/whatsappService.js";
 import { ensurePlus } from "../utils/ensurePlus.js";
+import { emitNewMessage, emitMessagesRead } from "../lib/socket.js";
+import {
+  reserveMessageQuota,
+  releaseReservedMessageQuota,
+  getQuotaErrorMessage,
+} from "../services/subscriptionService.js";
 // import { whatsappService } from "../services/whatsappService.js"
 
 /**
@@ -63,7 +69,7 @@ export const getContactMessages = catchAsync(async (req, res) => {
 
   // Mark unread messages as read
   // Mark unread inbound messages as read (only for this sales rep)
-  await prisma.message.updateMany({
+  const updateResult = await prisma.message.updateMany({
     where: {
       contactId,
       salesRepId: salesRep.id,
@@ -74,6 +80,11 @@ export const getContactMessages = catchAsync(async (req, res) => {
       readAt: new Date(),
     },
   });
+
+  // Emit real-time event if messages were marked as read
+  if (updateResult.count > 0) {
+    emitMessagesRead(contactId, updateResult.count);
+  }
 
   res.status(200).json({
     status: "success",
@@ -144,6 +155,40 @@ export const sendMessageToContact = catchAsync(async (req, res) => {
     throw new AppError("No active WhatsApp number configured", 400);
   }
 
+  // Check if 24-hour conversation window is open
+  // WhatsApp only allows freeform messages within 24 hours of last inbound message
+  const lastInboundMessage = await prisma.message.findFirst({
+    where: {
+      contactId: contact.id,
+      direction: "INBOUND",
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const windowOpen =
+    lastInboundMessage &&
+    new Date() - new Date(lastInboundMessage.createdAt) < 24 * 60 * 60 * 1000;
+
+  if (!windowOpen) {
+    throw new AppError(
+      "Cannot send freeform message: Contact hasn't messaged in the last 24 hours. Please use a template message instead.",
+      403,
+    );
+  }
+
+  const quotaReservation = await reserveMessageQuota({
+    organizationId: salesRep.organizationId,
+    amount: 1,
+  });
+
+  if (!quotaReservation.ok) {
+    throw new AppError(getQuotaErrorMessage(quotaReservation.subscription), 402);
+  }
+
+  let sentToWhatsApp = false;
+
   try {
     const phoneWithPlus = ensurePlus(contact.phone);
 
@@ -153,6 +198,7 @@ export const sendMessageToContact = catchAsync(async (req, res) => {
       text: message.trim(),
       waNumber: whatsappNumber,
     });
+    sentToWhatsApp = true;
 
     const savedMessage = await prisma.message.create({
       data: {
@@ -181,11 +227,21 @@ export const sendMessageToContact = catchAsync(async (req, res) => {
       },
     });
 
+    // Emit real-time event
+    emitNewMessage(savedMessage);
+
     res.status(201).json({
       status: "success",
       data: { message: savedMessage },
     });
   } catch (error) {
+    if (!sentToWhatsApp) {
+      await releaseReservedMessageQuota({
+        organizationId: salesRep.organizationId,
+        amount: 1,
+      }).catch(() => {});
+    }
+
     logger.error("Failed to send message to contact", {
       meta: {
         contactId,
@@ -300,6 +356,88 @@ export const getUnreadCount = catchAsync(async (req, res) => {
     status: "success",
     data: {
       unreadCount,
+    },
+  });
+});
+
+/**
+ * MARK CONTACT MESSAGES AS READ
+ * Mark all unread messages from a contact as read
+ */
+export const markContactMessagesAsRead = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+  const { contactId } = req.params;
+
+  // Get sales rep associated with user
+  const salesRep = await prisma.salesRep.findUnique({
+    where: { userId },
+  });
+
+  if (!salesRep) {
+    throw new AppError("Sales rep profile not found", 404);
+  }
+
+  // Verify contact is assigned to this sales rep
+  const contact = await prisma.contact.findFirst({
+    where: {
+      id: contactId,
+      salesRepId: salesRep.id,
+      organizationId: salesRep.organizationId,
+    },
+  });
+
+  if (!contact) {
+    throw new AppError("Contact not found or not assigned to you", 404);
+  }
+
+  // Check if there are any unread messages first
+  const unreadCount = await prisma.message.count({
+    where: {
+      contactId,
+      direction: "INBOUND",
+      readAt: null,
+    },
+  });
+
+  // If no unread messages, return early
+  if (unreadCount === 0) {
+    return res.status(200).json({
+      status: "success",
+      data: {
+        markedAsRead: 0,
+      },
+    });
+  }
+
+  // Mark all unread inbound messages as read
+  const result = await prisma.message.updateMany({
+    where: {
+      contactId,
+      direction: "INBOUND",
+      readAt: null,
+    },
+    data: {
+      readAt: new Date(),
+    },
+  });
+
+  logger.info("Marked messages as read", {
+    meta: {
+      contactId,
+      salesRepId: salesRep.id,
+      count: result.count,
+    },
+  });
+
+  // Emit real-time event
+  if (result.count > 0) {
+    emitMessagesRead(contactId, result.count);
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      markedAsRead: result.count,
     },
   });
 });

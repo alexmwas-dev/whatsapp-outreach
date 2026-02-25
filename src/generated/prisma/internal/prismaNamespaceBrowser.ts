@@ -54,6 +54,9 @@ export const ModelName = {
   Organization: 'Organization',
   User: 'User',
   Subscription: 'Subscription',
+  BillingPlan: 'BillingPlan',
+  Promotion: 'Promotion',
+  Payment: 'Payment',
   WhatsAppNumber: 'WhatsAppNumber',
   WhatsAppTemplate: 'WhatsAppTemplate',
   Contact: 'Contact',
@@ -89,6 +92,8 @@ export const OrganizationScalarFieldEnum = {
   whatsappStatus: 'whatsappStatus',
   messagingTier: 'messagingTier',
   webhookVerifyToken: 'webhookVerifyToken',
+  accessToken: 'accessToken',
+  accessTokenExpiresAt: 'accessTokenExpiresAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -128,6 +133,74 @@ export const SubscriptionScalarFieldEnum = {
 export type SubscriptionScalarFieldEnum = (typeof SubscriptionScalarFieldEnum)[keyof typeof SubscriptionScalarFieldEnum]
 
 
+export const BillingPlanScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  name: 'name',
+  description: 'description',
+  messageLimit: 'messageLimit',
+  amount: 'amount',
+  currency: 'currency',
+  periodDays: 'periodDays',
+  active: 'active',
+  sortOrder: 'sortOrder',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BillingPlanScalarFieldEnum = (typeof BillingPlanScalarFieldEnum)[keyof typeof BillingPlanScalarFieldEnum]
+
+
+export const PromotionScalarFieldEnum = {
+  id: 'id',
+  code: 'code',
+  description: 'description',
+  discountType: 'discountType',
+  discountValue: 'discountValue',
+  active: 'active',
+  startsAt: 'startsAt',
+  endsAt: 'endsAt',
+  maxUses: 'maxUses',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PromotionScalarFieldEnum = (typeof PromotionScalarFieldEnum)[keyof typeof PromotionScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  organizationId: 'organizationId',
+  subscriptionId: 'subscriptionId',
+  promotionId: 'promotionId',
+  provider: 'provider',
+  status: 'status',
+  planCode: 'planCode',
+  messageLimit: 'messageLimit',
+  periodDays: 'periodDays',
+  originalAmount: 'originalAmount',
+  discountAmount: 'discountAmount',
+  amount: 'amount',
+  currency: 'currency',
+  promotionCode: 'promotionCode',
+  merchantReference: 'merchantReference',
+  orderTrackingId: 'orderTrackingId',
+  providerReference: 'providerReference',
+  paymentMethod: 'paymentMethod',
+  paymentAccount: 'paymentAccount',
+  paidAt: 'paidAt',
+  expiresAt: 'expiresAt',
+  failureReason: 'failureReason',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
 export const WhatsAppNumberScalarFieldEnum = {
   id: 'id',
   organizationId: 'organizationId',
@@ -137,6 +210,7 @@ export const WhatsAppNumberScalarFieldEnum = {
   displayName: 'displayName',
   accessTokenExpiresAt: 'accessTokenExpiresAt',
   active: 'active',
+  isPrimary: 'isPrimary',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -149,9 +223,15 @@ export const WhatsAppTemplateScalarFieldEnum = {
   organizationId: 'organizationId',
   name: 'name',
   language: 'language',
+  content: 'content',
+  metaTemplateId: 'metaTemplateId',
+  status: 'status',
+  rejectionReason: 'rejectionReason',
   category: 'category',
   description: 'description',
   bodyParamsCount: 'bodyParamsCount',
+  bodyParamKeys: 'bodyParamKeys',
+  usageCount: 'usageCount',
   active: 'active',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -214,8 +294,27 @@ export const CampaignScalarFieldEnum = {
   organizationId: 'organizationId',
   name: 'name',
   description: 'description',
+  templateId: 'templateId',
+  templateName: 'templateName',
+  status: 'status',
+  state: 'state',
+  messagesSent: 'messagesSent',
+  messagesDelivered: 'messagesDelivered',
+  messagesRead: 'messagesRead',
+  messagesFailed: 'messagesFailed',
+  sendLimit: 'sendLimit',
+  sendDelayMs: 'sendDelayMs',
+  queueRequestedAt: 'queueRequestedAt',
+  startedAt: 'startedAt',
+  pausedAt: 'pausedAt',
+  canceledAt: 'canceledAt',
+  lastProgressAt: 'lastProgressAt',
+  lastError: 'lastError',
+  workerLockId: 'workerLockId',
+  workerLockedAt: 'workerLockedAt',
   active: 'active',
-  createdAt: 'createdAt'
+  createdAt: 'createdAt',
+  completedAt: 'completedAt'
 } as const
 
 export type CampaignScalarFieldEnum = (typeof CampaignScalarFieldEnum)[keyof typeof CampaignScalarFieldEnum]
@@ -225,7 +324,15 @@ export const CampaignContactScalarFieldEnum = {
   id: 'id',
   campaignId: 'campaignId',
   contactId: 'contactId',
-  assignedAt: 'assignedAt'
+  assignedAt: 'assignedAt',
+  sendStatus: 'sendStatus',
+  sendAttempts: 'sendAttempts',
+  lastAttemptAt: 'lastAttemptAt',
+  sentAt: 'sentAt',
+  deliveredAt: 'deliveredAt',
+  readAt: 'readAt',
+  lastError: 'lastError',
+  outboundMessageId: 'outboundMessageId'
 } as const
 
 export type CampaignContactScalarFieldEnum = (typeof CampaignContactScalarFieldEnum)[keyof typeof CampaignContactScalarFieldEnum]
@@ -237,6 +344,14 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {
@@ -253,4 +368,13 @@ export const NullsOrder = {
 } as const
 
 export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
+export const JsonNullValueFilter = {
+  DbNull: DbNull,
+  JsonNull: JsonNull,
+  AnyNull: AnyNull
+} as const
+
+export type JsonNullValueFilter = (typeof JsonNullValueFilter)[keyof typeof JsonNullValueFilter]
 

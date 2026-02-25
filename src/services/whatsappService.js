@@ -1,7 +1,11 @@
 import axios from "axios";
 import logger from "../utils/loogger.js";
 import { AppError } from "../utils/AppError.js";
-import { assertWhatsAppTokenValid } from "../utils/verifyAccessToken.js";
+import {
+  assertWhatsAppTokenValid,
+  getSystemWhatsAppToken,
+} from "../utils/verifyAccessToken.js";
+import { prisma } from "../lib/prisma.js";
 
 /**
  * Send WhatsApp template message
@@ -20,6 +24,7 @@ export async function sendTemplate({
   params = [],
   expectedParams,
   waNumber,
+  organizationId,
 }) {
   assertWhatsAppTokenValid(waNumber);
 
@@ -28,6 +33,7 @@ export async function sendTemplate({
       `Template expects ${expectedParams} params, got ${params.length}`,
     );
   }
+  const accessToken = getSystemWhatsAppToken();
 
   try {
     const url = `https://graph.facebook.com/v18.0/${waNumber.phoneNumberId}/messages`;
@@ -39,21 +45,25 @@ export async function sendTemplate({
       template: {
         name: templateName,
         language: { code: language },
-        components: [
-          {
-            type: "body",
-            parameters: params.map((text) => ({
-              type: "text",
-              text: String(text),
-            })),
-          },
-        ],
+        ...(params.length > 0
+          ? {
+              components: [
+                {
+                  type: "body",
+                  parameters: params.map((text) => ({
+                    type: "text",
+                    text: String(text),
+                  })),
+                },
+              ],
+            }
+          : {}),
       },
     };
 
     const response = await axios.post(url, payload, {
       headers: {
-        Authorization: `Bearer ${waNumber.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });
@@ -65,6 +75,17 @@ export async function sendTemplate({
         messageId: response.data.messages?.[0]?.id,
       },
     });
+
+    const orgId = organizationId ?? waNumber?.organizationId;
+    if (orgId) {
+      await prisma.whatsAppTemplate.updateMany({
+        where: {
+          organizationId: orgId,
+          name: templateName,
+        },
+        data: { usageCount: { increment: 1 } },
+      });
+    }
 
     return response.data;
   } catch (error) {
@@ -90,6 +111,7 @@ export async function sendTemplate({
  */
 export async function sendTextMessage({ phone, text, waNumber }) {
   assertWhatsAppTokenValid(waNumber);
+  const accessToken = getSystemWhatsAppToken();
   try {
     const url = `https://graph.facebook.com/v18.0/${waNumber.phoneNumberId}/messages`;
 
@@ -105,7 +127,7 @@ export async function sendTextMessage({ phone, text, waNumber }) {
 
     const response = await axios.post(url, payload, {
       headers: {
-        Authorization: `Bearer ${waNumber.accessToken}`,
+        Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       },
     });

@@ -4,6 +4,7 @@ import {
   getWhatsAppTemplate,
   createWhatsAppTemplate,
   updateWhatsAppTemplate,
+  pollWhatsAppTemplateStatus,
   toggleWhatsAppTemplateStatus,
   deleteWhatsAppTemplate,
 } from "../controllers/whatsappTemplateController.js";
@@ -24,11 +25,25 @@ router.get("/", getWhatsAppTemplates);
 // Create new template
 router.post("/", authorize("OWNER", "ADMIN"), createWhatsAppTemplate);
 
+// Poll Meta approval statuses for all organization templates
+router.post(
+  "/poll-status",
+  authorize("OWNER", "ADMIN"),
+  pollWhatsAppTemplateStatus,
+);
+
 // Get specific template
 router.get("/:templateId", getWhatsAppTemplate);
 
 // Update template
 router.put("/:templateId", authorize("OWNER", "ADMIN"), updateWhatsAppTemplate);
+
+// Poll Meta approval status for a specific template
+router.post(
+  "/:templateId/poll-status",
+  authorize("OWNER", "ADMIN"),
+  pollWhatsAppTemplateStatus,
+);
 
 // Toggle template status
 router.put(

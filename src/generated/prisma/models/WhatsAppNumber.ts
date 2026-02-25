@@ -33,6 +33,7 @@ export type WhatsAppNumberMinAggregateOutputType = {
   displayName: string | null
   accessTokenExpiresAt: Date | null
   active: boolean | null
+  isPrimary: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +47,7 @@ export type WhatsAppNumberMaxAggregateOutputType = {
   displayName: string | null
   accessTokenExpiresAt: Date | null
   active: boolean | null
+  isPrimary: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -59,6 +61,7 @@ export type WhatsAppNumberCountAggregateOutputType = {
   displayName: number
   accessTokenExpiresAt: number
   active: number
+  isPrimary: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -74,6 +77,7 @@ export type WhatsAppNumberMinAggregateInputType = {
   displayName?: true
   accessTokenExpiresAt?: true
   active?: true
+  isPrimary?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -87,6 +91,7 @@ export type WhatsAppNumberMaxAggregateInputType = {
   displayName?: true
   accessTokenExpiresAt?: true
   active?: true
+  isPrimary?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -100,6 +105,7 @@ export type WhatsAppNumberCountAggregateInputType = {
   displayName?: true
   accessTokenExpiresAt?: true
   active?: true
+  isPrimary?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -182,10 +188,11 @@ export type WhatsAppNumberGroupByOutputType = {
   organizationId: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken: string | null
   displayName: string | null
   accessTokenExpiresAt: Date | null
   active: boolean
+  isPrimary: boolean
   createdAt: Date
   updatedAt: Date
   _count: WhatsAppNumberCountAggregateOutputType | null
@@ -216,10 +223,11 @@ export type WhatsAppNumberWhereInput = {
   organizationId?: Prisma.StringFilter<"WhatsAppNumber"> | string
   phoneNumber?: Prisma.StringFilter<"WhatsAppNumber"> | string
   phoneNumberId?: Prisma.StringFilter<"WhatsAppNumber"> | string
-  accessToken?: Prisma.StringFilter<"WhatsAppNumber"> | string
+  accessToken?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   displayName?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   accessTokenExpiresAt?: Prisma.DateTimeNullableFilter<"WhatsAppNumber"> | Date | string | null
   active?: Prisma.BoolFilter<"WhatsAppNumber"> | boolean
+  isPrimary?: Prisma.BoolFilter<"WhatsAppNumber"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -231,10 +239,11 @@ export type WhatsAppNumberOrderByWithRelationInput = {
   organizationId?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   phoneNumberId?: Prisma.SortOrder
-  accessToken?: Prisma.SortOrder
+  accessToken?: Prisma.SortOrderInput | Prisma.SortOrder
   displayName?: Prisma.SortOrderInput | Prisma.SortOrder
   accessTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
+  isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
@@ -249,10 +258,11 @@ export type WhatsAppNumberWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.WhatsAppNumberWhereInput[]
   NOT?: Prisma.WhatsAppNumberWhereInput | Prisma.WhatsAppNumberWhereInput[]
   organizationId?: Prisma.StringFilter<"WhatsAppNumber"> | string
-  accessToken?: Prisma.StringFilter<"WhatsAppNumber"> | string
+  accessToken?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   displayName?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   accessTokenExpiresAt?: Prisma.DateTimeNullableFilter<"WhatsAppNumber"> | Date | string | null
   active?: Prisma.BoolFilter<"WhatsAppNumber"> | boolean
+  isPrimary?: Prisma.BoolFilter<"WhatsAppNumber"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
@@ -264,10 +274,11 @@ export type WhatsAppNumberOrderByWithAggregationInput = {
   organizationId?: Prisma.SortOrder
   phoneNumber?: Prisma.SortOrder
   phoneNumberId?: Prisma.SortOrder
-  accessToken?: Prisma.SortOrder
+  accessToken?: Prisma.SortOrderInput | Prisma.SortOrder
   displayName?: Prisma.SortOrderInput | Prisma.SortOrder
   accessTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   active?: Prisma.SortOrder
+  isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.WhatsAppNumberCountOrderByAggregateInput
@@ -283,10 +294,11 @@ export type WhatsAppNumberScalarWhereWithAggregatesInput = {
   organizationId?: Prisma.StringWithAggregatesFilter<"WhatsAppNumber"> | string
   phoneNumber?: Prisma.StringWithAggregatesFilter<"WhatsAppNumber"> | string
   phoneNumberId?: Prisma.StringWithAggregatesFilter<"WhatsAppNumber"> | string
-  accessToken?: Prisma.StringWithAggregatesFilter<"WhatsAppNumber"> | string
+  accessToken?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppNumber"> | string | null
   displayName?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppNumber"> | string | null
   accessTokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"WhatsAppNumber"> | Date | string | null
   active?: Prisma.BoolWithAggregatesFilter<"WhatsAppNumber"> | boolean
+  isPrimary?: Prisma.BoolWithAggregatesFilter<"WhatsAppNumber"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WhatsAppNumber"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WhatsAppNumber"> | Date | string
 }
@@ -295,10 +307,11 @@ export type WhatsAppNumberCreateInput = {
   id?: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutWhatsAppNumbersInput
@@ -310,10 +323,11 @@ export type WhatsAppNumberUncheckedCreateInput = {
   organizationId: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutWhatsappNumberInput
@@ -323,10 +337,11 @@ export type WhatsAppNumberUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutWhatsAppNumbersNestedInput
@@ -338,10 +353,11 @@ export type WhatsAppNumberUncheckedUpdateInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.MessageUncheckedUpdateManyWithoutWhatsappNumberNestedInput
@@ -352,10 +368,11 @@ export type WhatsAppNumberCreateManyInput = {
   organizationId: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -364,10 +381,11 @@ export type WhatsAppNumberUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -377,10 +395,11 @@ export type WhatsAppNumberUncheckedUpdateManyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -404,6 +423,7 @@ export type WhatsAppNumberCountOrderByAggregateInput = {
   displayName?: Prisma.SortOrder
   accessTokenExpiresAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -417,6 +437,7 @@ export type WhatsAppNumberMaxOrderByAggregateInput = {
   displayName?: Prisma.SortOrder
   accessTokenExpiresAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -430,6 +451,7 @@ export type WhatsAppNumberMinOrderByAggregateInput = {
   displayName?: Prisma.SortOrder
   accessTokenExpiresAt?: Prisma.SortOrder
   active?: Prisma.SortOrder
+  isPrimary?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -481,14 +503,6 @@ export type WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput = {
   deleteMany?: Prisma.WhatsAppNumberScalarWhereInput | Prisma.WhatsAppNumberScalarWhereInput[]
 }
 
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
-}
-
-export type BoolFieldUpdateOperationsInput = {
-  set?: boolean
-}
-
 export type WhatsAppNumberCreateNestedOneWithoutMessagesInput = {
   create?: Prisma.XOR<Prisma.WhatsAppNumberCreateWithoutMessagesInput, Prisma.WhatsAppNumberUncheckedCreateWithoutMessagesInput>
   connectOrCreate?: Prisma.WhatsAppNumberCreateOrConnectWithoutMessagesInput
@@ -507,10 +521,11 @@ export type WhatsAppNumberCreateWithoutOrganizationInput = {
   id?: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   messages?: Prisma.MessageCreateNestedManyWithoutWhatsappNumberInput
@@ -520,10 +535,11 @@ export type WhatsAppNumberUncheckedCreateWithoutOrganizationInput = {
   id?: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutWhatsappNumberInput
@@ -563,10 +579,11 @@ export type WhatsAppNumberScalarWhereInput = {
   organizationId?: Prisma.StringFilter<"WhatsAppNumber"> | string
   phoneNumber?: Prisma.StringFilter<"WhatsAppNumber"> | string
   phoneNumberId?: Prisma.StringFilter<"WhatsAppNumber"> | string
-  accessToken?: Prisma.StringFilter<"WhatsAppNumber"> | string
+  accessToken?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   displayName?: Prisma.StringNullableFilter<"WhatsAppNumber"> | string | null
   accessTokenExpiresAt?: Prisma.DateTimeNullableFilter<"WhatsAppNumber"> | Date | string | null
   active?: Prisma.BoolFilter<"WhatsAppNumber"> | boolean
+  isPrimary?: Prisma.BoolFilter<"WhatsAppNumber"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppNumber"> | Date | string
 }
@@ -575,10 +592,11 @@ export type WhatsAppNumberCreateWithoutMessagesInput = {
   id?: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutWhatsAppNumbersInput
@@ -589,10 +607,11 @@ export type WhatsAppNumberUncheckedCreateWithoutMessagesInput = {
   organizationId: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -617,10 +636,11 @@ export type WhatsAppNumberUpdateWithoutMessagesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutWhatsAppNumbersNestedInput
@@ -631,10 +651,11 @@ export type WhatsAppNumberUncheckedUpdateWithoutMessagesInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -643,10 +664,11 @@ export type WhatsAppNumberCreateManyOrganizationInput = {
   id?: string
   phoneNumber: string
   phoneNumberId: string
-  accessToken: string
+  accessToken?: string | null
   displayName?: string | null
   accessTokenExpiresAt?: Date | string | null
   active?: boolean
+  isPrimary?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -655,10 +677,11 @@ export type WhatsAppNumberUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.MessageUpdateManyWithoutWhatsappNumberNestedInput
@@ -668,10 +691,11 @@ export type WhatsAppNumberUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   messages?: Prisma.MessageUncheckedUpdateManyWithoutWhatsappNumberNestedInput
@@ -681,10 +705,11 @@ export type WhatsAppNumberUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumber?: Prisma.StringFieldUpdateOperationsInput | string
   phoneNumberId?: Prisma.StringFieldUpdateOperationsInput | string
-  accessToken?: Prisma.StringFieldUpdateOperationsInput | string
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   displayName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isPrimary?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -729,6 +754,7 @@ export type WhatsAppNumberSelect<ExtArgs extends runtime.Types.Extensions.Intern
   displayName?: boolean
   accessTokenExpiresAt?: boolean
   active?: boolean
+  isPrimary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -745,6 +771,7 @@ export type WhatsAppNumberSelectCreateManyAndReturn<ExtArgs extends runtime.Type
   displayName?: boolean
   accessTokenExpiresAt?: boolean
   active?: boolean
+  isPrimary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -759,6 +786,7 @@ export type WhatsAppNumberSelectUpdateManyAndReturn<ExtArgs extends runtime.Type
   displayName?: boolean
   accessTokenExpiresAt?: boolean
   active?: boolean
+  isPrimary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -773,11 +801,12 @@ export type WhatsAppNumberSelectScalar = {
   displayName?: boolean
   accessTokenExpiresAt?: boolean
   active?: boolean
+  isPrimary?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WhatsAppNumberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "phoneNumber" | "phoneNumberId" | "accessToken" | "displayName" | "accessTokenExpiresAt" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["whatsAppNumber"]>
+export type WhatsAppNumberOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "phoneNumber" | "phoneNumberId" | "accessToken" | "displayName" | "accessTokenExpiresAt" | "active" | "isPrimary" | "createdAt" | "updatedAt", ExtArgs["result"]["whatsAppNumber"]>
 export type WhatsAppNumberInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
   messages?: boolean | Prisma.WhatsAppNumber$messagesArgs<ExtArgs>
@@ -801,10 +830,11 @@ export type $WhatsAppNumberPayload<ExtArgs extends runtime.Types.Extensions.Inte
     organizationId: string
     phoneNumber: string
     phoneNumberId: string
-    accessToken: string
+    accessToken: string | null
     displayName: string | null
     accessTokenExpiresAt: Date | null
     active: boolean
+    isPrimary: boolean
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["whatsAppNumber"]>
@@ -1240,6 +1270,7 @@ export interface WhatsAppNumberFieldRefs {
   readonly displayName: Prisma.FieldRef<"WhatsAppNumber", 'String'>
   readonly accessTokenExpiresAt: Prisma.FieldRef<"WhatsAppNumber", 'DateTime'>
   readonly active: Prisma.FieldRef<"WhatsAppNumber", 'Boolean'>
+  readonly isPrimary: Prisma.FieldRef<"WhatsAppNumber", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WhatsAppNumber", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WhatsAppNumber", 'DateTime'>
 }

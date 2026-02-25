@@ -46,6 +46,51 @@ export const signup = catchAsync(async (req, res) => {
       role: "ADMIN", // default role, can upgrade later
     },
   });
+  // Create an organization for the user and assign OWNER role
+  const slugBase = name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+
+  // Ensure unique slug by appending short suffix if needed
+  let slug = slugBase || `org-${Math.random().toString(36).slice(2, 8)}`;
+  const exists = await prisma.organization.findUnique({ where: { slug } });
+  if (exists) {
+    slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`;
+  }
+
+  const organization = await prisma.$transaction(async (tx) => {
+    const org = await tx.organization.create({
+      data: {
+        name: `${name}'s Org`,
+        slug,
+        plan: "FREE",
+      },
+    });
+
+    // Link user to org and set role OWNER
+    await tx.user.update({
+      where: { id: user.id },
+      data: { role: "OWNER", organizationId: org.id },
+    });
+
+    // Create free trial subscription
+    await tx.subscription.create({
+      data: {
+        organizationId: org.id,
+        status: "TRIAL",
+        plan: "FREE",
+        messageLimit: 100,
+        messagesUsed: 0,
+        currentPeriodStart: new Date(),
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        provider: "trial",
+      },
+    });
+
+    return org;
+  });
 
   const token = generateToken(user.id);
 
@@ -59,7 +104,13 @@ export const signup = catchAsync(async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        role: user.role,
+        role: "OWNER",
+      },
+      organization: {
+        id: organization.id,
+        name: organization.name,
+        slug: organization.slug,
+        plan: organization.plan,
       },
     },
   });

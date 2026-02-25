@@ -87,3 +87,36 @@ export async function sendInviteEmail({ to, name, orgName, tempPassword }) {
     `,
   });
 }
+
+export async function sendLeadAssignedEmail({
+  to,
+  repName,
+  leadName,
+  leadPhone,
+  orgName,
+}) {
+  return resend.emails.send({
+    from: process.env.FROM_EMAIL,
+    to,
+    subject: `New lead assigned: ${leadName}`,
+    html: `
+      <div style="font-family: Arial, Helvetica, sans-serif; background-color: #f9fafb; padding: 24px 16px;">
+        <div style="max-width: 520px; margin: 0 auto; background: #ffffff; border-radius: 10px; padding: 24px; box-shadow: 0 8px 16px rgba(0,0,0,0.06);">
+          <h2 style="margin-top: 0; color: #111827;">New Lead Assigned</h2>
+          <p style="color: #374151; font-size: 14px; line-height: 1.6;">
+            Hi ${repName || "Sales Rep"}, a new lead has been assigned to you${orgName ? ` from <strong>${orgName}</strong>` : ""}.
+          </p>
+          <div style="background: #f3f4f6; border-radius: 8px; padding: 14px; margin: 16px 0;">
+            <p style="margin: 0 0 6px; color: #6b7280; font-size: 12px;">Lead Name</p>
+            <p style="margin: 0 0 12px; font-weight: 600; color: #111827;">${leadName || "Unknown"}</p>
+            <p style="margin: 0 0 6px; color: #6b7280; font-size: 12px;">Lead Phone</p>
+            <p style="margin: 0; font-weight: 600; color: #111827;">${leadPhone || "Unknown"}</p>
+          </div>
+          <p style="color: #374151; font-size: 13px; line-height: 1.6;">
+            Follow up with this lead as soon as possible.
+          </p>
+        </div>
+      </div>
+    `,
+  });
+}

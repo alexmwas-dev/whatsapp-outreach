@@ -4,6 +4,7 @@ import {
   getContactMessages,
   sendMessageToContact,
   getUnreadCount,
+  markContactMessagesAsRead,
 } from "../controllers/messageController.js";
 import { authenticate, authorize } from "../middlewares/authMiddleware.js";
 
@@ -44,6 +45,12 @@ router.post(
   authenticate,
   authorize("SALES_REP", "ADMIN", "OWNER"),
   sendMessageToContact,
+);
+router.post(
+  "/contacts/:contactId/read",
+  authenticate,
+  authorize("SALES_REP", "ADMIN", "OWNER"),
+  markContactMessagesAsRead,
 );
 
 export default router;

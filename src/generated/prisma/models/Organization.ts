@@ -33,6 +33,8 @@ export type OrganizationMinAggregateOutputType = {
   whatsappStatus: $Enums.WhatsappStatus | null
   messagingTier: $Enums.MessagingTier | null
   webhookVerifyToken: string | null
+  accessToken: string | null
+  accessTokenExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -46,6 +48,8 @@ export type OrganizationMaxAggregateOutputType = {
   whatsappStatus: $Enums.WhatsappStatus | null
   messagingTier: $Enums.MessagingTier | null
   webhookVerifyToken: string | null
+  accessToken: string | null
+  accessTokenExpiresAt: Date | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -60,6 +64,8 @@ export type OrganizationCountAggregateOutputType = {
   whatsappStatus: number
   messagingTier: number
   webhookVerifyToken: number
+  accessToken: number
+  accessTokenExpiresAt: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -75,6 +81,8 @@ export type OrganizationMinAggregateInputType = {
   whatsappStatus?: true
   messagingTier?: true
   webhookVerifyToken?: true
+  accessToken?: true
+  accessTokenExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -88,6 +96,8 @@ export type OrganizationMaxAggregateInputType = {
   whatsappStatus?: true
   messagingTier?: true
   webhookVerifyToken?: true
+  accessToken?: true
+  accessTokenExpiresAt?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -102,6 +112,8 @@ export type OrganizationCountAggregateInputType = {
   whatsappStatus?: true
   messagingTier?: true
   webhookVerifyToken?: true
+  accessToken?: true
+  accessTokenExpiresAt?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -189,6 +201,8 @@ export type OrganizationGroupByOutputType = {
   whatsappStatus: $Enums.WhatsappStatus | null
   messagingTier: $Enums.MessagingTier | null
   webhookVerifyToken: string | null
+  accessToken: string | null
+  accessTokenExpiresAt: Date | null
   createdAt: Date
   updatedAt: Date
   _count: OrganizationCountAggregateOutputType | null
@@ -224,6 +238,8 @@ export type OrganizationWhereInput = {
   whatsappStatus?: Prisma.EnumWhatsappStatusNullableFilter<"Organization"> | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.EnumMessagingTierNullableFilter<"Organization"> | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.StringNullableFilter<"Organization"> | string | null
+  accessToken?: Prisma.StringNullableFilter<"Organization"> | string | null
+  accessTokenExpiresAt?: Prisma.DateTimeNullableFilter<"Organization"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   users?: Prisma.UserListRelationFilter
@@ -234,6 +250,7 @@ export type OrganizationWhereInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberListRelationFilter
   subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   whatsappTemplates?: Prisma.WhatsAppTemplateListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }
 
 export type OrganizationOrderByWithRelationInput = {
@@ -246,6 +263,8 @@ export type OrganizationOrderByWithRelationInput = {
   whatsappStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   messagingTier?: Prisma.SortOrderInput | Prisma.SortOrder
   webhookVerifyToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   users?: Prisma.UserOrderByRelationAggregateInput
@@ -256,6 +275,7 @@ export type OrganizationOrderByWithRelationInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberOrderByRelationAggregateInput
   subscription?: Prisma.SubscriptionOrderByWithRelationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateOrderByRelationAggregateInput
+  payments?: Prisma.PaymentOrderByRelationAggregateInput
 }
 
 export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +291,8 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   whatsappStatus?: Prisma.EnumWhatsappStatusNullableFilter<"Organization"> | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.EnumMessagingTierNullableFilter<"Organization"> | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.StringNullableFilter<"Organization"> | string | null
+  accessToken?: Prisma.StringNullableFilter<"Organization"> | string | null
+  accessTokenExpiresAt?: Prisma.DateTimeNullableFilter<"Organization"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Organization"> | Date | string
   users?: Prisma.UserListRelationFilter
@@ -281,6 +303,7 @@ export type OrganizationWhereUniqueInput = Prisma.AtLeast<{
   whatsAppNumbers?: Prisma.WhatsAppNumberListRelationFilter
   subscription?: Prisma.XOR<Prisma.SubscriptionNullableScalarRelationFilter, Prisma.SubscriptionWhereInput> | null
   whatsappTemplates?: Prisma.WhatsAppTemplateListRelationFilter
+  payments?: Prisma.PaymentListRelationFilter
 }, "id" | "slug">
 
 export type OrganizationOrderByWithAggregationInput = {
@@ -293,6 +316,8 @@ export type OrganizationOrderByWithAggregationInput = {
   whatsappStatus?: Prisma.SortOrderInput | Prisma.SortOrder
   messagingTier?: Prisma.SortOrderInput | Prisma.SortOrder
   webhookVerifyToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  accessTokenExpiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.OrganizationCountOrderByAggregateInput
@@ -313,6 +338,8 @@ export type OrganizationScalarWhereWithAggregatesInput = {
   whatsappStatus?: Prisma.EnumWhatsappStatusNullableWithAggregatesFilter<"Organization"> | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.EnumMessagingTierNullableWithAggregatesFilter<"Organization"> | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
+  accessToken?: Prisma.StringNullableWithAggregatesFilter<"Organization"> | string | null
+  accessTokenExpiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Organization"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Organization"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Organization"> | Date | string
 }
@@ -327,6 +354,8 @@ export type OrganizationCreateInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -337,6 +366,7 @@ export type OrganizationCreateInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateInput = {
@@ -349,6 +379,8 @@ export type OrganizationUncheckedCreateInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -359,6 +391,7 @@ export type OrganizationUncheckedCreateInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUpdateInput = {
@@ -371,6 +404,8 @@ export type OrganizationUpdateInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -381,6 +416,7 @@ export type OrganizationUpdateInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateInput = {
@@ -393,6 +429,8 @@ export type OrganizationUncheckedUpdateInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -403,6 +441,7 @@ export type OrganizationUncheckedUpdateInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateManyInput = {
@@ -415,6 +454,8 @@ export type OrganizationCreateManyInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -429,6 +470,8 @@ export type OrganizationUpdateManyMutationInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -443,6 +486,8 @@ export type OrganizationUncheckedUpdateManyInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -465,6 +510,8 @@ export type OrganizationCountOrderByAggregateInput = {
   whatsappStatus?: Prisma.SortOrder
   messagingTier?: Prisma.SortOrder
   webhookVerifyToken?: Prisma.SortOrder
+  accessToken?: Prisma.SortOrder
+  accessTokenExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -478,6 +525,8 @@ export type OrganizationMaxOrderByAggregateInput = {
   whatsappStatus?: Prisma.SortOrder
   messagingTier?: Prisma.SortOrder
   webhookVerifyToken?: Prisma.SortOrder
+  accessToken?: Prisma.SortOrder
+  accessTokenExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -491,6 +540,8 @@ export type OrganizationMinOrderByAggregateInput = {
   whatsappStatus?: Prisma.SortOrder
   messagingTier?: Prisma.SortOrder
   webhookVerifyToken?: Prisma.SortOrder
+  accessToken?: Prisma.SortOrder
+  accessTokenExpiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -530,6 +581,10 @@ export type NullableEnumMessagingTierFieldUpdateOperationsInput = {
   set?: $Enums.MessagingTier | null
 }
 
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
@@ -562,6 +617,20 @@ export type OrganizationUpdateOneRequiredWithoutSubscriptionNestedInput = {
   upsert?: Prisma.OrganizationUpsertWithoutSubscriptionInput
   connect?: Prisma.OrganizationWhereUniqueInput
   update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutSubscriptionInput, Prisma.OrganizationUpdateWithoutSubscriptionInput>, Prisma.OrganizationUncheckedUpdateWithoutSubscriptionInput>
+}
+
+export type OrganizationCreateNestedOneWithoutPaymentsInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutPaymentsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+}
+
+export type OrganizationUpdateOneRequiredWithoutPaymentsNestedInput = {
+  create?: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentsInput>
+  connectOrCreate?: Prisma.OrganizationCreateOrConnectWithoutPaymentsInput
+  upsert?: Prisma.OrganizationUpsertWithoutPaymentsInput
+  connect?: Prisma.OrganizationWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.OrganizationUpdateToOneWithWhereWithoutPaymentsInput, Prisma.OrganizationUpdateWithoutPaymentsInput>, Prisma.OrganizationUncheckedUpdateWithoutPaymentsInput>
 }
 
 export type OrganizationCreateNestedOneWithoutWhatsAppNumbersInput = {
@@ -658,6 +727,8 @@ export type OrganizationCreateWithoutUsersInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactCreateNestedManyWithoutOrganizationInput
@@ -667,6 +738,7 @@ export type OrganizationCreateWithoutUsersInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutUsersInput = {
@@ -679,6 +751,8 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOrganizationInput
@@ -688,6 +762,7 @@ export type OrganizationUncheckedCreateWithoutUsersInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutUsersInput = {
@@ -716,6 +791,8 @@ export type OrganizationUpdateWithoutUsersInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUpdateManyWithoutOrganizationNestedInput
@@ -725,6 +802,7 @@ export type OrganizationUpdateWithoutUsersInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutUsersInput = {
@@ -737,6 +815,8 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contacts?: Prisma.ContactUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -746,6 +826,7 @@ export type OrganizationUncheckedUpdateWithoutUsersInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutSubscriptionInput = {
@@ -758,6 +839,8 @@ export type OrganizationCreateWithoutSubscriptionInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -767,6 +850,7 @@ export type OrganizationCreateWithoutSubscriptionInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutOrganizationInput
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSubscriptionInput = {
@@ -779,6 +863,8 @@ export type OrganizationUncheckedCreateWithoutSubscriptionInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -788,6 +874,7 @@ export type OrganizationUncheckedCreateWithoutSubscriptionInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutOrganizationInput
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSubscriptionInput = {
@@ -816,6 +903,8 @@ export type OrganizationUpdateWithoutSubscriptionInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -825,6 +914,7 @@ export type OrganizationUpdateWithoutSubscriptionInput = {
   messages?: Prisma.MessageUpdateManyWithoutOrganizationNestedInput
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSubscriptionInput = {
@@ -837,6 +927,8 @@ export type OrganizationUncheckedUpdateWithoutSubscriptionInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -845,6 +937,119 @@ export type OrganizationUncheckedUpdateWithoutSubscriptionInput = {
   campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutOrganizationNestedInput
   messages?: Prisma.MessageUncheckedUpdateManyWithoutOrganizationNestedInput
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
+  whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationCreateWithoutPaymentsInput = {
+  id?: string
+  name: string
+  slug: string
+  plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
+  whatsappBusinessAccountId?: string | null
+  whatsappStatus?: $Enums.WhatsappStatus | null
+  messagingTier?: $Enums.MessagingTier | null
+  webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
+  contacts?: Prisma.ContactCreateNestedManyWithoutOrganizationInput
+  salesReps?: Prisma.SalesRepCreateNestedManyWithoutOrganizationInput
+  campaigns?: Prisma.CampaignCreateNestedManyWithoutOrganizationInput
+  messages?: Prisma.MessageCreateNestedManyWithoutOrganizationInput
+  whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
+  subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
+  whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationUncheckedCreateWithoutPaymentsInput = {
+  id?: string
+  name: string
+  slug: string
+  plan?: string
+  whatsappStepsCompleted?: Prisma.OrganizationCreatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
+  whatsappBusinessAccountId?: string | null
+  whatsappStatus?: $Enums.WhatsappStatus | null
+  messagingTier?: $Enums.MessagingTier | null
+  webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
+  contacts?: Prisma.ContactUncheckedCreateNestedManyWithoutOrganizationInput
+  salesReps?: Prisma.SalesRepUncheckedCreateNestedManyWithoutOrganizationInput
+  campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutOrganizationInput
+  messages?: Prisma.MessageUncheckedCreateNestedManyWithoutOrganizationInput
+  whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
+  subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
+  whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+}
+
+export type OrganizationCreateOrConnectWithoutPaymentsInput = {
+  where: Prisma.OrganizationWhereUniqueInput
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentsInput>
+}
+
+export type OrganizationUpsertWithoutPaymentsInput = {
+  update: Prisma.XOR<Prisma.OrganizationUpdateWithoutPaymentsInput, Prisma.OrganizationUncheckedUpdateWithoutPaymentsInput>
+  create: Prisma.XOR<Prisma.OrganizationCreateWithoutPaymentsInput, Prisma.OrganizationUncheckedCreateWithoutPaymentsInput>
+  where?: Prisma.OrganizationWhereInput
+}
+
+export type OrganizationUpdateToOneWithWhereWithoutPaymentsInput = {
+  where?: Prisma.OrganizationWhereInput
+  data: Prisma.XOR<Prisma.OrganizationUpdateWithoutPaymentsInput, Prisma.OrganizationUncheckedUpdateWithoutPaymentsInput>
+}
+
+export type OrganizationUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
+  whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
+  messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
+  webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
+  contacts?: Prisma.ContactUpdateManyWithoutOrganizationNestedInput
+  salesReps?: Prisma.SalesRepUpdateManyWithoutOrganizationNestedInput
+  campaigns?: Prisma.CampaignUpdateManyWithoutOrganizationNestedInput
+  messages?: Prisma.MessageUpdateManyWithoutOrganizationNestedInput
+  whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
+  subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
+  whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+}
+
+export type OrganizationUncheckedUpdateWithoutPaymentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  plan?: Prisma.StringFieldUpdateOperationsInput | string
+  whatsappStepsCompleted?: Prisma.OrganizationUpdatewhatsappStepsCompletedInput | $Enums.WhatsappSetupStep[]
+  whatsappBusinessAccountId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
+  messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
+  webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
+  contacts?: Prisma.ContactUncheckedUpdateManyWithoutOrganizationNestedInput
+  salesReps?: Prisma.SalesRepUncheckedUpdateManyWithoutOrganizationNestedInput
+  campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutOrganizationNestedInput
+  messages?: Prisma.MessageUncheckedUpdateManyWithoutOrganizationNestedInput
+  whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
+  subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
@@ -858,6 +1063,8 @@ export type OrganizationCreateWithoutWhatsAppNumbersInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -867,6 +1074,7 @@ export type OrganizationCreateWithoutWhatsAppNumbersInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutWhatsAppNumbersInput = {
@@ -879,6 +1087,8 @@ export type OrganizationUncheckedCreateWithoutWhatsAppNumbersInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -888,6 +1098,7 @@ export type OrganizationUncheckedCreateWithoutWhatsAppNumbersInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutWhatsAppNumbersInput = {
@@ -916,6 +1127,8 @@ export type OrganizationUpdateWithoutWhatsAppNumbersInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -925,6 +1138,7 @@ export type OrganizationUpdateWithoutWhatsAppNumbersInput = {
   messages?: Prisma.MessageUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutWhatsAppNumbersInput = {
@@ -937,6 +1151,8 @@ export type OrganizationUncheckedUpdateWithoutWhatsAppNumbersInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -946,6 +1162,7 @@ export type OrganizationUncheckedUpdateWithoutWhatsAppNumbersInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutWhatsappTemplatesInput = {
@@ -958,6 +1175,8 @@ export type OrganizationCreateWithoutWhatsappTemplatesInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -967,6 +1186,7 @@ export type OrganizationCreateWithoutWhatsappTemplatesInput = {
   messages?: Prisma.MessageCreateNestedManyWithoutOrganizationInput
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutWhatsappTemplatesInput = {
@@ -979,6 +1199,8 @@ export type OrganizationUncheckedCreateWithoutWhatsappTemplatesInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -988,6 +1210,7 @@ export type OrganizationUncheckedCreateWithoutWhatsappTemplatesInput = {
   messages?: Prisma.MessageUncheckedCreateNestedManyWithoutOrganizationInput
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutWhatsappTemplatesInput = {
@@ -1016,6 +1239,8 @@ export type OrganizationUpdateWithoutWhatsappTemplatesInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -1025,6 +1250,7 @@ export type OrganizationUpdateWithoutWhatsappTemplatesInput = {
   messages?: Prisma.MessageUpdateManyWithoutOrganizationNestedInput
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutWhatsappTemplatesInput = {
@@ -1037,6 +1263,8 @@ export type OrganizationUncheckedUpdateWithoutWhatsappTemplatesInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1046,6 +1274,7 @@ export type OrganizationUncheckedUpdateWithoutWhatsappTemplatesInput = {
   messages?: Prisma.MessageUncheckedUpdateManyWithoutOrganizationNestedInput
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutContactsInput = {
@@ -1058,6 +1287,8 @@ export type OrganizationCreateWithoutContactsInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -1067,6 +1298,7 @@ export type OrganizationCreateWithoutContactsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutContactsInput = {
@@ -1079,6 +1311,8 @@ export type OrganizationUncheckedCreateWithoutContactsInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1088,6 +1322,7 @@ export type OrganizationUncheckedCreateWithoutContactsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutContactsInput = {
@@ -1116,6 +1351,8 @@ export type OrganizationUpdateWithoutContactsInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -1125,6 +1362,7 @@ export type OrganizationUpdateWithoutContactsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutContactsInput = {
@@ -1137,6 +1375,8 @@ export type OrganizationUncheckedUpdateWithoutContactsInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1146,6 +1386,7 @@ export type OrganizationUncheckedUpdateWithoutContactsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutSalesRepsInput = {
@@ -1158,6 +1399,8 @@ export type OrganizationCreateWithoutSalesRepsInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -1167,6 +1410,7 @@ export type OrganizationCreateWithoutSalesRepsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutSalesRepsInput = {
@@ -1179,6 +1423,8 @@ export type OrganizationUncheckedCreateWithoutSalesRepsInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1188,6 +1434,7 @@ export type OrganizationUncheckedCreateWithoutSalesRepsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutSalesRepsInput = {
@@ -1216,6 +1463,8 @@ export type OrganizationUpdateWithoutSalesRepsInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -1225,6 +1474,7 @@ export type OrganizationUpdateWithoutSalesRepsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutSalesRepsInput = {
@@ -1237,6 +1487,8 @@ export type OrganizationUncheckedUpdateWithoutSalesRepsInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1246,6 +1498,7 @@ export type OrganizationUncheckedUpdateWithoutSalesRepsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutMessagesInput = {
@@ -1258,6 +1511,8 @@ export type OrganizationCreateWithoutMessagesInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -1267,6 +1522,7 @@ export type OrganizationCreateWithoutMessagesInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutMessagesInput = {
@@ -1279,6 +1535,8 @@ export type OrganizationUncheckedCreateWithoutMessagesInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1288,6 +1546,7 @@ export type OrganizationUncheckedCreateWithoutMessagesInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutMessagesInput = {
@@ -1316,6 +1575,8 @@ export type OrganizationUpdateWithoutMessagesInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -1325,6 +1586,7 @@ export type OrganizationUpdateWithoutMessagesInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutMessagesInput = {
@@ -1337,6 +1599,8 @@ export type OrganizationUncheckedUpdateWithoutMessagesInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1346,6 +1610,7 @@ export type OrganizationUncheckedUpdateWithoutMessagesInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationCreateWithoutCampaignsInput = {
@@ -1358,6 +1623,8 @@ export type OrganizationCreateWithoutCampaignsInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserCreateNestedManyWithoutOrganizationInput
@@ -1367,6 +1634,7 @@ export type OrganizationCreateWithoutCampaignsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationUncheckedCreateWithoutCampaignsInput = {
@@ -1379,6 +1647,8 @@ export type OrganizationUncheckedCreateWithoutCampaignsInput = {
   whatsappStatus?: $Enums.WhatsappStatus | null
   messagingTier?: $Enums.MessagingTier | null
   webhookVerifyToken?: string | null
+  accessToken?: string | null
+  accessTokenExpiresAt?: Date | string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   users?: Prisma.UserUncheckedCreateNestedManyWithoutOrganizationInput
@@ -1388,6 +1658,7 @@ export type OrganizationUncheckedCreateWithoutCampaignsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedCreateNestedManyWithoutOrganizationInput
   subscription?: Prisma.SubscriptionUncheckedCreateNestedOneWithoutOrganizationInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedCreateNestedManyWithoutOrganizationInput
+  payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutOrganizationInput
 }
 
 export type OrganizationCreateOrConnectWithoutCampaignsInput = {
@@ -1416,6 +1687,8 @@ export type OrganizationUpdateWithoutCampaignsInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUpdateManyWithoutOrganizationNestedInput
@@ -1425,6 +1698,7 @@ export type OrganizationUpdateWithoutCampaignsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUpdateManyWithoutOrganizationNestedInput
 }
 
 export type OrganizationUncheckedUpdateWithoutCampaignsInput = {
@@ -1437,6 +1711,8 @@ export type OrganizationUncheckedUpdateWithoutCampaignsInput = {
   whatsappStatus?: Prisma.NullableEnumWhatsappStatusFieldUpdateOperationsInput | $Enums.WhatsappStatus | null
   messagingTier?: Prisma.NullableEnumMessagingTierFieldUpdateOperationsInput | $Enums.MessagingTier | null
   webhookVerifyToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  accessTokenExpiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   users?: Prisma.UserUncheckedUpdateManyWithoutOrganizationNestedInput
@@ -1446,6 +1722,7 @@ export type OrganizationUncheckedUpdateWithoutCampaignsInput = {
   whatsAppNumbers?: Prisma.WhatsAppNumberUncheckedUpdateManyWithoutOrganizationNestedInput
   subscription?: Prisma.SubscriptionUncheckedUpdateOneWithoutOrganizationNestedInput
   whatsappTemplates?: Prisma.WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput
+  payments?: Prisma.PaymentUncheckedUpdateManyWithoutOrganizationNestedInput
 }
 
 
@@ -1461,6 +1738,7 @@ export type OrganizationCountOutputType = {
   messages: number
   whatsAppNumbers: number
   whatsappTemplates: number
+  payments: number
 }
 
 export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1471,6 +1749,7 @@ export type OrganizationCountOutputTypeSelect<ExtArgs extends runtime.Types.Exte
   messages?: boolean | OrganizationCountOutputTypeCountMessagesArgs
   whatsAppNumbers?: boolean | OrganizationCountOutputTypeCountWhatsAppNumbersArgs
   whatsappTemplates?: boolean | OrganizationCountOutputTypeCountWhatsappTemplatesArgs
+  payments?: boolean | OrganizationCountOutputTypeCountPaymentsArgs
 }
 
 /**
@@ -1532,6 +1811,13 @@ export type OrganizationCountOutputTypeCountWhatsappTemplatesArgs<ExtArgs extend
   where?: Prisma.WhatsAppTemplateWhereInput
 }
 
+/**
+ * OrganizationCountOutputType without action
+ */
+export type OrganizationCountOutputTypeCountPaymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentWhereInput
+}
+
 
 export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1543,6 +1829,8 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   whatsappStatus?: boolean
   messagingTier?: boolean
   webhookVerifyToken?: boolean
+  accessToken?: boolean
+  accessTokenExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   users?: boolean | Prisma.Organization$usersArgs<ExtArgs>
@@ -1553,6 +1841,7 @@ export type OrganizationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   whatsAppNumbers?: boolean | Prisma.Organization$whatsAppNumbersArgs<ExtArgs>
   subscription?: boolean | Prisma.Organization$subscriptionArgs<ExtArgs>
   whatsappTemplates?: boolean | Prisma.Organization$whatsappTemplatesArgs<ExtArgs>
+  payments?: boolean | Prisma.Organization$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["organization"]>
 
@@ -1566,6 +1855,8 @@ export type OrganizationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   whatsappStatus?: boolean
   messagingTier?: boolean
   webhookVerifyToken?: boolean
+  accessToken?: boolean
+  accessTokenExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["organization"]>
@@ -1580,6 +1871,8 @@ export type OrganizationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   whatsappStatus?: boolean
   messagingTier?: boolean
   webhookVerifyToken?: boolean
+  accessToken?: boolean
+  accessTokenExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["organization"]>
@@ -1594,11 +1887,13 @@ export type OrganizationSelectScalar = {
   whatsappStatus?: boolean
   messagingTier?: boolean
   webhookVerifyToken?: boolean
+  accessToken?: boolean
+  accessTokenExpiresAt?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "whatsappStepsCompleted" | "whatsappBusinessAccountId" | "whatsappStatus" | "messagingTier" | "webhookVerifyToken" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
+export type OrganizationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "plan" | "whatsappStepsCompleted" | "whatsappBusinessAccountId" | "whatsappStatus" | "messagingTier" | "webhookVerifyToken" | "accessToken" | "accessTokenExpiresAt" | "createdAt" | "updatedAt", ExtArgs["result"]["organization"]>
 export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   users?: boolean | Prisma.Organization$usersArgs<ExtArgs>
   contacts?: boolean | Prisma.Organization$contactsArgs<ExtArgs>
@@ -1608,6 +1903,7 @@ export type OrganizationInclude<ExtArgs extends runtime.Types.Extensions.Interna
   whatsAppNumbers?: boolean | Prisma.Organization$whatsAppNumbersArgs<ExtArgs>
   subscription?: boolean | Prisma.Organization$subscriptionArgs<ExtArgs>
   whatsappTemplates?: boolean | Prisma.Organization$whatsappTemplatesArgs<ExtArgs>
+  payments?: boolean | Prisma.Organization$paymentsArgs<ExtArgs>
   _count?: boolean | Prisma.OrganizationCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type OrganizationIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1624,6 +1920,7 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     whatsAppNumbers: Prisma.$WhatsAppNumberPayload<ExtArgs>[]
     subscription: Prisma.$SubscriptionPayload<ExtArgs> | null
     whatsappTemplates: Prisma.$WhatsAppTemplatePayload<ExtArgs>[]
+    payments: Prisma.$PaymentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1635,6 +1932,8 @@ export type $OrganizationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     whatsappStatus: $Enums.WhatsappStatus | null
     messagingTier: $Enums.MessagingTier | null
     webhookVerifyToken: string | null
+    accessToken: string | null
+    accessTokenExpiresAt: Date | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["organization"]>
@@ -2039,6 +2338,7 @@ export interface Prisma__OrganizationClient<T, Null = never, ExtArgs extends run
   whatsAppNumbers<T extends Prisma.Organization$whatsAppNumbersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$whatsAppNumbersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WhatsAppNumberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   subscription<T extends Prisma.Organization$subscriptionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$subscriptionArgs<ExtArgs>>): Prisma.Prisma__SubscriptionClient<runtime.Types.Result.GetResult<Prisma.$SubscriptionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   whatsappTemplates<T extends Prisma.Organization$whatsappTemplatesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$whatsappTemplatesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$WhatsAppTemplatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payments<T extends Prisma.Organization$paymentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Organization$paymentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2077,6 +2377,8 @@ export interface OrganizationFieldRefs {
   readonly whatsappStatus: Prisma.FieldRef<"Organization", 'WhatsappStatus'>
   readonly messagingTier: Prisma.FieldRef<"Organization", 'MessagingTier'>
   readonly webhookVerifyToken: Prisma.FieldRef<"Organization", 'String'>
+  readonly accessToken: Prisma.FieldRef<"Organization", 'String'>
+  readonly accessTokenExpiresAt: Prisma.FieldRef<"Organization", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Organization", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Organization", 'DateTime'>
 }
@@ -2651,6 +2953,30 @@ export type Organization$whatsappTemplatesArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.WhatsAppTemplateScalarFieldEnum | Prisma.WhatsAppTemplateScalarFieldEnum[]
+}
+
+/**
+ * Organization.payments
+ */
+export type Organization$paymentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Payment
+   */
+  select?: Prisma.PaymentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Payment
+   */
+  omit?: Prisma.PaymentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentInclude<ExtArgs> | null
+  where?: Prisma.PaymentWhereInput
+  orderBy?: Prisma.PaymentOrderByWithRelationInput | Prisma.PaymentOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentScalarFieldEnum | Prisma.PaymentScalarFieldEnum[]
 }
 
 /**

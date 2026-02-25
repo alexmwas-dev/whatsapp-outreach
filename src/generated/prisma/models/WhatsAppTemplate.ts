@@ -28,10 +28,12 @@ export type AggregateWhatsAppTemplate = {
 
 export type WhatsAppTemplateAvgAggregateOutputType = {
   bodyParamsCount: number | null
+  usageCount: number | null
 }
 
 export type WhatsAppTemplateSumAggregateOutputType = {
   bodyParamsCount: number | null
+  usageCount: number | null
 }
 
 export type WhatsAppTemplateMinAggregateOutputType = {
@@ -39,9 +41,14 @@ export type WhatsAppTemplateMinAggregateOutputType = {
   organizationId: string | null
   name: string | null
   language: string | null
+  content: string | null
+  metaTemplateId: string | null
+  status: $Enums.TemplateStatus | null
+  rejectionReason: string | null
   category: string | null
   description: string | null
   bodyParamsCount: number | null
+  usageCount: number | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -52,9 +59,14 @@ export type WhatsAppTemplateMaxAggregateOutputType = {
   organizationId: string | null
   name: string | null
   language: string | null
+  content: string | null
+  metaTemplateId: string | null
+  status: $Enums.TemplateStatus | null
+  rejectionReason: string | null
   category: string | null
   description: string | null
   bodyParamsCount: number | null
+  usageCount: number | null
   active: boolean | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,9 +77,15 @@ export type WhatsAppTemplateCountAggregateOutputType = {
   organizationId: number
   name: number
   language: number
+  content: number
+  metaTemplateId: number
+  status: number
+  rejectionReason: number
   category: number
   description: number
   bodyParamsCount: number
+  bodyParamKeys: number
+  usageCount: number
   active: number
   createdAt: number
   updatedAt: number
@@ -77,10 +95,12 @@ export type WhatsAppTemplateCountAggregateOutputType = {
 
 export type WhatsAppTemplateAvgAggregateInputType = {
   bodyParamsCount?: true
+  usageCount?: true
 }
 
 export type WhatsAppTemplateSumAggregateInputType = {
   bodyParamsCount?: true
+  usageCount?: true
 }
 
 export type WhatsAppTemplateMinAggregateInputType = {
@@ -88,9 +108,14 @@ export type WhatsAppTemplateMinAggregateInputType = {
   organizationId?: true
   name?: true
   language?: true
+  content?: true
+  metaTemplateId?: true
+  status?: true
+  rejectionReason?: true
   category?: true
   description?: true
   bodyParamsCount?: true
+  usageCount?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -101,9 +126,14 @@ export type WhatsAppTemplateMaxAggregateInputType = {
   organizationId?: true
   name?: true
   language?: true
+  content?: true
+  metaTemplateId?: true
+  status?: true
+  rejectionReason?: true
   category?: true
   description?: true
   bodyParamsCount?: true
+  usageCount?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -114,9 +144,15 @@ export type WhatsAppTemplateCountAggregateInputType = {
   organizationId?: true
   name?: true
   language?: true
+  content?: true
+  metaTemplateId?: true
+  status?: true
+  rejectionReason?: true
   category?: true
   description?: true
   bodyParamsCount?: true
+  bodyParamKeys?: true
+  usageCount?: true
   active?: true
   createdAt?: true
   updatedAt?: true
@@ -214,9 +250,15 @@ export type WhatsAppTemplateGroupByOutputType = {
   organizationId: string
   name: string
   language: string
+  content: string | null
+  metaTemplateId: string | null
+  status: $Enums.TemplateStatus
+  rejectionReason: string | null
   category: string
   description: string | null
   bodyParamsCount: number
+  bodyParamKeys: runtime.JsonValue | null
+  usageCount: number
   active: boolean
   createdAt: Date
   updatedAt: Date
@@ -250,13 +292,20 @@ export type WhatsAppTemplateWhereInput = {
   organizationId?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   name?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   language?: Prisma.StringFilter<"WhatsAppTemplate"> | string
+  content?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  metaTemplateId?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  status?: Prisma.EnumTemplateStatusFilter<"WhatsAppTemplate"> | $Enums.TemplateStatus
+  rejectionReason?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
   category?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
   bodyParamsCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
+  bodyParamKeys?: Prisma.JsonNullableFilter<"WhatsAppTemplate">
+  usageCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  campaigns?: Prisma.CampaignListRelationFilter
 }
 
 export type WhatsAppTemplateOrderByWithRelationInput = {
@@ -264,13 +313,20 @@ export type WhatsAppTemplateOrderByWithRelationInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   language?: Prisma.SortOrder
+  content?: Prisma.SortOrderInput | Prisma.SortOrder
+  metaTemplateId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   bodyParamsCount?: Prisma.SortOrder
+  bodyParamKeys?: Prisma.SortOrderInput | Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   organization?: Prisma.OrganizationOrderByWithRelationInput
+  campaigns?: Prisma.CampaignOrderByRelationAggregateInput
 }
 
 export type WhatsAppTemplateWhereUniqueInput = Prisma.AtLeast<{
@@ -282,13 +338,20 @@ export type WhatsAppTemplateWhereUniqueInput = Prisma.AtLeast<{
   organizationId?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   name?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   language?: Prisma.StringFilter<"WhatsAppTemplate"> | string
+  content?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  metaTemplateId?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  status?: Prisma.EnumTemplateStatusFilter<"WhatsAppTemplate"> | $Enums.TemplateStatus
+  rejectionReason?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
   category?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
   bodyParamsCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
+  bodyParamKeys?: Prisma.JsonNullableFilter<"WhatsAppTemplate">
+  usageCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   organization?: Prisma.XOR<Prisma.OrganizationScalarRelationFilter, Prisma.OrganizationWhereInput>
+  campaigns?: Prisma.CampaignListRelationFilter
 }, "id" | "organizationId_name">
 
 export type WhatsAppTemplateOrderByWithAggregationInput = {
@@ -296,9 +359,15 @@ export type WhatsAppTemplateOrderByWithAggregationInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   language?: Prisma.SortOrder
+  content?: Prisma.SortOrderInput | Prisma.SortOrder
+  metaTemplateId?: Prisma.SortOrderInput | Prisma.SortOrder
+  status?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrderInput | Prisma.SortOrder
   bodyParamsCount?: Prisma.SortOrder
+  bodyParamKeys?: Prisma.SortOrderInput | Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -317,9 +386,15 @@ export type WhatsAppTemplateScalarWhereWithAggregatesInput = {
   organizationId?: Prisma.StringWithAggregatesFilter<"WhatsAppTemplate"> | string
   name?: Prisma.StringWithAggregatesFilter<"WhatsAppTemplate"> | string
   language?: Prisma.StringWithAggregatesFilter<"WhatsAppTemplate"> | string
+  content?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppTemplate"> | string | null
+  metaTemplateId?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppTemplate"> | string | null
+  status?: Prisma.EnumTemplateStatusWithAggregatesFilter<"WhatsAppTemplate"> | $Enums.TemplateStatus
+  rejectionReason?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppTemplate"> | string | null
   category?: Prisma.StringWithAggregatesFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableWithAggregatesFilter<"WhatsAppTemplate"> | string | null
   bodyParamsCount?: Prisma.IntWithAggregatesFilter<"WhatsAppTemplate"> | number
+  bodyParamKeys?: Prisma.JsonNullableWithAggregatesFilter<"WhatsAppTemplate">
+  usageCount?: Prisma.IntWithAggregatesFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolWithAggregatesFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"WhatsAppTemplate"> | Date | string
@@ -329,13 +404,20 @@ export type WhatsAppTemplateCreateInput = {
   id?: string
   name: string
   language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
   category: string
   description?: string | null
   bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
   organization: Prisma.OrganizationCreateNestedOneWithoutWhatsappTemplatesInput
+  campaigns?: Prisma.CampaignCreateNestedManyWithoutTemplateInput
 }
 
 export type WhatsAppTemplateUncheckedCreateInput = {
@@ -343,25 +425,39 @@ export type WhatsAppTemplateUncheckedCreateInput = {
   organizationId: string
   name: string
   language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
   category: string
   description?: string | null
   bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutTemplateInput
 }
 
 export type WhatsAppTemplateUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   organization?: Prisma.OrganizationUpdateOneRequiredWithoutWhatsappTemplatesNestedInput
+  campaigns?: Prisma.CampaignUpdateManyWithoutTemplateNestedInput
 }
 
 export type WhatsAppTemplateUncheckedUpdateInput = {
@@ -369,12 +465,19 @@ export type WhatsAppTemplateUncheckedUpdateInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutTemplateNestedInput
 }
 
 export type WhatsAppTemplateCreateManyInput = {
@@ -382,9 +485,15 @@ export type WhatsAppTemplateCreateManyInput = {
   organizationId: string
   name: string
   language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
   category: string
   description?: string | null
   bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -394,9 +503,15 @@ export type WhatsAppTemplateUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -407,9 +522,15 @@ export type WhatsAppTemplateUncheckedUpdateManyInput = {
   organizationId?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -435,9 +556,15 @@ export type WhatsAppTemplateCountOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   language?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  metaTemplateId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
   bodyParamsCount?: Prisma.SortOrder
+  bodyParamKeys?: Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -445,6 +572,7 @@ export type WhatsAppTemplateCountOrderByAggregateInput = {
 
 export type WhatsAppTemplateAvgOrderByAggregateInput = {
   bodyParamsCount?: Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
 }
 
 export type WhatsAppTemplateMaxOrderByAggregateInput = {
@@ -452,9 +580,14 @@ export type WhatsAppTemplateMaxOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   language?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  metaTemplateId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
   bodyParamsCount?: Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -465,9 +598,14 @@ export type WhatsAppTemplateMinOrderByAggregateInput = {
   organizationId?: Prisma.SortOrder
   name?: Prisma.SortOrder
   language?: Prisma.SortOrder
+  content?: Prisma.SortOrder
+  metaTemplateId?: Prisma.SortOrder
+  status?: Prisma.SortOrder
+  rejectionReason?: Prisma.SortOrder
   category?: Prisma.SortOrder
   description?: Prisma.SortOrder
   bodyParamsCount?: Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
   active?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -475,6 +613,12 @@ export type WhatsAppTemplateMinOrderByAggregateInput = {
 
 export type WhatsAppTemplateSumOrderByAggregateInput = {
   bodyParamsCount?: Prisma.SortOrder
+  usageCount?: Prisma.SortOrder
+}
+
+export type WhatsAppTemplateNullableScalarRelationFilter = {
+  is?: Prisma.WhatsAppTemplateWhereInput | null
+  isNot?: Prisma.WhatsAppTemplateWhereInput | null
 }
 
 export type WhatsAppTemplateCreateNestedManyWithoutOrganizationInput = {
@@ -519,28 +663,62 @@ export type WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationNestedInput = 
   deleteMany?: Prisma.WhatsAppTemplateScalarWhereInput | Prisma.WhatsAppTemplateScalarWhereInput[]
 }
 
+export type EnumTemplateStatusFieldUpdateOperationsInput = {
+  set?: $Enums.TemplateStatus
+}
+
+export type WhatsAppTemplateCreateNestedOneWithoutCampaignsInput = {
+  create?: Prisma.XOR<Prisma.WhatsAppTemplateCreateWithoutCampaignsInput, Prisma.WhatsAppTemplateUncheckedCreateWithoutCampaignsInput>
+  connectOrCreate?: Prisma.WhatsAppTemplateCreateOrConnectWithoutCampaignsInput
+  connect?: Prisma.WhatsAppTemplateWhereUniqueInput
+}
+
+export type WhatsAppTemplateUpdateOneWithoutCampaignsNestedInput = {
+  create?: Prisma.XOR<Prisma.WhatsAppTemplateCreateWithoutCampaignsInput, Prisma.WhatsAppTemplateUncheckedCreateWithoutCampaignsInput>
+  connectOrCreate?: Prisma.WhatsAppTemplateCreateOrConnectWithoutCampaignsInput
+  upsert?: Prisma.WhatsAppTemplateUpsertWithoutCampaignsInput
+  disconnect?: Prisma.WhatsAppTemplateWhereInput | boolean
+  delete?: Prisma.WhatsAppTemplateWhereInput | boolean
+  connect?: Prisma.WhatsAppTemplateWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WhatsAppTemplateUpdateToOneWithWhereWithoutCampaignsInput, Prisma.WhatsAppTemplateUpdateWithoutCampaignsInput>, Prisma.WhatsAppTemplateUncheckedUpdateWithoutCampaignsInput>
+}
+
 export type WhatsAppTemplateCreateWithoutOrganizationInput = {
   id?: string
   name: string
   language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
   category: string
   description?: string | null
   bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  campaigns?: Prisma.CampaignCreateNestedManyWithoutTemplateInput
 }
 
 export type WhatsAppTemplateUncheckedCreateWithoutOrganizationInput = {
   id?: string
   name: string
   language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
   category: string
   description?: string | null
   bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  campaigns?: Prisma.CampaignUncheckedCreateNestedManyWithoutTemplateInput
 }
 
 export type WhatsAppTemplateCreateOrConnectWithoutOrganizationInput = {
@@ -577,21 +755,125 @@ export type WhatsAppTemplateScalarWhereInput = {
   organizationId?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   name?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   language?: Prisma.StringFilter<"WhatsAppTemplate"> | string
+  content?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  metaTemplateId?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
+  status?: Prisma.EnumTemplateStatusFilter<"WhatsAppTemplate"> | $Enums.TemplateStatus
+  rejectionReason?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
   category?: Prisma.StringFilter<"WhatsAppTemplate"> | string
   description?: Prisma.StringNullableFilter<"WhatsAppTemplate"> | string | null
   bodyParamsCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
+  bodyParamKeys?: Prisma.JsonNullableFilter<"WhatsAppTemplate">
+  usageCount?: Prisma.IntFilter<"WhatsAppTemplate"> | number
   active?: Prisma.BoolFilter<"WhatsAppTemplate"> | boolean
   createdAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"WhatsAppTemplate"> | Date | string
+}
+
+export type WhatsAppTemplateCreateWithoutCampaignsInput = {
+  id?: string
+  name: string
+  language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
+  category: string
+  description?: string | null
+  bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  organization: Prisma.OrganizationCreateNestedOneWithoutWhatsappTemplatesInput
+}
+
+export type WhatsAppTemplateUncheckedCreateWithoutCampaignsInput = {
+  id?: string
+  organizationId: string
+  name: string
+  language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
+  category: string
+  description?: string | null
+  bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
+  active?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type WhatsAppTemplateCreateOrConnectWithoutCampaignsInput = {
+  where: Prisma.WhatsAppTemplateWhereUniqueInput
+  create: Prisma.XOR<Prisma.WhatsAppTemplateCreateWithoutCampaignsInput, Prisma.WhatsAppTemplateUncheckedCreateWithoutCampaignsInput>
+}
+
+export type WhatsAppTemplateUpsertWithoutCampaignsInput = {
+  update: Prisma.XOR<Prisma.WhatsAppTemplateUpdateWithoutCampaignsInput, Prisma.WhatsAppTemplateUncheckedUpdateWithoutCampaignsInput>
+  create: Prisma.XOR<Prisma.WhatsAppTemplateCreateWithoutCampaignsInput, Prisma.WhatsAppTemplateUncheckedCreateWithoutCampaignsInput>
+  where?: Prisma.WhatsAppTemplateWhereInput
+}
+
+export type WhatsAppTemplateUpdateToOneWithWhereWithoutCampaignsInput = {
+  where?: Prisma.WhatsAppTemplateWhereInput
+  data: Prisma.XOR<Prisma.WhatsAppTemplateUpdateWithoutCampaignsInput, Prisma.WhatsAppTemplateUncheckedUpdateWithoutCampaignsInput>
+}
+
+export type WhatsAppTemplateUpdateWithoutCampaignsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  organization?: Prisma.OrganizationUpdateOneRequiredWithoutWhatsappTemplatesNestedInput
+}
+
+export type WhatsAppTemplateUncheckedUpdateWithoutCampaignsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  organizationId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
+  active?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type WhatsAppTemplateCreateManyOrganizationInput = {
   id?: string
   name: string
   language: string
+  content?: string | null
+  metaTemplateId?: string | null
+  status?: $Enums.TemplateStatus
+  rejectionReason?: string | null
   category: string
   description?: string | null
   bodyParamsCount?: number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: number
   active?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -601,38 +883,87 @@ export type WhatsAppTemplateUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  campaigns?: Prisma.CampaignUpdateManyWithoutTemplateNestedInput
 }
 
 export type WhatsAppTemplateUncheckedUpdateWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  campaigns?: Prisma.CampaignUncheckedUpdateManyWithoutTemplateNestedInput
 }
 
 export type WhatsAppTemplateUncheckedUpdateManyWithoutOrganizationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   language?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  metaTemplateId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTemplateStatusFieldUpdateOperationsInput | $Enums.TemplateStatus
+  rejectionReason?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   bodyParamsCount?: Prisma.IntFieldUpdateOperationsInput | number
+  bodyParamKeys?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  usageCount?: Prisma.IntFieldUpdateOperationsInput | number
   active?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type WhatsAppTemplateCountOutputType
+ */
+
+export type WhatsAppTemplateCountOutputType = {
+  campaigns: number
+}
+
+export type WhatsAppTemplateCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  campaigns?: boolean | WhatsAppTemplateCountOutputTypeCountCampaignsArgs
+}
+
+/**
+ * WhatsAppTemplateCountOutputType without action
+ */
+export type WhatsAppTemplateCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the WhatsAppTemplateCountOutputType
+   */
+  select?: Prisma.WhatsAppTemplateCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * WhatsAppTemplateCountOutputType without action
+ */
+export type WhatsAppTemplateCountOutputTypeCountCampaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CampaignWhereInput
+}
 
 
 export type WhatsAppTemplateSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -640,13 +971,21 @@ export type WhatsAppTemplateSelect<ExtArgs extends runtime.Types.Extensions.Inte
   organizationId?: boolean
   name?: boolean
   language?: boolean
+  content?: boolean
+  metaTemplateId?: boolean
+  status?: boolean
+  rejectionReason?: boolean
   category?: boolean
   description?: boolean
   bodyParamsCount?: boolean
+  bodyParamKeys?: boolean
+  usageCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  campaigns?: boolean | Prisma.WhatsAppTemplate$campaignsArgs<ExtArgs>
+  _count?: boolean | Prisma.WhatsAppTemplateCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["whatsAppTemplate"]>
 
 export type WhatsAppTemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -654,9 +993,15 @@ export type WhatsAppTemplateSelectCreateManyAndReturn<ExtArgs extends runtime.Ty
   organizationId?: boolean
   name?: boolean
   language?: boolean
+  content?: boolean
+  metaTemplateId?: boolean
+  status?: boolean
+  rejectionReason?: boolean
   category?: boolean
   description?: boolean
   bodyParamsCount?: boolean
+  bodyParamKeys?: boolean
+  usageCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -668,9 +1013,15 @@ export type WhatsAppTemplateSelectUpdateManyAndReturn<ExtArgs extends runtime.Ty
   organizationId?: boolean
   name?: boolean
   language?: boolean
+  content?: boolean
+  metaTemplateId?: boolean
+  status?: boolean
+  rejectionReason?: boolean
   category?: boolean
   description?: boolean
   bodyParamsCount?: boolean
+  bodyParamKeys?: boolean
+  usageCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -682,17 +1033,25 @@ export type WhatsAppTemplateSelectScalar = {
   organizationId?: boolean
   name?: boolean
   language?: boolean
+  content?: boolean
+  metaTemplateId?: boolean
+  status?: boolean
+  rejectionReason?: boolean
   category?: boolean
   description?: boolean
   bodyParamsCount?: boolean
+  bodyParamKeys?: boolean
+  usageCount?: boolean
   active?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type WhatsAppTemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "language" | "category" | "description" | "bodyParamsCount" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["whatsAppTemplate"]>
+export type WhatsAppTemplateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "organizationId" | "name" | "language" | "content" | "metaTemplateId" | "status" | "rejectionReason" | "category" | "description" | "bodyParamsCount" | "bodyParamKeys" | "usageCount" | "active" | "createdAt" | "updatedAt", ExtArgs["result"]["whatsAppTemplate"]>
 export type WhatsAppTemplateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
+  campaigns?: boolean | Prisma.WhatsAppTemplate$campaignsArgs<ExtArgs>
+  _count?: boolean | Prisma.WhatsAppTemplateCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WhatsAppTemplateIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   organization?: boolean | Prisma.OrganizationDefaultArgs<ExtArgs>
@@ -705,15 +1064,22 @@ export type $WhatsAppTemplatePayload<ExtArgs extends runtime.Types.Extensions.In
   name: "WhatsAppTemplate"
   objects: {
     organization: Prisma.$OrganizationPayload<ExtArgs>
+    campaigns: Prisma.$CampaignPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     organizationId: string
     name: string
     language: string
+    content: string | null
+    metaTemplateId: string | null
+    status: $Enums.TemplateStatus
+    rejectionReason: string | null
     category: string
     description: string | null
     bodyParamsCount: number
+    bodyParamKeys: runtime.JsonValue | null
+    usageCount: number
     active: boolean
     createdAt: Date
     updatedAt: Date
@@ -1112,6 +1478,7 @@ readonly fields: WhatsAppTemplateFieldRefs;
 export interface Prisma__WhatsAppTemplateClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   organization<T extends Prisma.OrganizationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.OrganizationDefaultArgs<ExtArgs>>): Prisma.Prisma__OrganizationClient<runtime.Types.Result.GetResult<Prisma.$OrganizationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  campaigns<T extends Prisma.WhatsAppTemplate$campaignsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WhatsAppTemplate$campaignsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CampaignPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1145,9 +1512,15 @@ export interface WhatsAppTemplateFieldRefs {
   readonly organizationId: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly name: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly language: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
+  readonly content: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
+  readonly metaTemplateId: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
+  readonly status: Prisma.FieldRef<"WhatsAppTemplate", 'TemplateStatus'>
+  readonly rejectionReason: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly category: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly description: Prisma.FieldRef<"WhatsAppTemplate", 'String'>
   readonly bodyParamsCount: Prisma.FieldRef<"WhatsAppTemplate", 'Int'>
+  readonly bodyParamKeys: Prisma.FieldRef<"WhatsAppTemplate", 'Json'>
+  readonly usageCount: Prisma.FieldRef<"WhatsAppTemplate", 'Int'>
   readonly active: Prisma.FieldRef<"WhatsAppTemplate", 'Boolean'>
   readonly createdAt: Prisma.FieldRef<"WhatsAppTemplate", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"WhatsAppTemplate", 'DateTime'>
@@ -1544,6 +1917,30 @@ export type WhatsAppTemplateDeleteManyArgs<ExtArgs extends runtime.Types.Extensi
    * Limit how many WhatsAppTemplates to delete.
    */
   limit?: number
+}
+
+/**
+ * WhatsAppTemplate.campaigns
+ */
+export type WhatsAppTemplate$campaignsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Campaign
+   */
+  select?: Prisma.CampaignSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Campaign
+   */
+  omit?: Prisma.CampaignOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CampaignInclude<ExtArgs> | null
+  where?: Prisma.CampaignWhereInput
+  orderBy?: Prisma.CampaignOrderByWithRelationInput | Prisma.CampaignOrderByWithRelationInput[]
+  cursor?: Prisma.CampaignWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CampaignScalarFieldEnum | Prisma.CampaignScalarFieldEnum[]
 }
 
 /**

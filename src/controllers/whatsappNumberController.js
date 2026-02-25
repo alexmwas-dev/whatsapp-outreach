@@ -9,6 +9,13 @@ import logger from "../utils/loogger.js";
 export const getWhatsAppNumbers = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
 
+  const org = await prisma.organization.findUnique({
+    where: { id: orgId },
+    select: {
+      whatsappBusinessAccountId: true,
+    },
+  });
+
   const numbers = await prisma.whatsAppNumber.findMany({
     where: { organizationId: orgId },
     select: {
@@ -17,26 +24,61 @@ export const getWhatsAppNumbers = catchAsync(async (req, res) => {
       phoneNumberId: true,
       displayName: true,
       active: true,
+      isPrimary: true,
       createdAt: true,
       updatedAt: true,
-      _count: {
-        select: { messages: true },
-      },
     },
     orderBy: { createdAt: "desc" },
   });
 
+  const [messageCounts, lastActiveByNumber] = await Promise.all([
+    prisma.message.groupBy({
+      by: ["whatsappNumberId", "direction"],
+      where: { organizationId: orgId },
+      _count: true,
+    }),
+    prisma.message.groupBy({
+      by: ["whatsappNumberId"],
+      where: { organizationId: orgId },
+      _max: { createdAt: true },
+    }),
+  ]);
+
+  const countsByNumber = messageCounts.reduce((acc, item) => {
+    if (!acc[item.whatsappNumberId]) {
+      acc[item.whatsappNumberId] = { sent: 0, received: 0 };
+    }
+    if (item.direction === "OUTBOUND") {
+      acc[item.whatsappNumberId].sent = item._count;
+    }
+    if (item.direction === "INBOUND") {
+      acc[item.whatsappNumberId].received = item._count;
+    }
+    return acc;
+  }, {});
+
+  const lastActiveMap = lastActiveByNumber.reduce((acc, item) => {
+    acc[item.whatsappNumberId] = item._max?.createdAt || null;
+    return acc;
+  }, {});
+
   res.status(200).json({
     status: "success",
     data: {
+      organization: {
+        wabaConnected: Boolean(org?.whatsappBusinessAccountId),
+        webhookConfigured: Boolean(process.env.WEBHOOK_VERIFY_TOKEN),
+      },
       total: numbers.length,
       numbers: numbers.map((num) => ({
         id: num.id,
         phoneNumber: num.phoneNumber,
-        phoneNumberId: num.phoneNumberId,
         displayName: num.displayName,
-        active: num.active,
-        messageCount: num._count.messages,
+        isActive: num.active,
+        isPrimary: num.isPrimary,
+        messagesSent: countsByNumber[num.id]?.sent || 0,
+        messagesReceived: countsByNumber[num.id]?.received || 0,
+        lastActiveAt: lastActiveMap[num.id] || null,
         createdAt: num.createdAt,
       })),
     },
@@ -116,6 +158,10 @@ export const addWhatsAppNumber = catchAsync(async (req, res) => {
     );
   }
 
+  const existingPrimary = await prisma.whatsAppNumber.findFirst({
+    where: { organizationId: orgId, isPrimary: true },
+  });
+
   // Create WhatsApp number
   const whatsappNumber = await prisma.whatsAppNumber.create({
     data: {
@@ -125,6 +171,7 @@ export const addWhatsAppNumber = catchAsync(async (req, res) => {
       accessToken,
       displayName: displayName || phoneNumber,
       active: true,
+      isPrimary: !existingPrimary,
     },
   });
 
@@ -401,13 +448,23 @@ export const getWhatsAppNumberStats = catchAsync(async (req, res) => {
 export const getPrimaryWhatsAppNumber = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
 
-  const number = await prisma.whatsAppNumber.findFirst({
+  let number = await prisma.whatsAppNumber.findFirst({
     where: {
       organizationId: orgId,
-      active: true,
+      isPrimary: true,
     },
     orderBy: { createdAt: "asc" },
   });
+
+  if (!number) {
+    number = await prisma.whatsAppNumber.findFirst({
+      where: {
+        organizationId: orgId,
+        active: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+  }
 
   if (!number) {
     return res.status(200).json({

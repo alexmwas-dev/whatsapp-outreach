@@ -33,6 +33,21 @@ export type User = Prisma.UserModel
  */
 export type Subscription = Prisma.SubscriptionModel
 /**
+ * Model BillingPlan
+ * 
+ */
+export type BillingPlan = Prisma.BillingPlanModel
+/**
+ * Model Promotion
+ * 
+ */
+export type Promotion = Prisma.PromotionModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
  * Model WhatsAppNumber
  * 
  */

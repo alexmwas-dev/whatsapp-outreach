@@ -1,0 +1,170 @@
+{
+  "info": {
+    "_postman_id": "salesconnect-promotions-api",
+    "name": "SalesConnect Promotions API",
+    "description": "Promotion code management and validation endpoints for billing checkout.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Promotions",
+      "description": "Create, list, and validate promotion codes.",
+      "item": [
+        {
+          "name": "List Promotions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/promotions",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "promotions"]
+            },
+            "description": "Returns the latest promotion codes (OWNER/ADMIN)."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"SAVE20\",\n  \"description\": \"20% off monthly plans\",\n  \"discountType\": \"PERCENTAGE\",\n  \"discountValue\": 20,\n  \"active\": true,\n  \"startsAt\": \"2026-02-21T00:00:00.000Z\",\n  \"endsAt\": \"2026-03-31T23:59:59.999Z\",\n  \"maxUses\": 500\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/promotions",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "promotions"]
+            },
+            "description": "Creates a promotion code. discountType supports PERCENTAGE or FIXED."
+          },
+          "response": []
+        },
+        {
+          "name": "Validate Promotion",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planCode\": \"STARTER\",\n  \"promoCode\": \"SAVE20\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/promotions/validate",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "promotions", "validate"]
+            },
+            "description": "Checks whether a promotion can be applied to the selected plan."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Checkout with Promotion",
+      "description": "Use promoCode during billing checkout and verify discounted totals.",
+      "item": [
+        {
+          "name": "Create Checkout (with promoCode)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"planCode\": \"STARTER\",\n  \"customerEmail\": \"owner@example.com\",\n  \"customerPhone\": \"+254700000000\",\n  \"promoCode\": \"SAVE20\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/billing/checkout",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "checkout"]
+            },
+            "description": "Starts checkout and applies the promo code if valid."
+          },
+          "response": []
+        },
+        {
+          "name": "Billing Overview",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/overview",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "overview"]
+            },
+            "description": "Checks current subscription, plans, and payment history."
+          },
+          "response": []
+        },
+        {
+          "name": "List Billing Payments",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/billing/payments",
+              "host": ["{{base_url}}"],
+              "path": ["billing", "payments"]
+            },
+            "description": "Lists recent payments including discount and promotion fields."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ]
+}

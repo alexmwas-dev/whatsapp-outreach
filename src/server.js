@@ -16,7 +16,17 @@ process.on("unhandledRejection", (reason) => {
 });
 
 import app from "./app.js";
+import { createServer } from "http";
+import { initializeSocket } from "./lib/socket.js";
+import { startCampaignWorker } from "./workers/campaignWorker.js";
 
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// Create HTTP server
+const httpServer = createServer(app);
+
+// Initialize Socket.io
+initializeSocket(httpServer);
+startCampaignWorker();
+
+httpServer.listen(PORT, () => console.log(`Server running on port ${PORT}`));

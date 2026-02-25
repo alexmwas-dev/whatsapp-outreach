@@ -25,14 +25,106 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"templateName\": \"intro_salesconnect_v1\",\n  \"limit\": 20,\n  \"delay\": 60000\n}"
+              "raw": "{\n  \"campaignId\": \"{{campaignId}}\",\n  \"templateName\": \"intro_salesconnect_v1\",\n  \"limit\": 20,\n  \"delay\": 60000\n}"
             },
             "url": {
               "raw": "{{base_url}}/campaigns/send",
               "host": ["{{base_url}}"],
               "path": ["campaigns", "send"]
             },
-            "description": "Send campaign to contacts using specified template and WhatsApp number. Automatically uses the organization's active WhatsApp number.\n\nParameters:\n- templateName (optional): Name of the template to use. If not provided, uses first active template\n- limit (optional, default 20): Maximum number of contacts to send to\n- delay (optional, default 60000): Delay in milliseconds between messages (to avoid rate limiting)\n\nProcess:\n1. Fetches org's active WhatsApp number\n2. Fetches org's active template\n3. Fetches NEW contacts (up to limit)\n4. Sends template to each contact\n5. Updates contact status to INTRO_SENT\n6. Waits for specified delay before next message"
+            "description": "Send campaign to contacts using specified template and WhatsApp number. Automatically uses the organization's active WhatsApp number.\n\nParameters:\n- campaignId (optional): If provided, sends to contacts in the campaign and updates campaign status\n- templateName (optional): Name of the template to use. If not provided, uses first active template\n- limit (optional, default 20): Maximum number of contacts to send to\n- delay (optional, default 60000): Delay in milliseconds between messages (to avoid rate limiting)\n\nProcess:\n1. Fetches org's active WhatsApp number\n2. Fetches org's active template\n3. Fetches contacts (campaign contacts or NEW contacts)\n4. Sends template to each contact\n5. Updates contact status to INTRO_SENT\n6. Tracks messagesSent/messagesDelivered/messagesFailed on campaign\n7. Waits for specified delay before next message"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Holiday Promo 2024\",\n  \"description\": \"Campaign for Q4 sales\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/campaigns",
+              "host": ["{{base_url}}"],
+              "path": ["campaigns"]
+            },
+            "description": "Create a new campaign."
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Campaigns",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/campaigns",
+              "host": ["{{base_url}}"],
+              "path": ["campaigns"]
+            },
+            "description": "List campaigns with totals and message stats."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Campaign By Id",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/campaigns/{{campaignId}}",
+              "host": ["{{base_url}}"],
+              "path": ["campaigns", "{{campaignId}}"]
+            },
+            "description": "Get a single campaign with contacts and stats."
+          },
+          "response": []
+        },
+        {
+          "name": "Create Contact & Attach to Campaign",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Jane Doe\",\n  \"phone\": \"+15555550123\",\n  \"email\": \"jane@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/campaigns/{{campaignId}}/contacts/create",
+              "host": ["{{base_url}}"],
+              "path": ["campaigns", "{{campaignId}}", "contacts", "create"]
+            },
+            "description": "Create a contact and attach to a campaign."
           },
           "response": []
         },
@@ -51,7 +143,7 @@
               "host": ["{{base_url}}"],
               "path": ["campaigns", "stats"]
             },
-            "description": "Get campaign statistics including contact status breakdown and total messages sent."
+            "description": "Get campaign statistics summary: totalCampaigns, activeCampaigns, totalMessagesSent, deliveryRate, readRate."
           },
           "response": []
         }
@@ -70,6 +162,12 @@
       "value": "",
       "type": "string",
       "description": "JWT token from login or signup"
+    },
+    {
+      "key": "campaignId",
+      "value": "",
+      "type": "string",
+      "description": "Campaign ID"
     }
   ]
 }

@@ -4,6 +4,10 @@ import { AppError } from "../utils/AppError.js";
 import logger from "../utils/loogger.js";
 import bcrypt from "bcryptjs";
 import { sendInviteEmail } from "../lib/email.js";
+import {
+  getSubscriptionUsage,
+  toSubscriptionSummary,
+} from "../services/subscriptionService.js";
 
 /**
  * GET ORGANIZATION DETAILS
@@ -56,7 +60,7 @@ export const createOrganization = catchAsync(async (req, res) => {
         messageLimit: 100,
         messagesUsed: 0,
         currentPeriodStart: new Date(),
-        currentPeriodEnd: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         provider: "trial",
       },
     });
@@ -72,13 +76,10 @@ export const createOrganization = catchAsync(async (req, res) => {
 
 export const connectWhatsAppBusiness = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
-  const { wabaId, webhookToken, displayName, tier } = req.body;
+  const { wabaId, displayName, tier } = req.body;
 
-  if (!wabaId || !webhookToken || !tier) {
-    throw new AppError(
-      "WABA ID, access token, and messaging tier are required",
-      400,
-    );
+  if (!wabaId || !tier) {
+    throw new AppError("WABA ID and messaging tier are required", 400);
   }
 
   // Update organization with WABA
@@ -87,13 +88,377 @@ export const connectWhatsAppBusiness = catchAsync(async (req, res) => {
     data: {
       whatsappBusinessAccountId: wabaId,
       messagingTier: tier,
-      webhookVerifyToken: webhookToken,
     },
   });
 
   res.status(200).json({
     status: "success",
     data: { organization: updatedOrg },
+  });
+});
+
+/**
+ * Start embedded signup: accept a Facebook user access token from the client
+ * and return the list of WhatsApp Business Accounts the user can manage.
+ * Body: { accessToken: string }
+ */
+export const startConnectWhatsApp = catchAsync(async (req, res) => {
+  const { accessToken } = req.body;
+
+  if (!accessToken) {
+    throw new AppError("accessToken is required", 400);
+  }
+
+  // 1️⃣ Get businesses user manages
+  const bizResp = await fetch(
+    `https://graph.facebook.com/v19.0/me/businesses?access_token=${accessToken}`,
+  );
+
+  const bizJson = await bizResp.json();
+
+  if (!bizResp.ok) {
+    logger.warn("Failed fetching businesses", { meta: bizJson });
+    throw new AppError("Failed to fetch businesses", 502);
+  }
+
+  const businesses = bizJson.data || [];
+
+  // 2️⃣ For each business, fetch WABAs
+  const wabas = [];
+
+  for (const biz of businesses) {
+    const wabaResp = await fetch(
+      `https://graph.facebook.com/v19.0/${biz.id}/owned_whatsapp_business_accounts?access_token=${accessToken}`,
+    );
+
+    const wabaJson = await wabaResp.json();
+
+    if (wabaResp.ok && wabaJson.data) {
+      for (const w of wabaJson.data) {
+        wabas.push({
+          ...w,
+          businessId: biz.id,
+          businessName: biz.name,
+        });
+      }
+    }
+  }
+  console.log("Fetched WABAs for user:", wabas);
+
+  res.status(200).json({
+    status: "success",
+    data: wabas,
+  });
+});
+
+const persistWhatsAppConnection = async ({
+  orgId,
+  wabaId,
+  accessToken,
+  preferredPhoneNumberId,
+  providedPhoneNumbers,
+}) => {
+  // 1) Subscribe WABA to our webhook
+  try {
+    const subscribeResp = await fetch(
+      `https://graph.facebook.com/v19.0/${wabaId}/subscribed_apps?access_token=${accessToken}`,
+      { method: "POST" },
+    );
+
+    const subJson = await subscribeResp.json().catch(() => ({}));
+    if (!subscribeResp.ok) {
+      logger.warn("Failed to subscribe WABA to webhook", { meta: subJson });
+      throw new AppError("Failed to subscribe WABA to webhook", 502);
+    }
+  } catch (err) {
+    logger.error("Error subscribing WABA to webhook", { error: err.message });
+    throw new AppError("Error subscribing WABA to webhook", 502);
+  }
+
+  // 2) Fetch phone numbers for the WABA
+  let phoneNumbers = providedPhoneNumbers || [];
+  if (!providedPhoneNumbers) {
+    try {
+      const numbersResp = await fetch(
+        `https://graph.facebook.com/v19.0/${wabaId}/phone_numbers?access_token=${accessToken}`,
+      );
+      const numsJson = await numbersResp.json().catch(() => ({}));
+      if (!numbersResp.ok) {
+        logger.warn("Failed to fetch WABA phone numbers", { meta: numsJson });
+      } else {
+        phoneNumbers = numsJson.data || [];
+      }
+    } catch (err) {
+      logger.error("Error fetching WABA phone numbers", { error: err.message });
+    }
+  }
+
+  // 3) Persist organization fields and numbers
+  const updatedOrg = await prisma.organization.update({
+    where: { id: orgId },
+    data: {
+      whatsappBusinessAccountId: wabaId,
+      whatsappStatus: "VERIFIED",
+      accessToken: accessToken,
+      accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
+      whatsappStepsCompleted: {
+        push: ["WABA_CONNECTED", "WEBHOOK_CONFIGURED"],
+      },
+    },
+  });
+
+  // Create WhatsAppNumber records when provided
+  const createdNumbers = [];
+
+  const orderedNumbers = [...phoneNumbers].sort((a, b) => {
+    const aId = a.id || a.phone_number_id;
+    const bId = b.id || b.phone_number_id;
+    if (!preferredPhoneNumberId) return 0;
+    if (aId === preferredPhoneNumberId) return -1;
+    if (bId === preferredPhoneNumberId) return 1;
+    return 0;
+  });
+
+  for (const num of orderedNumbers) {
+    try {
+      const phoneNumber = num.display_phone_number || num.phone_number || null;
+      const phoneNumberId = num.id || num.phone_number_id || null;
+      const displayName = num.verified_name || num.display_phone_number || null;
+
+      if (!phoneNumber || !phoneNumberId) continue;
+
+      const created = await prisma.whatsAppNumber.upsert({
+        where: { phoneNumberId },
+        update: {
+          displayName,
+          active: true,
+          accessToken,
+          accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
+        },
+        create: {
+          organizationId: orgId,
+          phoneNumber,
+          phoneNumberId,
+          displayName,
+          accessToken,
+          accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
+          active: true,
+          isPrimary:
+            createdNumbers.length === 0 ||
+            phoneNumberId === preferredPhoneNumberId,
+        },
+      });
+
+      createdNumbers.push(created);
+    } catch (err) {
+      logger.warn("Failed to upsert WhatsApp number", {
+        meta: num,
+        error: err.message,
+      });
+    }
+  }
+
+  if (createdNumbers.length > 0) {
+    await prisma.organization.update({
+      where: { id: orgId },
+      data: { whatsappStepsCompleted: { push: "PHONE_NUMBER_ADDED" } },
+    });
+  }
+
+  if (preferredPhoneNumberId && createdNumbers.length > 0) {
+    const preferred = createdNumbers.find(
+      (n) => n.phoneNumberId === preferredPhoneNumberId,
+    );
+    if (preferred) {
+      await prisma.whatsAppNumber.updateMany({
+        where: { organizationId: orgId },
+        data: { isPrimary: false },
+      });
+      await prisma.whatsAppNumber.update({
+        where: { id: preferred.id },
+        data: { isPrimary: true },
+      });
+    }
+  }
+
+  return { organization: updatedOrg, numbers: createdNumbers };
+};
+
+/**
+ * Complete embedded signup: subscribe the selected WABA to our webhook,
+ * fetch phone numbers and persist org + number records.
+ * Body: { wabaId: string, accessToken: string }
+ */
+export const completeConnectWhatsApp = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const { wabaId, accessToken } = req.body;
+
+  console.log("Completing WhatsApp connection with data:", {
+    wabaId,
+    accessToken,
+  });
+
+  if (!wabaId || !accessToken) {
+    throw new AppError("wabaId and accessToken are required", 400);
+  }
+
+  const result = await persistWhatsAppConnection({
+    orgId,
+    wabaId,
+    accessToken,
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: result,
+  });
+});
+
+/**
+ * Complete embedded signup using authorization code from FB SDK.
+ * Body: { code: string, wabaId: string, phoneNumberId?: string }
+ */
+export const completeEmbeddedConnectWhatsApp = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const { code, wabaId, phoneNumberId } = req.body;
+
+  if (!code || !wabaId) {
+    throw new AppError("code and wabaId are required", 400);
+  }
+
+  const appId = process.env.FB_APP_ID;
+  const appSecret = process.env.FB_APP_SECRET;
+
+  if (!appId || !appSecret) {
+    throw new AppError("Facebook app credentials are not configured", 500);
+  }
+
+  const tokenParams = new URLSearchParams({
+    client_id: appId,
+    client_secret: appSecret,
+    code,
+  });
+
+  const tokenResp = await fetch(
+    `https://graph.facebook.com/v24.0/oauth/access_token?${tokenParams.toString()}`,
+  );
+  const tokenJson = await tokenResp.json().catch(() => ({}));
+
+  if (!tokenResp.ok || !tokenJson?.access_token) {
+    logger.warn("Failed to exchange embedded signup code", { meta: tokenJson });
+    throw new AppError("Failed to exchange code for access token", 502);
+  }
+
+  const result = await persistWhatsAppConnection({
+    orgId,
+    wabaId,
+    accessToken: tokenJson.access_token,
+    preferredPhoneNumberId: phoneNumberId,
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: result,
+  });
+});
+
+/**
+ * Manual connect flow:
+ * - user shares WABA + phone number with our business in Business Manager
+ * - client sends IDs
+ * - backend verifies visibility with system token, subscribes webhook, persists IDs
+ * Body: { wabaId: string }
+ */
+export const manualConnectWhatsApp = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const { wabaId } = req.body;
+
+  if (!wabaId) {
+    throw new AppError("wabaId is required", 400);
+  }
+
+  const systemToken =
+    process.env.SYSTEM_USER_TOKEN || process.env.WHATSAPP_TOKEN;
+  if (!systemToken) {
+    throw new AppError(
+      "SYSTEM_USER_TOKEN or WHATSAPP_TOKEN is required for manual setup",
+      500,
+    );
+  }
+
+  // 1) Verify token can access WABA
+  const verifyResp = await fetch(
+    `https://graph.facebook.com/v24.0/${wabaId}?fields=id,name`,
+    {
+      headers: {
+        Authorization: `Bearer ${systemToken}`,
+      },
+    },
+  );
+  const verifyJson = await verifyResp.json().catch(() => ({}));
+  if (!verifyResp.ok) {
+    logger.warn("Manual connect: token cannot access WABA", {
+      meta: verifyJson,
+    });
+    throw new AppError(
+      "Could not access this WABA. Ask customer to share WABA with your business partner ID.",
+      403,
+    );
+  }
+
+  // 2) Fetch phone numbers under this WABA and pick one
+  const phoneListResp = await fetch(
+    `https://graph.facebook.com/v24.0/${wabaId}/phone_numbers?fields=id,display_phone_number,verified_name`,
+    {
+      headers: {
+        Authorization: `Bearer ${systemToken}`,
+      },
+    },
+  );
+  const phoneListJson = await phoneListResp.json().catch(() => ({}));
+  if (!phoneListResp.ok || !Array.isArray(phoneListJson?.data)) {
+    logger.warn("Manual connect: failed fetching WABA phone numbers", {
+      meta: phoneListJson,
+    });
+    throw new AppError(
+      "Could not fetch phone numbers for this WABA. Ensure the number is shared with your business.",
+      403,
+    );
+  }
+  const sharedNumbers = phoneListJson.data;
+  const selectedPhone = sharedNumbers.find(
+    (n) => n?.id && (n?.display_phone_number || n?.phone_number),
+  );
+  if (!selectedPhone) {
+    throw new AppError(
+      "No phone numbers available on this WABA for your token access",
+      403,
+    );
+  }
+  const phoneNumberId = selectedPhone.id;
+  const displayPhone =
+    selectedPhone.display_phone_number || selectedPhone.phone_number;
+
+  const result = await persistWhatsAppConnection({
+    orgId,
+    wabaId,
+    accessToken: systemToken,
+    preferredPhoneNumberId: phoneNumberId,
+    providedPhoneNumbers: sharedNumbers.map((n) => ({
+      id: n.id,
+      display_phone_number: n.display_phone_number || n.phone_number || null,
+      verified_name:
+        n.verified_name || n.display_phone_number || n.phone_number || null,
+    })),
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      ...result,
+      selectedPhoneNumberId: phoneNumberId,
+      selectedDisplayPhoneNumber: displayPhone,
+    },
   });
 });
 
@@ -211,11 +576,27 @@ export const getTeamMembers = catchAsync(async (req, res) => {
     orderBy: { createdAt: "asc" },
   });
 
+  const members = users.map((user) => {
+    const [firstName, ...lastNameParts] = (user.name || "").trim().split(/\s+/);
+    const lastName = lastNameParts.join(" ") || null;
+
+    return {
+      id: user.salesRep?.id || user.id,
+      userId: user.id,
+      email: user.email,
+      firstName: firstName || null,
+      lastName,
+      role: user.role,
+      status: "ACTIVE",
+      joinedAt: user.createdAt,
+    };
+  });
+
   res.status(200).json({
     status: "success",
     data: {
-      totalMembers: users.length,
-      members: users,
+      totalMembers: members.length,
+      members,
     },
   });
 });
@@ -270,6 +651,7 @@ export const inviteTeamMember = catchAsync(async (req, res) => {
     await prisma.salesRep.create({
       data: {
         name: newUser.name,
+        email: newUser.email,
         phone,
         organizationId: orgId,
         userId: newUser.id,
@@ -310,7 +692,8 @@ export const inviteTeamMember = catchAsync(async (req, res) => {
 export const updateTeamMemberRole = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
   const userId = req.user.id;
-  const { memberId, role } = req.body;
+  const { memberId } = req.params;
+  const { role } = req.body;
 
   // Validation
   if (!memberId || !role) {
@@ -382,7 +765,7 @@ export const updateTeamMemberRole = catchAsync(async (req, res) => {
 export const removeTeamMember = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
   const userId = req.user.id;
-  const { memberId } = req.body;
+  const { memberId } = req.params;
 
   if (!memberId) {
     throw new AppError("Member ID is required", 400);
@@ -442,10 +825,17 @@ export const removeTeamMember = catchAsync(async (req, res) => {
  */
 export const addContactsToOrganization = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
-  const { contacts, name, phone, email, salesRepId } = req.body;
+  const { contacts, name, phone, email, salesRepId, campaignId } = req.body;
 
   // Bulk create
   if (contacts && Array.isArray(contacts)) {
+    // Only OWNER or ADMIN can perform bulk imports
+    if (!["OWNER", "ADMIN"].includes(req.user.role)) {
+      throw new AppError(
+        "Only OWNER or ADMIN can import contacts in bulk",
+        403,
+      );
+    }
     const prepared = contacts.map((c) => ({
       name: c.name,
       phone: c.phone,
@@ -463,9 +853,42 @@ export const addContactsToOrganization = catchAsync(async (req, res) => {
       skipDuplicates: true,
     });
 
+    // If campaignId provided, link contacts to campaign (existing + newly created)
+    let campaignAdded = 0;
+    if (campaignId) {
+      // Ensure campaign exists and belongs to org
+      const campaign = await prisma.campaign.findUnique({
+        where: { id: campaignId },
+      });
+      if (!campaign || campaign.organizationId !== orgId) {
+        throw new AppError(
+          "Campaign not found or does not belong to this organization",
+          400,
+        );
+      }
+
+      const phones = prepared.map((c) => c.phone);
+      const matchedContacts = await prisma.contact.findMany({
+        where: { organizationId: orgId, phone: { in: phones } },
+      });
+
+      const campaignContactsData = matchedContacts.map((c) => ({
+        campaignId,
+        contactId: c.id,
+      }));
+
+      if (campaignContactsData.length > 0) {
+        const ccResult = await prisma.campaignContact.createMany({
+          data: campaignContactsData,
+          skipDuplicates: true,
+        });
+        campaignAdded = ccResult.count || 0;
+      }
+    }
+
     res.status(201).json({
       status: "success",
-      data: { created: result.count },
+      data: { created: result.count, campaignAdded },
     });
     return;
   }
@@ -489,12 +912,165 @@ export const addContactsToOrganization = catchAsync(async (req, res) => {
 });
 
 /**
+ * GET ORGANIZATION CONTACTS
+ * - OWNER/ADMIN: all org contacts
+ * - SALES_REP: only contacts assigned to the sales rep
+ */
+export const getOrganizationContacts = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const userRole = req.user.role;
+
+  const filter = { organizationId: orgId };
+
+  if (userRole === "SALES_REP") {
+    const salesRep = await prisma.salesRep.findUnique({
+      where: { userId: req.user.id },
+    });
+
+    if (!salesRep) {
+      throw new AppError("Sales rep profile not found", 404);
+    }
+
+    filter.salesRepId = salesRep.id;
+  }
+
+  const contacts = await prisma.contact.findMany({
+    where: filter,
+    orderBy: { updatedAt: "desc" },
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      contacts: contacts.map((contact) => ({
+        id: contact.id,
+        name: contact.name,
+        phone: contact.phone,
+        email: contact.email,
+        status: contact.status,
+        consent: contact.consent,
+        converted: contact.converted,
+        salesRepId: contact.salesRepId,
+        createdAt: contact.createdAt,
+        updatedAt: contact.updatedAt,
+      })),
+    },
+  });
+});
+
+/**
+ * UPDATE ORGANIZATION CONTACT
+ */
+export const updateOrganizationContact = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const userRole = req.user.role;
+  const { contactId } = req.params;
+  const { name, phone, email, status, consent, salesRepId } = req.body;
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+  });
+
+  if (!contact) {
+    throw new AppError("Contact not found", 404);
+  }
+
+  if (contact.organizationId !== orgId) {
+    throw new AppError("Contact does not belong to this organization", 403);
+  }
+
+  if (userRole === "SALES_REP") {
+    const salesRep = await prisma.salesRep.findUnique({
+      where: { userId: req.user.id },
+    });
+
+    if (!salesRep || contact.salesRepId !== salesRep.id) {
+      throw new AppError("You do not have access to this contact", 403);
+    }
+  }
+
+  const updateData = {
+    ...(name !== undefined && { name }),
+    ...(phone !== undefined && { phone }),
+    ...(email !== undefined && { email }),
+    ...(status !== undefined && { status }),
+    ...(consent !== undefined && { consent }),
+    ...(userRole !== "SALES_REP" && salesRepId !== undefined
+      ? { salesRepId }
+      : {}),
+  };
+
+  const updated = await prisma.contact.update({
+    where: { id: contactId },
+    data: updateData,
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      contact: updated,
+    },
+  });
+});
+
+/**
+ * DELETE ORGANIZATION CONTACT
+ */
+export const deleteOrganizationContact = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
+  const userRole = req.user.role;
+  const { contactId } = req.params;
+
+  const contact = await prisma.contact.findUnique({
+    where: { id: contactId },
+  });
+
+  if (!contact) {
+    throw new AppError("Contact not found", 404);
+  }
+
+  if (contact.organizationId !== orgId) {
+    throw new AppError("Contact does not belong to this organization", 403);
+  }
+
+  if (userRole === "SALES_REP") {
+    const salesRep = await prisma.salesRep.findUnique({
+      where: { userId: req.user.id },
+    });
+
+    if (!salesRep || contact.salesRepId !== salesRep.id) {
+      throw new AppError("You do not have access to this contact", 403);
+    }
+  }
+
+  await prisma.contact.delete({ where: { id: contactId } });
+
+  res.status(200).json({
+    status: "success",
+    message: "Contact deleted successfully",
+  });
+});
+
+/**
  * GET ORGANIZATION STATS & USAGE
  */
 export const getOrganizationStats = catchAsync(async (req, res) => {
   const orgId = req.organization.id;
 
-  const [org, contacts, campaigns, messages, subscription] = await Promise.all([
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+  const [
+    org,
+    contacts,
+    campaigns,
+    messages,
+    messagesThisMonthFromMessages,
+    messagesThisMonthFromCampaignSends,
+    activeWhatsAppNumbers,
+    activeTemplates,
+    subscriptionUsage,
+  ] = await Promise.all([
     prisma.organization.findUnique({
       where: { id: orgId },
     }),
@@ -507,10 +1083,27 @@ export const getOrganizationStats = catchAsync(async (req, res) => {
     prisma.message.count({
       where: { organizationId: orgId },
     }),
-    prisma.subscription.findUnique({
-      where: { organizationId: orgId },
+    prisma.message.count({
+      where: { organizationId: orgId, createdAt: { gte: startOfMonth } },
     }),
+    prisma.campaignContact.count({
+      where: {
+        sentAt: { gte: startOfMonth },
+        campaign: { organizationId: orgId },
+      },
+    }),
+    prisma.whatsAppNumber.count({
+      where: { organizationId: orgId, active: true },
+    }),
+    prisma.whatsAppTemplate.count({
+      where: { organizationId: orgId, active: true },
+    }),
+    getSubscriptionUsage(orgId),
   ]);
+
+  const messagesThisMonth =
+    (messagesThisMonthFromMessages ?? 0) +
+    (messagesThisMonthFromCampaignSends ?? 0);
 
   const messagesByDirection = await prisma.message.groupBy({
     by: ["direction"],
@@ -524,6 +1117,9 @@ export const getOrganizationStats = catchAsync(async (req, res) => {
     _count: true,
   });
 
+  const subscription = subscriptionUsage?.subscription || null;
+  const subscriptionSummary = toSubscriptionSummary(subscription);
+
   res.status(200).json({
     status: "success",
     data: {
@@ -536,6 +1132,9 @@ export const getOrganizationStats = catchAsync(async (req, res) => {
         totalContacts: contacts,
         totalCampaigns: campaigns,
         totalMessages: messages,
+        messagesThisMonth,
+        activeWhatsAppNumbers,
+        activeTemplates,
       },
       messageStats: {
         byDirection: messagesByDirection.map((item) => ({
@@ -547,17 +1146,7 @@ export const getOrganizationStats = catchAsync(async (req, res) => {
           count: item._count,
         })),
       },
-      subscription: subscription
-        ? {
-            status: subscription.status,
-            plan: subscription.plan,
-            messageLimit: subscription.messageLimit,
-            messagesUsed: subscription.messagesUsed,
-            remaining: subscription.messageLimit - subscription.messagesUsed,
-            currentPeriodStart: subscription.currentPeriodStart,
-            currentPeriodEnd: subscription.currentPeriodEnd,
-          }
-        : null,
+      subscription: subscriptionSummary,
     },
   });
 });

@@ -4,6 +4,7 @@ import { sendSamples } from "../services/sampaleSender.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
 import logger from "../utils/loogger.js";
+import { emitNewMessage, emitContactUpdate } from "../lib/socket.js";
 // import logger from "../utils/logger.js";
 
 /**
@@ -13,33 +14,22 @@ export const verifyWebhook = catchAsync(async (req, res) => {
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
+  const expectedVerifyToken = process.env.WEBHOOK_VERIFY_TOKEN;
 
   // Check mode
   if (mode !== "subscribe") {
     throw new AppError("Invalid mode", 400);
   }
-
-  // Look up organization by token
-  const org = await prisma.organization.findFirst({
-    where: { webhookVerifyToken: token },
-  });
-
-  if (!org) {
+  if (!expectedVerifyToken) {
+    throw new AppError("WEBHOOK_VERIFY_TOKEN is not configured", 500);
+  }
+  if (token !== expectedVerifyToken) {
     throw new AppError("Invalid verify token", 403);
   }
 
-  // ✅ Mark WhatsApp as VERIFIED
-  await prisma.organization.update({
-    where: { id: org.id },
-    data: {
-      whatsappStatus: "VERIFIED",
-      whatsappStepsCompleted: {
-        push: "WEBHOOK_CONFIGURED",
-      },
-    },
+  logger.info("Webhook verified successfully", {
+    meta: { mode, usingGlobalVerifyToken: true },
   });
-
-  logger.info("Webhook verified successfully", { orgId: org.id });
 
   // Respond with challenge (Meta expects plain text)
   return res.status(200).send(challenge);
@@ -48,37 +38,130 @@ export const verifyWebhook = catchAsync(async (req, res) => {
 /**
  * Receive incoming WhatsApp messages
  */
-export const receiveMessage = catchAsync(async (req, res) => {
-  const entry = req.body.entry?.[0];
-  const change = entry?.changes?.[0];
-  const value = change?.value;
+const processWebhookValue = async (value) => {
   const message = value?.messages?.[0];
+  const phoneNumberId = value?.metadata?.phone_number_id;
 
-  // Meta requires 200 even if empty
-  if (!value) return res.sendStatus(200);
+  if (!value) return;
+
+  const whatsappNumber = phoneNumberId
+    ? await prisma.whatsAppNumber.findUnique({
+        where: { phoneNumberId },
+      })
+    : null;
 
   // Status updates (delivery / read receipts)
   if (value.statuses) {
-    logger.info("Webhook status update", { meta: value.statuses });
-    return res.sendStatus(200);
+    let matchedCount = 0;
+    let unmatchedCount = 0;
+    let deliveredIncrements = 0;
+    let readIncrements = 0;
+
+    for (const statusEvent of value.statuses) {
+      const outboundMessageId = statusEvent?.id;
+      const status = statusEvent?.status;
+      const recipientId = statusEvent?.recipient_id;
+      if (!status) continue;
+
+      let campaignContact = null;
+      if (outboundMessageId) {
+        campaignContact = await prisma.campaignContact.findFirst({
+          where: { outboundMessageId },
+        });
+      }
+
+      // Fallback for old/partial data where outboundMessageId was not persisted.
+      if (!campaignContact && recipientId) {
+        const cleaned = String(recipientId).replace(/[^0-9]/g, "");
+        const variants = cleaned ? [cleaned, `+${cleaned}`] : [];
+
+        if (variants.length) {
+          campaignContact = await prisma.campaignContact.findFirst({
+            where: {
+              sentAt: { not: null },
+              contact: { phone: { in: variants } },
+              ...(whatsappNumber
+                ? { campaign: { organizationId: whatsappNumber.organizationId } }
+                : {}),
+            },
+            orderBy: { sentAt: "desc" },
+          });
+        }
+      }
+
+      if (!campaignContact) {
+        unmatchedCount++;
+        continue;
+      }
+      matchedCount++;
+
+      if (status === "delivered") {
+        const delivered = await prisma.campaignContact.updateMany({
+          where: { id: campaignContact.id, deliveredAt: null },
+          data: { deliveredAt: new Date() },
+        });
+
+        if (delivered.count > 0) {
+          deliveredIncrements += delivered.count;
+          await prisma.campaign.update({
+            where: { id: campaignContact.campaignId },
+            data: { messagesDelivered: { increment: 1 } },
+          });
+        }
+      }
+
+      if (status === "read") {
+        const read = await prisma.campaignContact.updateMany({
+          where: { id: campaignContact.id, readAt: null },
+          data: { readAt: new Date() },
+        });
+
+        if (read.count > 0) {
+          readIncrements += read.count;
+          const delivered = await prisma.campaignContact.updateMany({
+            where: { id: campaignContact.id, deliveredAt: null },
+            data: { deliveredAt: new Date() },
+          });
+
+          if (delivered.count > 0) {
+            deliveredIncrements += delivered.count;
+          }
+
+          await prisma.campaign.update({
+            where: { id: campaignContact.campaignId },
+            data: {
+              messagesRead: { increment: 1 },
+              ...(delivered.count > 0
+                ? { messagesDelivered: { increment: 1 } }
+                : {}),
+            },
+          });
+        }
+      }
+    }
+
+    logger.info("Webhook status update processed", {
+      meta: {
+        statuses: value.statuses,
+        matchedCount,
+        unmatchedCount,
+        deliveredIncrements,
+        readIncrements,
+      },
+    });
   }
 
-  if (!message) return res.sendStatus(200);
+  // Meta can send statuses and messages together in the same change.
+  if (!message) return;
 
   /* --------------------------------
      RESOLVE WHATSAPP NUMBER
   --------------------------------- */
-  const phoneNumberId = value?.metadata?.phone_number_id;
-
-  const whatsappNumber = await prisma.whatsAppNumber.findUnique({
-    where: { phoneNumberId },
-  });
-
   if (!whatsappNumber) {
     logger.error("Incoming message for unknown WhatsApp number", {
       meta: { phoneNumberId },
     });
-    return res.sendStatus(200);
+    return;
   }
 
   /* --------------------------------
@@ -108,7 +191,7 @@ export const receiveMessage = catchAsync(async (req, res) => {
     logger.info("Message from unknown contact", {
       meta: { phone: cleanedFrom },
     });
-    return res.sendStatus(200);
+    return;
   }
 
   /* --------------------------------
@@ -119,7 +202,7 @@ export const receiveMessage = catchAsync(async (req, res) => {
     text.includes("stop") ||
     text.includes("not interested")
   ) {
-    await prisma.$transaction([
+    const [updatedContact, newMessage] = await prisma.$transaction([
       prisma.contact.update({
         where: { id: contact.id },
         data: { status: "DECLINED", consent: false },
@@ -129,17 +212,22 @@ export const receiveMessage = catchAsync(async (req, res) => {
           organizationId: whatsappNumber.organizationId,
           whatsappNumberId: whatsappNumber.id,
           contactId: contact.id,
+          salesRepId: contact.salesRepId, // Include assigned rep if exists
           direction: "INBOUND",
           message: text,
         },
       }),
     ]);
 
+    // Emit real-time events
+    emitNewMessage(newMessage);
+    emitContactUpdate(updatedContact);
+
     logger.info("Contact opted out", {
       meta: { contactId: contact.id },
     });
 
-    return res.sendStatus(200);
+    return;
   }
 
   /* --------------------------------
@@ -148,20 +236,27 @@ export const receiveMessage = catchAsync(async (req, res) => {
   if (["yes", "sure", "ok", "okay"].some((w) => text.includes(w))) {
     if (!contact.consent) {
       // Log inbound consent message
-      await prisma.message.create({
+      const consentMessage = await prisma.message.create({
         data: {
           organizationId: whatsappNumber.organizationId,
           whatsappNumberId: whatsappNumber.id,
           contactId: contact.id,
+          salesRepId: contact.salesRepId, // Include if already assigned
           direction: "INBOUND",
           message: text,
         },
       });
 
+      // Emit real-time event
+      emitNewMessage(consentMessage);
+
       let updatedContact = await prisma.contact.update({
         where: { id: contact.id },
         data: { consent: true, status: "CONSENTED" },
       });
+
+      // Emit contact update
+      emitContactUpdate(updatedContact);
 
       logger.info("Contact consented", {
         meta: { contactId: contact.id },
@@ -189,6 +284,9 @@ export const receiveMessage = catchAsync(async (req, res) => {
             },
           });
 
+          // Emit contact update
+          emitContactUpdate(updatedContact);
+
           logger.info("Sales rep assigned", {
             meta: {
               repId: assignedRep.id,
@@ -197,34 +295,32 @@ export const receiveMessage = catchAsync(async (req, res) => {
           });
 
           try {
+            const org = await prisma.organization.findUnique({
+              where: { id: whatsappNumber.organizationId },
+              select: { name: true },
+            });
+
             await notifyRep({
-              repPhone: assignedRep.phone,
+              repEmail: assignedRep.email,
               repName: assignedRep.name,
               leadName: updatedContact.name,
               leadPhone: updatedContact.phone,
-              waNumber: whatsappNumber,
-            });
-
-            await prisma.message.create({
-              data: {
-                organizationId: whatsappNumber.organizationId,
-                whatsappNumberId: whatsappNumber.id,
-                contactId: contact.id,
-                salesRepId: assignedRep.id,
-                direction: "OUTBOUND",
-                message: `You have been assigned to contact ${updatedContact.name}. Please follow up.`,
-              },
+              orgName: org?.name || null,
             });
 
             logger.info("Sales rep notified", {
-              meta: { repPhone: assignedRep.phone },
+              meta: {
+                repEmail: assignedRep.email,
+                contactId: contact.id,
+                leadName: updatedContact.name,
+              },
             });
           } catch (err) {
             logger.error("Failed to notify sales rep", {
               meta: {
-                repPhone: assignedRep.phone,
+                repEmail: assignedRep.email,
                 contactId: contact.id,
-                err,
+                error: err.message,
               },
             });
           }
@@ -232,25 +328,43 @@ export const receiveMessage = catchAsync(async (req, res) => {
       }
     }
 
-    return res.sendStatus(200);
+    return;
   }
 
   /* --------------------------------
      OTHER MESSAGES
   --------------------------------- */
-  await prisma.message.create({
+  const inboundMessage = await prisma.message.create({
     data: {
       organizationId: whatsappNumber.organizationId,
       whatsappNumberId: whatsappNumber.id,
       contactId: contact.id,
+      salesRepId: contact.salesRepId, // Link to assigned rep
       direction: "INBOUND",
       message: text,
     },
   });
 
+  // Emit real-time event
+  emitNewMessage(inboundMessage);
+
   logger.debug("Unhandled inbound message", {
     meta: { contactId: contact.id, text },
   });
+};
+
+export const receiveMessage = catchAsync(async (req, res) => {
+  const entries = Array.isArray(req.body?.entry) ? req.body.entry : [];
+
+  // Meta requires 200 even if empty
+  if (!entries.length) return res.sendStatus(200);
+
+  for (const entry of entries) {
+    const changes = Array.isArray(entry?.changes) ? entry.changes : [];
+    for (const change of changes) {
+      await processWebhookValue(change?.value);
+    }
+  }
 
   return res.sendStatus(200);
 });

@@ -31,7 +31,8 @@ export type ContactStatus = (typeof ContactStatus)[keyof typeof ContactStatus]
 
 export const MessageDirection = {
   INBOUND: 'INBOUND',
-  OUTBOUND: 'OUTBOUND'
+  OUTBOUND: 'OUTBOUND',
+  SYSTEM: 'SYSTEM'
 } as const
 
 export type MessageDirection = (typeof MessageDirection)[keyof typeof MessageDirection]
@@ -54,6 +55,24 @@ export const SubscriptionStatus = {
 } as const
 
 export type SubscriptionStatus = (typeof SubscriptionStatus)[keyof typeof SubscriptionStatus]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+  FAILED: 'FAILED',
+  CANCELED: 'CANCELED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PromotionDiscountType = {
+  PERCENTAGE: 'PERCENTAGE',
+  FIXED: 'FIXED'
+} as const
+
+export type PromotionDiscountType = (typeof PromotionDiscountType)[keyof typeof PromotionDiscountType]
 
 
 export const WhatsappStatus = {
@@ -82,3 +101,21 @@ export const WhatsappSetupStep = {
 } as const
 
 export type WhatsappSetupStep = (typeof WhatsappSetupStep)[keyof typeof WhatsappSetupStep]
+
+
+export const CampaignStatus = {
+  DRAFT: 'DRAFT',
+  SENDING: 'SENDING',
+  COMPLETED: 'COMPLETED'
+} as const
+
+export type CampaignStatus = (typeof CampaignStatus)[keyof typeof CampaignStatus]
+
+
+export const TemplateStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type TemplateStatus = (typeof TemplateStatus)[keyof typeof TemplateStatus]

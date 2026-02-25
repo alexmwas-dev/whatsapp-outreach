@@ -10,6 +10,60 @@
       "name": "Organization",
       "item": [
         {
+          "name": "Create Organization",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Acme Inc\",\n  \"slug\": \"acme-inc\",\n  \"plan\": \"FREE\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization",
+              "host": ["{{base_url}}"],
+              "path": ["organization"]
+            },
+            "description": "Create a new organization and assign the authenticated user as OWNER."
+          },
+          "response": []
+        },
+        {
+          "name": "Connect WhatsApp Business",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"wabaId\": \"123456789012345\",\n  \"webhookToken\": \"your-verify-token\",\n  \"tier\": \"TIER_1\",\n  \"displayName\": \"SalesConnect\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/connect-whatsapp",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "connect-whatsapp"]
+            },
+            "description": "Connect WhatsApp Business (WABA) to the organization. Requires OWNER or ADMIN role."
+          },
+          "response": []
+        },
+        {
           "name": "Get Organization Details",
           "request": {
             "method": "GET",
@@ -70,7 +124,34 @@
               "host": ["{{base_url}}"],
               "path": ["organization", "stats"]
             },
-            "description": "Get organization usage statistics (total contacts, campaigns, messages sent)."
+            "description": "Get organization usage statistics (contacts, campaigns, messages, templates, WhatsApp numbers, subscription)."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Contacts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"contacts\": [\n    {\"name\": \"Jane Doe\", \"phone\": \"+15555550123\", \"email\": \"jane@example.com\"},\n    {\"name\": \"John Doe\", \"phone\": \"+15555550124\"}\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/contacts",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "contacts"]
+            },
+            "description": "Add one or many contacts to the organization."
           },
           "response": []
         },
@@ -90,6 +171,33 @@
               "path": ["organization", "activity"]
             },
             "description": "Get recent message activity log for the organization."
+          },
+          "response": []
+        },
+        {
+          "name": "Add Sales Rep",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"phone\": \"+15555550111\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/organization/sales-reps",
+              "host": ["{{base_url}}"],
+              "path": ["organization", "sales-reps"]
+            },
+            "description": "Add a sales rep to the organization. Requires OWNER or ADMIN role."
           },
           "response": []
         }
@@ -212,6 +320,12 @@
       "value": "",
       "type": "string",
       "description": "Team member ID"
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "string",
+      "description": "User ID (for sales rep creation)"
     }
   ]
 }

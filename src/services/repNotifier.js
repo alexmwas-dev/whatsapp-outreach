@@ -1,19 +1,23 @@
 import { ensurePlus } from "../utils/ensurePlus.js";
-import { sendTemplate } from "./whatsappService.js";
+import { AppError } from "../utils/AppError.js";
+import { sendLeadAssignedEmail } from "../lib/email.js";
 
 export async function notifyRep({
-  repPhone,
+  repEmail,
   repName,
   leadName,
   leadPhone,
-  waNumber,
+  orgName,
 }) {
-  return sendTemplate({
-    phone: ensurePlus(repPhone),
-    templateName: "lead_assigned_notification",
-    language: "en",
-    expectedParams: 3,
-    params: [repName, leadName, ensurePlus(leadPhone)],
-    waNumber,
+  if (!repEmail) {
+    throw new AppError("Sales rep email is missing", 400);
+  }
+
+  return sendLeadAssignedEmail({
+    to: repEmail,
+    repName,
+    leadName,
+    leadPhone: ensurePlus(leadPhone),
+    orgName,
   });
 }
