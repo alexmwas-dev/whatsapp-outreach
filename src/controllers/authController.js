@@ -8,12 +8,146 @@ import { prisma } from "../lib/prisma.js";
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key";
 const JWT_EXPIRE = process.env.JWT_EXPIRE || "7d";
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_ISSUERS = new Set([
+  "accounts.google.com",
+  "https://accounts.google.com",
+]);
 
 /**
  * Generate JWT Token
  */
 const generateToken = (userId) => {
   return jwt.sign({ userId }, JWT_SECRET, { expiresIn: JWT_EXPIRE });
+};
+
+const buildOrganizationSlugBase = (name) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 40);
+
+const generateUniqueOrganizationSlug = async (name) => {
+  const slugBase = buildOrganizationSlugBase(name);
+  let slug = slugBase || `org-${Math.random().toString(36).slice(2, 8)}`;
+
+  const exists = await prisma.organization.findUnique({ where: { slug } });
+  if (exists) {
+    slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`;
+  }
+
+  return slug;
+};
+
+const createOwnerAccountWithOrganization = async ({
+  name,
+  email,
+  password = null,
+  googleId = null,
+}) => {
+  const slug = await generateUniqueOrganizationSlug(name);
+
+  return prisma.$transaction(async (tx) => {
+    const organization = await tx.organization.create({
+      data: {
+        name: `${name}'s Org`,
+        slug,
+        plan: "FREE",
+      },
+    });
+
+    const user = await tx.user.create({
+      data: {
+        name,
+        email,
+        password,
+        googleId,
+        role: "OWNER",
+        organizationId: organization.id,
+      },
+    });
+
+    await tx.subscription.create({
+      data: {
+        organizationId: organization.id,
+        status: "TRIAL",
+        plan: "FREE",
+        messageLimit: 100,
+        messagesUsed: 0,
+        currentPeriodStart: new Date(),
+        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+        provider: "trial",
+      },
+    });
+
+    return { user, organization };
+  });
+};
+
+const buildAuthResponseData = (user, organization = user.organization) => {
+  if (!organization) {
+    throw new AppError("User account is not linked to an organization", 400);
+  }
+
+  return {
+    token: generateToken(user.id),
+    user: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    },
+    organization: {
+      id: organization.id,
+      name: organization.name,
+      slug: organization.slug,
+      plan: organization.plan,
+    },
+  };
+};
+
+const verifyGoogleCredential = async (credential) => {
+  if (!GOOGLE_CLIENT_ID) {
+    throw new AppError("Google sign-in is not configured", 500);
+  }
+
+  const response = await fetch(
+    `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(
+      credential,
+    )}`,
+  );
+  const payload = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    logger.warn("Google token verification failed", {
+      meta: { response: payload },
+    });
+    throw new AppError("Invalid Google credential", 401);
+  }
+
+  if (payload.aud !== GOOGLE_CLIENT_ID) {
+    throw new AppError("Google credential audience mismatch", 401);
+  }
+
+  if (!GOOGLE_ISSUERS.has(payload.iss)) {
+    throw new AppError("Invalid Google token issuer", 401);
+  }
+
+  if (!(payload.email_verified === "true" || payload.email_verified === true)) {
+    throw new AppError("Google email is not verified", 401);
+  }
+
+  if (!payload.sub || !payload.email) {
+    throw new AppError("Google credential is missing required fields", 401);
+  }
+
+  const exp = Number(payload.exp);
+  if (Number.isFinite(exp) && exp * 1000 <= Date.now()) {
+    throw new AppError("Google credential has expired", 401);
+  }
+
+  return payload;
 };
 
 /**
@@ -38,81 +172,17 @@ export const signup = catchAsync(async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-      password: hashedPassword,
-      role: "ADMIN", // default role, can upgrade later
-    },
+  const { user, organization } = await createOwnerAccountWithOrganization({
+    name,
+    email,
+    password: hashedPassword,
   });
-  // Create an organization for the user and assign OWNER role
-  const slugBase = name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 40);
-
-  // Ensure unique slug by appending short suffix if needed
-  let slug = slugBase || `org-${Math.random().toString(36).slice(2, 8)}`;
-  const exists = await prisma.organization.findUnique({ where: { slug } });
-  if (exists) {
-    slug = `${slug}-${Math.random().toString(36).slice(2, 6)}`;
-  }
-
-  const organization = await prisma.$transaction(async (tx) => {
-    const org = await tx.organization.create({
-      data: {
-        name: `${name}'s Org`,
-        slug,
-        plan: "FREE",
-      },
-    });
-
-    // Link user to org and set role OWNER
-    await tx.user.update({
-      where: { id: user.id },
-      data: { role: "OWNER", organizationId: org.id },
-    });
-
-    // Create free trial subscription
-    await tx.subscription.create({
-      data: {
-        organizationId: org.id,
-        status: "TRIAL",
-        plan: "FREE",
-        messageLimit: 100,
-        messagesUsed: 0,
-        currentPeriodStart: new Date(),
-        currentPeriodEnd: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-        provider: "trial",
-      },
-    });
-
-    return org;
-  });
-
-  const token = generateToken(user.id);
 
   logger.info("User signup completed", { meta: { userId: user.id } });
 
   res.status(201).json({
     status: "success",
-    data: {
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: "OWNER",
-      },
-      organization: {
-        id: organization.id,
-        name: organization.name,
-        slug: organization.slug,
-        plan: organization.plan,
-      },
-    },
+    data: buildAuthResponseData(user, organization),
   });
 });
 
@@ -139,6 +209,13 @@ export const login = catchAsync(async (req, res) => {
     throw new AppError("Invalid email or password", 401);
   }
 
+  if (!user.password) {
+    throw new AppError(
+      "This account uses Google sign-in. Continue with Google",
+      400,
+    );
+  }
+
   // Verify password
   const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -146,30 +223,82 @@ export const login = catchAsync(async (req, res) => {
     throw new AppError("Invalid email or password", 401);
   }
 
-  // Generate token
-  const token = generateToken(user.id);
-
   logger.info("User login successful", {
     meta: { userId: user.id },
   });
 
   res.status(200).json({
     status: "success",
-    data: {
-      token,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-      organization: {
-        id: user.organization.id,
-        name: user.organization.name,
-        slug: user.organization.slug,
-        plan: user.organization.plan,
-      },
+    data: buildAuthResponseData(user),
+  });
+});
+
+/**
+ * GOOGLE AUTH - Login or Signup with Google ID token
+ */
+export const googleAuth = catchAsync(async (req, res) => {
+  const { credential } = req.body;
+
+  if (!credential || typeof credential !== "string") {
+    throw new AppError("Google credential is required", 400);
+  }
+
+  const googlePayload = await verifyGoogleCredential(credential);
+  const googleId = googlePayload.sub;
+  const email = String(googlePayload.email).trim().toLowerCase();
+  const name =
+    String(googlePayload.name || "").trim() || email.split("@")[0] || "User";
+
+  let user = await prisma.user.findFirst({
+    where: {
+      OR: [{ googleId }, { email }],
     },
+    include: {
+      organization: true,
+    },
+  });
+
+  if (!user) {
+    const created = await createOwnerAccountWithOrganization({
+      name,
+      email,
+      googleId,
+    });
+
+    logger.info("User Google signup completed", {
+      meta: { userId: created.user.id },
+    });
+
+    return res.status(200).json({
+      status: "success",
+      data: buildAuthResponseData(created.user, created.organization),
+    });
+  }
+
+  if (user.googleId && user.googleId !== googleId) {
+    throw new AppError(
+      "This email is linked to a different Google account",
+      409,
+    );
+  }
+
+  if (!user.googleId) {
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: { googleId },
+      include: {
+        organization: true,
+      },
+    });
+  }
+
+  logger.info("User Google login successful", {
+    meta: { userId: user.id },
+  });
+
+  res.status(200).json({
+    status: "success",
+    data: buildAuthResponseData(user),
   });
 });
 
@@ -286,6 +415,17 @@ export const changePassword = catchAsync(async (req, res) => {
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });
+
+  if (!user) {
+    throw new AppError("User not found", 404);
+  }
+
+  if (!user.password) {
+    throw new AppError(
+      "Password login is not enabled for this account. Use Google sign-in",
+      400,
+    );
+  }
 
   // Verify current password
   const passwordMatch = await bcrypt.compare(currentPassword, user.password);

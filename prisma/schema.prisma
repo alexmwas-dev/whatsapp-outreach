@@ -127,7 +127,8 @@ model User {
   id             String   @id @default(uuid())
   name           String
   email          String   @unique
-  password       String
+  password       String?
+  googleId       String?  @unique
   role           UserRole @default(ADMIN)
 
   organizationId String?   

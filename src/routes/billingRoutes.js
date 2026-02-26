@@ -30,7 +30,7 @@ router.get("/plans", getBillingPlans);
 router.get("/overview", getBillingOverview);
 router.get("/pesapal/health", getPesapalHealth);
 router.get("/promotions", listBillingPromotions);
-router.post("/promotions", createBillingPromotion);
+router.post("/promotions", authorize("ADMIN"), createBillingPromotion);
 router.post("/promotions/validate", validateBillingPromotion);
 router.post("/checkout", createBillingCheckout);
 router.get("/payments", listBillingPayments);

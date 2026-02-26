@@ -9679,3 +9679,431 @@
 {"level":"http","message":"GET /campaign"}
 {"level":"http","message":"GET /campaign/stats"}
 {"level":"http","message":"GET /organization/contacts"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"POST /auth/login"}
+{"level":"error","message":"Invalid email or password","meta":{"method":"POST","path":"/auth/login","stack":"Error: Invalid email or password\n    at file:///home/jj/repo/whatsapp-outreach/src/controllers/authController.js:139:11\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)","statusCode":401}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"POST /auth/logout"}
+{"level":"info","message":"User logout","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"error","message":"Invalid email or password","meta":{"method":"POST","path":"/auth/login","stack":"Error: Invalid email or password\n    at file:///home/jj/repo/whatsapp-outreach/src/controllers/authController.js:146:11","statusCode":401}}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"POST /billing/checkout"}
+{"level":"info","message":"Billing checkout initiated","meta":{"amount":69,"baseAmount":69,"currency":"USD","discountAmount":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","pesapalConfig":{"backendPublicUrl":"https://b084-62-8-79-110.ngrok-free.app","baseUrl":"https://cybqa.pesapal.com/pesapalv3","callbackUrl":"https://b084-62-8-79-110.ngrok-free.app/billing/pesapal/callback","credentials":{"consumerKey":{"configured":true,"hasLeadingOrTrailingWhitespace":false,"length":32,"preview":"qkio1B************************EW"},"consumerSecret":{"configured":true,"hasLeadingOrTrailingWhitespace":false,"length":28,"preview":"os************************s="}},"frontendUrl":"https://b084-62-8-79-110.ngrok-free.app","ipnIdConfigured":false,"ipnUrl":"https://b084-62-8-79-110.ngrok-free.app/billing/pesapal/webhook","warnings":[]},"planCode":"STARTER","promotionCode":null,"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"POST /organization/contacts"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"POST /auth/login"}
+{"level":"info","message":"User login successful","meta":{"userId":"5cadd3e5-9475-4903-91b3-db268856c315"}}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"POST /organization/whatsapp-templates/poll-status"}
+{"level":"info","message":"WhatsApp template status poll completed","meta":{"checkedTemplates":0,"organizationId":"fb9bc26a-ec80-49a9-8f09-2f79b7c38635","requestedTemplateId":null,"updatedTemplates":0}}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /billing/overview"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"POST /auth/google"}
+{"level":"error","message":"\nInvalid `prisma.user.findFirst()` invocation:\n\n{\n  where: {\n    OR: [\n      {\n        googleId: \"101260527972578335788\"\n      },\n      {\n        email: \"khamjapher1@gmail.com\"\n      }\n    ]\n  },\n  include: {\n    organization: true\n  }\n}\n\nUnknown argument `googleId`. Available options are marked with ?.","meta":{"method":"POST","path":"/auth/google","stack":"PrismaClientValidationError: \nInvalid `prisma.user.findFirst()` invocation:\n\n{\n  where: {\n    OR: [\n      {\n        googleId: \"101260527972578335788\"\n      },\n      {\n        email: \"khamjapher1@gmail.com\"\n      }\n    ]\n  },\n  include: {\n    organization: true\n  }\n}\n\nUnknown argument `googleId`. Available options are marked with ?.\n    at rr (/home/jj/repo/whatsapp-outreach/node_modules/@prisma/client/runtime/client.js:10:1379)\n    at Vr.handleRequestError (/home/jj/repo/whatsapp-outreach/node_modules/@prisma/client/runtime/client.js:65:7815)\n    at Vr.handleAndLogRequestError (/home/jj/repo/whatsapp-outreach/node_modules/@prisma/client/runtime/client.js:65:7467)\n    at Vr.request (/home/jj/repo/whatsapp-outreach/node_modules/@prisma/client/runtime/client.js:65:7174)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async a (/home/jj/repo/whatsapp-outreach/node_modules/@prisma/client/runtime/client.js:75:5816)\n    at async file:///home/jj/repo/whatsapp-outreach/src/controllers/authController.js:249:14","statusCode":500}}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"POST /auth/google"}
+{"level":"info","message":"User Google signup completed","meta":{"userId":"25f59005-e215-483d-a3d7-ba24de88fb55"}}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"POST /auth/logout"}
+{"level":"info","message":"User logout","meta":{"userId":"25f59005-e215-483d-a3d7-ba24de88fb55"}}
+{"level":"http","message":"POST /auth/google"}
+{"level":"info","message":"User Google login successful","meta":{"userId":"25f59005-e215-483d-a3d7-ba24de88fb55"}}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"POST /auth/logout"}
+{"level":"info","message":"User logout","meta":{"userId":"25f59005-e215-483d-a3d7-ba24de88fb55"}}
+{"level":"http","message":"POST /auth/google"}
+{"level":"error","message":"fetch failed","meta":{"method":"POST","path":"/auth/google","stack":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async verifyGoogleCredential (file:///home/jj/repo/whatsapp-outreach/src/controllers/authController.js:115:20)\n    at async file:///home/jj/repo/whatsapp-outreach/src/controllers/authController.js:246:25","statusCode":500}}
+{"level":"http","message":"POST /auth/google"}
+{"level":"info","message":"User Google login successful","meta":{"userId":"25f59005-e215-483d-a3d7-ba24de88fb55"}}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"info","message":"Socket.io initialized"}
+{"level":"info","message":"Campaign worker started","meta":{"maxConcurrentCampaigns":3,"pollIntervalMs":1500}}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /auth/me"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /config"}
+{"level":"http","message":"POST /auth/google"}
+{"level":"info","message":"User Google login successful","meta":{"userId":"25f59005-e215-483d-a3d7-ba24de88fb55"}}
+{"level":"http","message":"GET /organization/team"}
+{"level":"http","message":"GET /organization/stats"}
+{"level":"http","message":"GET /organization/whatsapp-numbers"}
+{"level":"http","message":"GET /campaign"}
+{"level":"http","message":"GET /organization/whatsapp-templates"}
+{"level":"http","message":"GET /organization/activity"}
+{"level":"http","message":"GET /organization/contacts"}
+{"level":"http","message":"GET /campaign/stats"}
+{"level":"http","message":"GET /config"}
+{"level":"http","message":"GET /config"}

@@ -1,0 +1,158 @@
+{
+  "info": {
+    "_postman_id": "salesconnect-google-auth-api",
+    "name": "SalesConnect Google Auth API",
+    "description": "Postman collection for testing Google login/signup (`POST /auth/google`) and verifying the returned JWT with `/auth/me`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Google Auth",
+      "description": "Use a Google ID token (`credential`) from Google Sign-In and send it to the backend. If the user exists, it logs in. If not, it creates the user, organization, and trial subscription.",
+      "item": [
+        {
+          "name": "Google Login / Signup",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is success', function () {",
+                  "  pm.expect(pm.response.code).to.be.oneOf([200, 201]);",
+                  "});",
+                  "",
+                  "let data = null;",
+                  "try {",
+                  "  const json = pm.response.json();",
+                  "  data = json && json.data ? json.data : null;",
+                  "} catch (e) {",
+                  "  console.log('Response was not JSON', e);",
+                  "}",
+                  "",
+                  "if (data && data.token) {",
+                  "  pm.collectionVariables.set('token', data.token);",
+                  "}",
+                  "if (data && data.user && data.user.email) {",
+                  "  pm.collectionVariables.set('last_user_email', data.user.email);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "true"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"credential\": \"{{google_id_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/auth/google",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "google"
+              ]
+            },
+            "description": "Send Google ID token (`credential`) to backend. Returns your app JWT (`data.token`) plus user and organization."
+          },
+          "response": []
+        },
+        {
+          "name": "Get Current User (JWT from Google Auth)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "true"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/me",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "me"
+              ]
+            },
+            "description": "Verify the JWT returned by Google auth works with protected routes."
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "ngrok-skip-browser-warning",
+                "value": "true"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/auth/logout",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "auth",
+                "logout"
+              ]
+            },
+            "description": "Optional logout test. Your backend is stateless JWT, so this mainly confirms route access."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string",
+      "description": "API base URL, e.g. http://localhost:3000 or your ngrok URL"
+    },
+    {
+      "key": "google_id_token",
+      "value": "",
+      "type": "string",
+      "description": "Google ID token from Google Sign-In (credential)"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "App JWT returned by POST /auth/google"
+    },
+    {
+      "key": "last_user_email",
+      "value": "",
+      "type": "string",
+      "description": "Captured from the last Google auth response"
+    }
+  ]
+}
