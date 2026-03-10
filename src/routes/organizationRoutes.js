@@ -11,10 +11,6 @@ import {
   getActivityLog,
   createOrganization,
   connectWhatsAppBusiness,
-  startConnectWhatsApp,
-  completeConnectWhatsApp,
-  completeEmbeddedConnectWhatsApp,
-  manualConnectWhatsApp,
   addSalesRep,
   getOrganizationContacts,
   updateOrganizationContact,
@@ -39,27 +35,7 @@ router.post(
   connectWhatsAppBusiness,
 );
 // Embedded signup: start -> client sends short-lived user access token to list WABAs
-router.post(
-  "/connect-whatsapp/start",
-  authorize("OWNER", "ADMIN"),
-  startConnectWhatsApp,
-);
-// Complete signup: subscribe WABA to webhook, fetch numbers, persist org
-router.post(
-  "/connect-whatsapp/complete",
-  authorize("OWNER", "ADMIN"),
-  completeConnectWhatsApp,
-);
-router.post(
-  "/connect-whatsapp/embedded-complete",
-  authorize("OWNER", "ADMIN"),
-  completeEmbeddedConnectWhatsApp,
-);
-router.post(
-  "/connect-whatsapp/manual",
-  authorize("OWNER", "ADMIN"),
-  manualConnectWhatsApp,
-);
+
 router.get("/", getOrganization);
 router.put("/", authorize("OWNER", "ADMIN"), updateOrganization);
 router.get("/stats", getOrganizationStats);
