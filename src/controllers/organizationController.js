@@ -74,7 +74,31 @@ export const createOrganization = catchAsync(async (req, res) => {
   });
 });
 
+export const getWhatsAppConnection = catchAsync(async (req, res) => {
+  const orgId = req.organization.id;
 
+  const organization = await prisma.organization.findUnique({
+    where: { id: orgId },
+  });
+
+  const numbers = await prisma.whatsAppNumber.findMany({
+    where: { organizationId: orgId },
+  });
+
+  res.status(200).json({
+    organization: {
+      businessId: organization.businessId || "",
+      whatsappBusinessAccountId: organization.whatsappBusinessAccountId || "",
+      whatsappStatus: organization.whatsappStatus || "",
+    },
+    numbers: numbers.map((n) => ({
+      id: n.id,
+      displayName: n.displayName,
+      phoneNumber: n.phoneNumber,
+      isPrimary: n.isPrimary,
+    })),
+  });
+});
 
 export const connectWhatsAppBusiness = catchAsync(async (req, res) => {
 
