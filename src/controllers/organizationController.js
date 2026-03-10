@@ -1,7 +1,7 @@
 import { prisma } from "../lib/prisma.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
-import logger from "../utils/loogger.js";
+import logger from "../utils/logger.js";
 import bcrypt from "bcryptjs";
 import { sendInviteEmail } from "../lib/email.js";
 import {
@@ -74,132 +74,100 @@ export const createOrganization = catchAsync(async (req, res) => {
   });
 });
 
+
+
 export const connectWhatsAppBusiness = catchAsync(async (req, res) => {
+
   const orgId = req.organization.id;
-  const { wabaId, displayName, tier } = req.body;
 
-  if (!wabaId || !tier) {
-    throw new AppError("WABA ID and messaging tier are required", 400);
+  const { code, wabaId, phoneNumberId } = req.body;
+
+  if (!code || !wabaId) {
+    throw new AppError("authorization code and wabaId are required", 400);
   }
 
-  // Update organization with WABA
-  const updatedOrg = await prisma.organization.update({
-    where: { id: orgId },
-    data: {
-      whatsappBusinessAccountId: wabaId,
-      messagingTier: tier,
-    },
-  });
+  /*
+  =========================
+  Exchange Code For Access Token
+  =========================
+  */
 
-  res.status(200).json({
-    status: "success",
-    data: { organization: updatedOrg },
-  });
-});
-
-/**
- * Start embedded signup: accept a Facebook user access token from the client
- * and return the list of WhatsApp Business Accounts the user can manage.
- * Body: { accessToken: string }
- */
-export const startConnectWhatsApp = catchAsync(async (req, res) => {
-  const { accessToken } = req.body;
-
-  if (!accessToken) {
-    throw new AppError("accessToken is required", 400);
-  }
-
-  // 1️⃣ Get businesses user manages
-  const bizResp = await fetch(
-    `https://graph.facebook.com/v19.0/me/businesses?access_token=${accessToken}`,
+  const tokenResp = await fetch(
+    `https://graph.facebook.com/v24.0/oauth/access_token?client_id=${process.env.META_APP_ID}&client_secret=${process.env.META_APP_SECRET}&code=${code}`
   );
 
-  const bizJson = await bizResp.json();
+  const tokenJson = await tokenResp.json().catch(() => ({}));
 
-  if (!bizResp.ok) {
-    logger.warn("Failed fetching businesses", { meta: bizJson });
-    throw new AppError("Failed to fetch businesses", 502);
+  if (!tokenResp.ok) {
+    logger.error("Token exchange failed", { meta: tokenJson });
+    throw new AppError("Failed to exchange authorization code", 500);
   }
 
-  const businesses = bizJson.data || [];
+  const accessToken = tokenJson.access_token;
 
-  // 2️⃣ For each business, fetch WABAs
-  const wabas = [];
+  if (!accessToken) {
+    throw new AppError("Access token missing from Meta response", 500);
+  }
 
-  for (const biz of businesses) {
-    const wabaResp = await fetch(
-      `https://graph.facebook.com/v19.0/${biz.id}/owned_whatsapp_business_accounts?access_token=${accessToken}`,
-    );
+  /*
+  =========================
+  Subscribe Webhook
+  =========================
+  */
 
-    const wabaJson = await wabaResp.json();
-
-    if (wabaResp.ok && wabaJson.data) {
-      for (const w of wabaJson.data) {
-        wabas.push({
-          ...w,
-          businessId: biz.id,
-          businessName: biz.name,
-        });
-      }
+  const subscribeResp = await fetch(
+    `https://graph.facebook.com/v24.0/${wabaId}/subscribed_apps`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     }
+  );
+
+  const subscribeJson = await subscribeResp.json().catch(() => ({}));
+
+  if (!subscribeResp.ok) {
+    logger.warn("Webhook subscription failed", { meta: subscribeJson });
+    throw new AppError("Failed to subscribe webhook", 502);
   }
-  console.log("Fetched WABAs for user:", wabas);
 
-  res.status(200).json({
-    status: "success",
-    data: wabas,
-  });
-});
+  /*
+  =========================
+   Fetch Phone Numbers
+  =========================
+  */
 
-const persistWhatsAppConnection = async ({
-  orgId,
-  wabaId,
-  accessToken,
-  preferredPhoneNumberId,
-  providedPhoneNumbers,
-}) => {
-  // 1) Subscribe WABA to our webhook
-  try {
-    const subscribeResp = await fetch(
-      `https://graph.facebook.com/v19.0/${wabaId}/subscribed_apps?access_token=${accessToken}`,
-      { method: "POST" },
-    );
-
-    const subJson = await subscribeResp.json().catch(() => ({}));
-    if (!subscribeResp.ok) {
-      logger.warn("Failed to subscribe WABA to webhook", { meta: subJson });
-      throw new AppError("Failed to subscribe WABA to webhook", 502);
+  const numbersResp = await fetch(
+    `https://graph.facebook.com/v24.0/${wabaId}/phone_numbers`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
     }
-  } catch (err) {
-    logger.error("Error subscribing WABA to webhook", { error: err.message });
-    throw new AppError("Error subscribing WABA to webhook", 502);
+  );
+
+  const numbersJson = await numbersResp.json().catch(() => ({}));
+
+  if (!numbersResp.ok) {
+    logger.warn("Failed fetching phone numbers", { meta: numbersJson });
+    throw new AppError("Failed to fetch phone numbers", 502);
   }
 
-  // 2) Fetch phone numbers for the WABA
-  let phoneNumbers = providedPhoneNumbers || [];
-  if (!providedPhoneNumbers) {
-    try {
-      const numbersResp = await fetch(
-        `https://graph.facebook.com/v19.0/${wabaId}/phone_numbers?access_token=${accessToken}`,
-      );
-      const numsJson = await numbersResp.json().catch(() => ({}));
-      if (!numbersResp.ok) {
-        logger.warn("Failed to fetch WABA phone numbers", { meta: numsJson });
-      } else {
-        phoneNumbers = numsJson.data || [];
-      }
-    } catch (err) {
-      logger.error("Error fetching WABA phone numbers", { error: err.message });
-    }
-  }
+  const numbers = numbersJson.data || [];
 
-  // 3) Persist organization fields and numbers
+  /*
+  =========================
+  Update Organization
+  =========================
+  */
+
   const updatedOrg = await prisma.organization.update({
     where: { id: orgId },
     data: {
       whatsappBusinessAccountId: wabaId,
-      whatsappStatus: "VERIFIED",
-      accessToken: accessToken,
+      whatsappStatus: "CONNECTED",
+      accessToken,
       accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
       whatsappStepsCompleted: {
         push: ["WABA_CONNECTED", "WEBHOOK_CONFIGURED"],
@@ -207,160 +175,97 @@ const persistWhatsAppConnection = async ({
     },
   });
 
-  // Create WhatsAppNumber records when provided
+  /*
+  =========================
+   Save Numbers
+  =========================
+  */
+
   const createdNumbers = [];
 
-  const orderedNumbers = [...phoneNumbers].sort((a, b) => {
-    const aId = a.id || a.phone_number_id;
-    const bId = b.id || b.phone_number_id;
-    if (!preferredPhoneNumberId) return 0;
-    if (aId === preferredPhoneNumberId) return -1;
-    if (bId === preferredPhoneNumberId) return 1;
-    return 0;
-  });
+  for (const num of numbers) {
 
-  for (const num of orderedNumbers) {
-    try {
-      const phoneNumber = num.display_phone_number || num.phone_number || null;
-      const phoneNumberId = num.id || num.phone_number_id || null;
-      const displayName = num.verified_name || num.display_phone_number || null;
+    const phoneNumber = num.display_phone_number || num.phone_number;
+    const phoneId = num.id;
 
-      if (!phoneNumber || !phoneNumberId) continue;
+    if (!phoneNumber || !phoneId) continue;
 
-      const created = await prisma.whatsAppNumber.upsert({
-        where: { phoneNumberId },
-        update: {
-          displayName,
-          active: true,
-          accessToken,
-          accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
-        },
-        create: {
-          organizationId: orgId,
-          phoneNumber,
-          phoneNumberId,
-          displayName,
-          accessToken,
-          accessTokenExpiresAt: new Date(Date.now() + 60 * 60 * 1000),
-          active: true,
-          isPrimary:
-            createdNumbers.length === 0 ||
-            phoneNumberId === preferredPhoneNumberId,
-        },
-      });
-
-      createdNumbers.push(created);
-    } catch (err) {
-      logger.warn("Failed to upsert WhatsApp number", {
-        meta: num,
-        error: err.message,
-      });
-    }
-  }
-
-  if (createdNumbers.length > 0) {
-    await prisma.organization.update({
-      where: { id: orgId },
-      data: { whatsappStepsCompleted: { push: "PHONE_NUMBER_ADDED" } },
+    const created = await prisma.whatsAppNumber.upsert({
+      where: { phoneNumberId: phoneId },
+      update: {
+        displayName: num.verified_name || phoneNumber,
+        active: true,
+        accessToken,
+      },
+      create: {
+        organizationId: orgId,
+        phoneNumber,
+        phoneNumberId: phoneId,
+        displayName: num.verified_name || phoneNumber,
+        accessToken,
+        active: true,
+        isPrimary: createdNumbers.length === 0,
+      },
     });
+
+    createdNumbers.push(created);
   }
 
-  if (preferredPhoneNumberId && createdNumbers.length > 0) {
+  /*
+  =========================
+  Set Primary Number
+  =========================
+  */
+
+  if (phoneNumberId) {
+
     const preferred = createdNumbers.find(
-      (n) => n.phoneNumberId === preferredPhoneNumberId,
+      (n) => n.phoneNumberId === phoneNumberId
     );
+
     if (preferred) {
+
       await prisma.whatsAppNumber.updateMany({
         where: { organizationId: orgId },
         data: { isPrimary: false },
       });
+
       await prisma.whatsAppNumber.update({
         where: { id: preferred.id },
         data: { isPrimary: true },
       });
+
     }
+
   }
 
-  return { organization: updatedOrg, numbers: createdNumbers };
-};
+  /*
+  =========================
+  SUCCESS RESPONSE
+  =========================
+  */
 
-/**
- * Complete embedded signup: subscribe the selected WABA to our webhook,
- * fetch phone numbers and persist org + number records.
- * Body: { wabaId: string, accessToken: string }
- */
-export const completeConnectWhatsApp = catchAsync(async (req, res) => {
-  const orgId = req.organization.id;
-  const { wabaId, accessToken } = req.body;
-
-  console.log("Completing WhatsApp connection with data:", {
-    wabaId,
-    accessToken,
-  });
-
-  if (!wabaId || !accessToken) {
-    throw new AppError("wabaId and accessToken are required", 400);
-  }
-
-  const result = await persistWhatsAppConnection({
-    orgId,
-    wabaId,
-    accessToken,
+  logger.info("WhatsApp Business connected", {
+    meta: {
+      organizationId: orgId,
+      wabaId,
+      numbers: createdNumbers.length,
+    },
   });
 
   res.status(200).json({
     status: "success",
-    data: result,
+    message: "WhatsApp Business connected successfully",
+    data: {
+      organization: updatedOrg,
+      numbers: createdNumbers,
+    },
   });
+
 });
 
-/**
- * Complete embedded signup using authorization code from FB SDK.
- * Body: { code: string, wabaId: string, phoneNumberId?: string }
- */
-export const completeEmbeddedConnectWhatsApp = catchAsync(async (req, res) => {
-  const orgId = req.organization.id;
-  const { code, wabaId, phoneNumberId } = req.body;
 
-  if (!code || !wabaId) {
-    throw new AppError("code and wabaId are required", 400);
-  }
 
-  const appId = process.env.FB_APP_ID;
-  const appSecret = process.env.FB_APP_SECRET;
-
-  if (!appId || !appSecret) {
-    throw new AppError("Facebook app credentials are not configured", 500);
-  }
-
-  const tokenParams = new URLSearchParams({
-    client_id: appId,
-    client_secret: appSecret,
-    code,
-  });
-
-  const tokenResp = await fetch(
-    `https://graph.facebook.com/v24.0/oauth/access_token?${tokenParams.toString()}`,
-  );
-  const tokenJson = await tokenResp.json().catch(() => ({}));
-
-  if (!tokenResp.ok || !tokenJson?.access_token) {
-    logger.warn("Failed to exchange embedded signup code", { meta: tokenJson });
-    throw new AppError("Failed to exchange code for access token", 502);
-  }
-
-  const result = await persistWhatsAppConnection({
-    orgId,
-    wabaId,
-    accessToken: tokenJson.access_token,
-    preferredPhoneNumberId: phoneNumberId,
-  });
-
-  res.status(200).json({
-    status: "success",
-    data: result,
-  });
-});
 
 /**
  * Manual connect flow:
