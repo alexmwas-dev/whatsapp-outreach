@@ -11,6 +11,7 @@ import {
   getActivityLog,
   createOrganization,
   connectWhatsAppBusiness,
+  getWhatsAppConnection,
   addSalesRep,
   getOrganizationContacts,
   updateOrganizationContact,
@@ -35,6 +36,8 @@ router.post(
   connectWhatsAppBusiness,
 );
 // Embedded signup: start -> client sends short-lived user access token to list WABAs
+
+router.get("/whatsapp-connection", getWhatsAppConnection);
 
 router.get("/", getOrganization);
 router.put("/", authorize("OWNER", "ADMIN"), updateOrganization);
