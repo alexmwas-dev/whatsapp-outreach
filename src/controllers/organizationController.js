@@ -1,7 +1,6 @@
 import { prisma } from "../lib/prisma.js";
 import { catchAsync } from "../utils/catchAsync.js";
 import { AppError } from "../utils/AppError.js";
-import logger from "../utils/logger.js";
 import bcrypt from "bcryptjs";
 import { sendInviteEmail } from "../lib/email.js";
 import {
