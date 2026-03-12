@@ -21,6 +21,8 @@ app.use(
       "https://b084-62-8-79-110.ngrok-free.app",
       "https://8c00-62-8-79-110.ngrok-free.app",
       "https://org.sales-connect.site",
+      "https://whatsapp-outreach.onrender.com",
+      "https://salesconnect-hub.onrender.com",
     ],
     credentials: true,
   }),
